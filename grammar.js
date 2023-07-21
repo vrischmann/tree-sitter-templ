@@ -5,16 +5,16 @@ module.exports = grammar({
         source_file: $ => repeat($._definition),
 
         _definition: $ => choice(
-            $.package_definition,
-            $.component_definition,
+            $.package_declaration,
+            $.component_declaration,
         ),
 
-        package_definition: $ => seq(
+        package_declaration: $ => seq(
             'package',
             $._package_identifier,
         ),
 
-        component_definition: $ => seq(
+        component_declaration: $ => seq(
             'templ',
             field('name', $._component_identifier),
             $.parameter_list,
