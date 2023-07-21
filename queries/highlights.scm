@@ -1,16 +1,20 @@
 (component_declaration
   name: (component_identifier) @function)
 
-(open_tag
-  name: (element_identifier) @tag)
-(close_tag
-  name: (element_identifier) @tag)
+(open_tag) @tag
+(close_tag) @tag
 
-(attribute
-  name: (attribute_name) @attribute
-  value: (attribute_value) @string)
+(attribute_value) @string
+
+(text) @string.special
+
+(css_property
+  name: (css_property_name) @attribute)
+
+(expression) @function.method
 
 [
   "package"
   "templ"
+  "css"
 ] @keyword
