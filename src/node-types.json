@@ -87,6 +87,86 @@
     }
   },
   {
+    "type": "css_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "css_property",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "css_declaration",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "css_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "css_block",
+          "named": true
+        },
+        {
+          "type": "parameter_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "css_property",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "css_property_name",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "css_property_value",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "css_property_value",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "element",
     "named": true,
     "fields": {},
@@ -122,6 +202,22 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "expression",
+    "named": true,
+    "fields": {
+      "content": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression_content",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -212,10 +308,14 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "component_declaration",
+          "named": true
+        },
+        {
+          "type": "css_declaration",
           "named": true
         },
         {
@@ -239,6 +339,14 @@
   },
   {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": ";",
     "named": false
   },
   {
@@ -274,7 +382,23 @@
     "named": true
   },
   {
+    "type": "css",
+    "named": false
+  },
+  {
+    "type": "css_identifier",
+    "named": true
+  },
+  {
+    "type": "css_property_name",
+    "named": true
+  },
+  {
     "type": "element_identifier",
+    "named": true
+  },
+  {
+    "type": "expression_content",
     "named": true
   },
   {
