@@ -55,17 +55,33 @@ module.exports = grammar({
             '}',
         ),
 
-        element: $ => seq(
-            $.open_tag,
-            repeat($._element_content),
-            $.close_tag,
+        element: $ => choice(
+            $._tag,
+            $.self_closing_tag,
         ),
-        open_tag: $ => seq(
+        _tag: $ => seq(
+            $.tag_start,
+            repeat($._element_content),
+            $.tag_end,
+        ),
+        tag_start: $ => seq(
             '<',
             field('name', $.element_identifier),
             repeat($.attribute),
             '>',
         ),
+        tag_end: $ => seq(
+            '</',
+            field('name', $.element_identifier),
+            '>',
+        ),
+        self_closing_tag: $ => seq(
+            '<',
+            field('name', $.element_identifier),
+            repeat($.attribute),
+            '/>',
+        ),
+
         attribute: $ => seq(
             field('name', $.attribute_name),
             '=',
@@ -85,11 +101,6 @@ module.exports = grammar({
             $.text,
             // $.statement
             // $.expression,
-        ),
-        close_tag: $ => seq(
-            '</',
-            field('name', $.element_identifier),
-            '>',
         ),
 
         // CSS stuff
