@@ -30,7 +30,7 @@ module.exports = grammar({
             'templ',
             field('name', $._component_identifier),
             $.parameter_list,
-            $.block,
+            $._block,
         ),
 
         parameter_list: $ => seq(
@@ -47,7 +47,7 @@ module.exports = grammar({
         )),
         parameter_type: $ => /[a-zA-Z0-9\[\]]+/,
 
-        block: $ => seq(
+        _block: $ => seq(
             '{',
             repeat(choice(
                 $.element,
@@ -57,7 +57,7 @@ module.exports = grammar({
 
         element: $ => seq(
             $.open_tag,
-            repeat($.element_content),
+            repeat($._element_content),
             $.close_tag,
         ),
         open_tag: $ => seq(
@@ -68,14 +68,21 @@ module.exports = grammar({
         ),
         attribute: $ => seq(
             field('name', $.attribute_name),
-            '="',
-            field('value', $.attribute_value),
-            '"',
+            '=',
+            field('value', $._attribute_value),
         ),
-        element_content: $ => choice(
+        _attribute_value: $ => choice(
+            $.expression,
+            seq(
+                '"',
+                $.attribute_value,
+                '"',
+            ),
+        ),
+
+        _element_content: $ => choice(
             $.element,
-            // TODO
-            'FOO',
+            $.text,
             // $.statement
             // $.expression,
         ),
@@ -91,9 +98,9 @@ module.exports = grammar({
             'css',
             field('name', $._css_identifier),
             $.parameter_list,
-            $.css_block,
+            $._css_block,
         ),
-        css_block: $ => seq(
+        _css_block: $ => seq(
             '{',
             repeat($.css_property),
             '}',
@@ -122,5 +129,6 @@ module.exports = grammar({
         // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
         attribute_name: _ => /[^<>"'/=\s]+/,
         attribute_value: _ => /[^<>"'=\s]+/,
+        text: _ => /[^<>&\s]([^<>&]*[^<>&\s])?/,
     },
 });
