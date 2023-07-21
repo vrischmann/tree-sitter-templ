@@ -13,15 +13,15 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "package_definition"
+          "name": "package_declaration"
         },
         {
           "type": "SYMBOL",
-          "name": "component_definition"
+          "name": "component_declaration"
         }
       ]
     },
-    "package_definition": {
+    "package_declaration": {
       "type": "SEQ",
       "members": [
         {
@@ -34,7 +34,7 @@
         }
       ]
     },
-    "component_definition": {
+    "component_declaration": {
       "type": "SEQ",
       "members": [
         {

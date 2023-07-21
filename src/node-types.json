@@ -15,7 +15,7 @@
     }
   },
   {
-    "type": "component_definition",
+    "type": "component_declaration",
     "named": true,
     "fields": {
       "name": {
@@ -135,7 +135,7 @@
     }
   },
   {
-    "type": "package_definition",
+    "type": "package_declaration",
     "named": true,
     "fields": {},
     "children": {
@@ -199,11 +199,11 @@
       "required": false,
       "types": [
         {
-          "type": "component_definition",
+          "type": "component_declaration",
           "named": true
         },
         {
-          "type": "package_definition",
+          "type": "package_declaration",
           "named": true
         }
       ]
