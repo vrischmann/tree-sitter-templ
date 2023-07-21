@@ -1,8 +1,9 @@
 (component_declaration
   name: (component_identifier) @function)
 
-(open_tag) @tag
-(close_tag) @tag
+(tag_start) @tag
+(tag_end) @tag
+(self_closing_tag) @tag
 
 (attribute_value) @string
 
