@@ -162,11 +162,6 @@
     }
   },
   {
-    "type": "css_property_value",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "element",
     "named": true,
     "fields": {},
@@ -202,22 +197,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "expression",
-    "named": true,
-    "fields": {
-      "content": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression_content",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -394,11 +373,15 @@
     "named": true
   },
   {
+    "type": "css_property_value",
+    "named": true
+  },
+  {
     "type": "element_identifier",
     "named": true
   },
   {
-    "type": "expression_content",
+    "type": "expression",
     "named": true
   },
   {

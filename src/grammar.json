@@ -1,5 +1,6 @@
 {
   "name": "templ",
+  "word": "identifier",
   "rules": {
     "source_file": {
       "type": "SEQ",
@@ -270,31 +271,6 @@
         }
       ]
     },
-    "expression": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "{"
-        },
-        {
-          "type": "FIELD",
-          "name": "content",
-          "content": {
-            "type": "SYMBOL",
-            "name": "expression_content"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "}"
-        }
-      ]
-    },
-    "expression_content": {
-      "type": "STRING",
-      "value": "color"
-    },
     "css_declaration": {
       "type": "SEQ",
       "members": [
@@ -382,15 +358,6 @@
       "type": "PATTERN",
       "value": "[a-zA-Z\\-]+"
     },
-    "css_property_value": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "[a-zA-Z0-9-+]+"
-        }
-      ]
-    },
     "identifier": {
       "type": "PATTERN",
       "value": "[a-zA-Z0-9_]+"
@@ -452,7 +419,16 @@
   ],
   "conflicts": [],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "expression"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "css_property_value"
+    }
+  ],
   "inline": [],
   "supertypes": []
 }
