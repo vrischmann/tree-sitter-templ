@@ -47,6 +47,7 @@ package main
 
 css myClass(color string) {
   color: { color };
+  font-size: calc(230 / 1em);
 }
 
 ---
@@ -63,5 +64,7 @@ css myClass(color string) {
     (css_block
       (css_property
         name: (css_property_name)
-        value: (expression
-          content: (expression_content))))))
+        value: (expression))
+      (css_property
+        name: (css_property_name)
+        value: (css_property_value)))))
