@@ -1,6 +1,13 @@
 module.exports = grammar({
     name: 'templ',
 
+    word: $ => $.identifier,
+
+    externals: $ => [
+        $.expression,
+        $.css_property_value,
+    ],
+
     rules: {
         source_file: $ => seq(
             $.package_declaration,
@@ -78,14 +85,6 @@ module.exports = grammar({
             '>',
         ),
 
-        // TODO
-        expression: $ => seq(
-            '{',
-            field('content', $.expression_content),
-            '}',
-        ),
-        expression_content: $ => 'color',
-
         // CSS stuff
 
         css_declaration: $ => seq(
@@ -109,9 +108,6 @@ module.exports = grammar({
             ';'
         ),
         css_property_name: $ => /[a-zA-Z\-]+/,
-        css_property_value: $ => choice(
-            /[a-zA-Z0-9-+]+/,
-        ),
 
         //
 
