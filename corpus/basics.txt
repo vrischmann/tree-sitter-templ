@@ -11,13 +11,58 @@ package foobar
     (package_identifier)))
 
 =========
-Component
+Empty component without arguments
 =========
 
 package foobar
 
-templ Header() {
-  <h1>My header</h1>
+templ Foo() {}
+
+---
+
+(source_file
+  (package_definition
+    (package_identifier))
+  (component_definition
+    (component_identifier)
+    (parameter_list)
+    (block)))
+
+=========
+Empty component with arguments
+=========
+
+package foobar
+
+templ Foo(name string, foo int, bar []string) {}
+
+---
+
+(source_file
+  (package_definition
+    (package_identifier))
+  (component_definition
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (parameter_identifier)
+        type: (parameter_type))
+      (parameter_declaration
+        name: (parameter_identifier)
+        type: (parameter_type))
+      (parameter_declaration
+        name: (parameter_identifier)
+        type: (parameter_type)))
+    (block)))
+
+=========
+Component with a single element taking a parameter
+=========
+
+package foobar
+
+templ Foo(text string) {
+  <button class="button">FOO</button>
 }
 
 ---
@@ -26,4 +71,16 @@ templ Header() {
   (package_definition
     (package_identifier))
   (component_definition
-    (component_identifier)))
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (parameter_identifier)
+        type: (parameter_type)))
+    (block
+      (element
+        (element_open_tag
+          name: (element_identifier)
+          (element_attribute))
+        (element_content)
+        (element_close_tag
+          name: (element_identifier))))))

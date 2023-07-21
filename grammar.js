@@ -11,26 +11,72 @@ module.exports = grammar({
 
         package_definition: $ => seq(
             'package',
-            $.package_identifier,
+            $._package_identifier,
         ),
-        package_identifier: $ => /[a-z_]+/,
 
         component_definition: $ => seq(
             'templ',
-            $.component_identifier,
-            $.component_parameter_list,
-            $.component_block,
+            field('name', $._component_identifier),
+            $.parameter_list,
+            $.block,
         ),
-        component_identifier: $ => /[a-zA-Z0-9_]/,
-        component_parameter_list: $ => seq(
+
+        parameter_list: $ => seq(
             '(',
-            // TODO
-            ')',
+            repeat(seq(
+                $.parameter_declaration,
+                optional(','),
+            )),
+            ')'
         ),
-        component_block: $ => seq(
+        parameter_declaration: $ => prec.left(seq(
+            field('name', $._parameter_identifier),
+            field('type', $.parameter_type),
+        )),
+        parameter_type: $ => /[a-zA-Z0-9\[\]]+/,
+
+        block: $ => seq(
             '{',
-            // TODO
+            repeat(choice(
+                $.element,
+            )),
             '}',
         ),
+
+        element: $ => seq(
+            $.element_open_tag,
+            repeat($.element_content),
+            $.element_close_tag,
+        ),
+        element_open_tag: $ => seq(
+            '<',
+            field('name', $.element_identifier),
+            repeat($.element_attribute),
+            '>',
+        ),
+        element_attribute: $ => seq(
+            field('name', /[a-z\-]+/),
+            '="',
+            field('value', repeat(/[^"]/)),
+            '"',
+        ),
+        element_content: $ => choice(
+            $.element,
+            'FOO',
+            // $.statement
+            // $.expression,
+        ),
+        element_close_tag: $ => seq(
+            '</',
+            field('name', $.element_identifier),
+            '>',
+        ),
+
+        identifier: $ => /[a-zA-Z0-9_]+/,
+        _package_identifier: $ => alias($.identifier, $.package_identifier),
+        _component_identifier: $ => alias($.identifier, $.component_identifier),
+        _parameter_identifier: $ => alias($.identifier, $.parameter_identifier),
+
+        element_identifier: $ => /[a-z\-]+/,
     },
 });
