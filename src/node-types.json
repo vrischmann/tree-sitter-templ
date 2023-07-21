@@ -14,30 +14,23 @@
         ]
       },
       "value": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "\"",
+            "named": false
+          },
+          {
             "type": "attribute_value",
+            "named": true
+          },
+          {
+            "type": "expression",
             "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "element",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -76,26 +69,11 @@
       "required": true,
       "types": [
         {
-          "type": "block",
+          "type": "element",
           "named": true
         },
         {
           "type": "parameter_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "css_block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "css_property",
           "named": true
         }
       ]
@@ -121,7 +99,7 @@
       "required": true,
       "types": [
         {
-          "type": "css_block",
+          "type": "css_property",
           "named": true
         },
         {
@@ -174,26 +152,15 @@
           "named": true
         },
         {
-          "type": "element_content",
+          "type": "element",
           "named": true
         },
         {
           "type": "open_tag",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "element_content",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
+        },
         {
-          "type": "element",
+          "type": "text",
           "named": true
         }
       ]
@@ -337,15 +304,11 @@
     "named": false
   },
   {
-    "type": "=\"",
+    "type": "=",
     "named": false
   },
   {
     "type": ">",
-    "named": false
-  },
-  {
-    "type": "FOO",
     "named": false
   },
   {
@@ -403,6 +366,10 @@
   {
     "type": "templ",
     "named": false
+  },
+  {
+    "type": "text",
+    "named": true
   },
   {
     "type": "{",

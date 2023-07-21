@@ -65,7 +65,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "block"
+          "name": "_block"
         }
       ]
     },
@@ -135,7 +135,7 @@
       "type": "PATTERN",
       "value": "[a-zA-Z0-9\\[\\]]+"
     },
-    "block": {
+    "_block": {
       "type": "SEQ",
       "members": [
         {
@@ -171,7 +171,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "element_content"
+            "name": "_element_content"
           }
         },
         {
@@ -221,23 +221,45 @@
         },
         {
           "type": "STRING",
-          "value": "=\""
+          "value": "="
         },
         {
           "type": "FIELD",
           "name": "value",
           "content": {
             "type": "SYMBOL",
-            "name": "attribute_value"
+            "name": "_attribute_value"
           }
-        },
-        {
-          "type": "STRING",
-          "value": "\""
         }
       ]
     },
-    "element_content": {
+    "_attribute_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "\""
+            },
+            {
+              "type": "SYMBOL",
+              "name": "attribute_value"
+            },
+            {
+              "type": "STRING",
+              "value": "\""
+            }
+          ]
+        }
+      ]
+    },
+    "_element_content": {
       "type": "CHOICE",
       "members": [
         {
@@ -245,8 +267,8 @@
           "name": "element"
         },
         {
-          "type": "STRING",
-          "value": "FOO"
+          "type": "SYMBOL",
+          "name": "text"
         }
       ]
     },
@@ -292,11 +314,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "css_block"
+          "name": "_css_block"
         }
       ]
     },
-    "css_block": {
+    "_css_block": {
       "type": "SEQ",
       "members": [
         {
@@ -409,6 +431,10 @@
     "attribute_value": {
       "type": "PATTERN",
       "value": "[^<>\"'=\\s]+"
+    },
+    "text": {
+      "type": "PATTERN",
+      "value": "[^<>&\\s]([^<>&]*[^<>&\\s])?"
     }
   },
   "extras": [
