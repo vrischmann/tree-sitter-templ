@@ -34,22 +34,6 @@
     }
   },
   {
-    "type": "close_tag",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "element_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "component_declaration",
     "named": true,
     "fields": {
@@ -148,45 +132,23 @@
       "required": true,
       "types": [
         {
-          "type": "close_tag",
-          "named": true
-        },
-        {
           "type": "element",
           "named": true
         },
         {
-          "type": "open_tag",
+          "type": "self_closing_tag",
+          "named": true
+        },
+        {
+          "type": "tag_end",
+          "named": true
+        },
+        {
+          "type": "tag_start",
           "named": true
         },
         {
           "type": "text",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "open_tag",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "element_identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "attribute",
           "named": true
         }
       ]
@@ -249,6 +211,32 @@
     }
   },
   {
+    "type": "self_closing_tag",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "attribute",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -272,6 +260,48 @@
     }
   },
   {
+    "type": "tag_end",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "tag_start",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "attribute",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "\"",
     "named": false
   },
@@ -285,6 +315,10 @@
   },
   {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": "/>",
     "named": false
   },
   {
