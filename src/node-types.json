@@ -1,5 +1,31 @@
 [
   {
+    "type": "attribute",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "attribute_name",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "attribute_value",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "block",
     "named": true,
     "fields": {},
@@ -12,6 +38,22 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "close_tag",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -53,7 +95,7 @@
       "required": true,
       "types": [
         {
-          "type": "element_close_tag",
+          "type": "close_tag",
           "named": true
         },
         {
@@ -61,31 +103,10 @@
           "named": true
         },
         {
-          "type": "element_open_tag",
+          "type": "open_tag",
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "element_attribute",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "element_close_tag",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "element_identifier",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -104,12 +125,7 @@
     }
   },
   {
-    "type": "element_identifier",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "element_open_tag",
+    "type": "open_tag",
     "named": true,
     "fields": {
       "name": {
@@ -128,7 +144,7 @@
       "required": false,
       "types": [
         {
-          "type": "element_attribute",
+          "type": "attribute",
           "named": true
         }
       ]
@@ -246,7 +262,19 @@
     "named": false
   },
   {
+    "type": "attribute_name",
+    "named": true
+  },
+  {
+    "type": "attribute_value",
+    "named": true
+  },
+  {
     "type": "component_identifier",
+    "named": true
+  },
+  {
+    "type": "element_identifier",
     "named": true
   },
   {

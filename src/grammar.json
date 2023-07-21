@@ -155,7 +155,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "element_open_tag"
+          "name": "open_tag"
         },
         {
           "type": "REPEAT",
@@ -166,11 +166,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "element_close_tag"
+          "name": "close_tag"
         }
       ]
     },
-    "element_open_tag": {
+    "open_tag": {
       "type": "SEQ",
       "members": [
         {
@@ -189,7 +189,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "element_attribute"
+            "name": "attribute"
           }
         },
         {
@@ -198,15 +198,15 @@
         }
       ]
     },
-    "element_attribute": {
+    "attribute": {
       "type": "SEQ",
       "members": [
         {
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "PATTERN",
-            "value": "[a-z\\-]+"
+            "type": "SYMBOL",
+            "name": "attribute_name"
           }
         },
         {
@@ -217,11 +217,8 @@
           "type": "FIELD",
           "name": "value",
           "content": {
-            "type": "REPEAT",
-            "content": {
-              "type": "PATTERN",
-              "value": "[^\"]"
-            }
+            "type": "SYMBOL",
+            "name": "attribute_value"
           }
         },
         {
@@ -243,7 +240,7 @@
         }
       ]
     },
-    "element_close_tag": {
+    "close_tag": {
       "type": "SEQ",
       "members": [
         {
@@ -297,7 +294,15 @@
     },
     "element_identifier": {
       "type": "PATTERN",
-      "value": "[a-z\\-]+"
+      "value": "[a-z0-9\\-]+"
+    },
+    "attribute_name": {
+      "type": "PATTERN",
+      "value": "[^<>\"'/=\\s]+"
+    },
+    "attribute_value": {
+      "type": "PATTERN",
+      "value": "[^<>\"'=\\s]+"
     }
   },
   "extras": [
