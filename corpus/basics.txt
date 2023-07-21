@@ -1,0 +1,29 @@
+=======
+Package
+=======
+
+package foobar
+
+---
+
+(source_file
+  (package_definition
+    (package_identifier)))
+
+=========
+Component
+=========
+
+package foobar
+
+templ Header() {
+  <h1>My header</h1>
+}
+
+---
+
+(source_file
+  (package_definition
+    (package_identifier))
+  (component_definition
+    (component_identifier)))

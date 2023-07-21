@@ -1,0 +1,101 @@
+[
+  {
+    "type": "component_block",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "component_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "component_block",
+          "named": true
+        },
+        {
+          "type": "component_identifier",
+          "named": true
+        },
+        {
+          "type": "component_parameter_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "component_parameter_list",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "package_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "package_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "component_definition",
+          "named": true
+        },
+        {
+          "type": "package_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "component_identifier",
+    "named": true
+  },
+  {
+    "type": "package",
+    "named": false
+  },
+  {
+    "type": "package_identifier",
+    "named": true
+  },
+  {
+    "type": "templ",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  }
+]
