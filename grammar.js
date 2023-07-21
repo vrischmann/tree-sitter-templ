@@ -44,20 +44,20 @@ module.exports = grammar({
         ),
 
         element: $ => seq(
-            $.element_open_tag,
+            $.open_tag,
             repeat($.element_content),
-            $.element_close_tag,
+            $.close_tag,
         ),
-        element_open_tag: $ => seq(
+        open_tag: $ => seq(
             '<',
             field('name', $.element_identifier),
-            repeat($.element_attribute),
+            repeat($.attribute),
             '>',
         ),
-        element_attribute: $ => seq(
-            field('name', /[a-z\-]+/),
+        attribute: $ => seq(
+            field('name', $.attribute_name),
             '="',
-            field('value', repeat(/[^"]/)),
+            field('value', $.attribute_value),
             '"',
         ),
         element_content: $ => choice(
@@ -66,7 +66,7 @@ module.exports = grammar({
             // $.statement
             // $.expression,
         ),
-        element_close_tag: $ => seq(
+        close_tag: $ => seq(
             '</',
             field('name', $.element_identifier),
             '>',
@@ -77,6 +77,10 @@ module.exports = grammar({
         _component_identifier: $ => alias($.identifier, $.component_identifier),
         _parameter_identifier: $ => alias($.identifier, $.parameter_identifier),
 
-        element_identifier: $ => /[a-z\-]+/,
+        element_identifier: $ => /[a-z0-9\-]+/,
+
+        // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
+        attribute_name: _ => /[^<>"'/=\s]+/,
+        attribute_value: _ => /[^<>"'=\s]+/,
     },
 });
