@@ -30,13 +30,9 @@
         },
         {
           "type": "SYMBOL",
-          "name": "package_identifier"
+          "name": "_package_identifier"
         }
       ]
-    },
-    "package_identifier": {
-      "type": "PATTERN",
-      "value": "[a-z_]+"
     },
     "component_definition": {
       "type": "SEQ",
@@ -46,24 +42,24 @@
           "value": "templ"
         },
         {
-          "type": "SYMBOL",
-          "name": "component_identifier"
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_component_identifier"
+          }
         },
         {
           "type": "SYMBOL",
-          "name": "component_parameter_list"
+          "name": "parameter_list"
         },
         {
           "type": "SYMBOL",
-          "name": "component_block"
+          "name": "block"
         }
       ]
     },
-    "component_identifier": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z0-9_]"
-    },
-    "component_parameter_list": {
+    "parameter_list": {
       "type": "SEQ",
       "members": [
         {
@@ -71,12 +67,65 @@
           "value": "("
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "parameter_declaration"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ","
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
           "type": "STRING",
           "value": ")"
         }
       ]
     },
-    "component_block": {
+    "parameter_declaration": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "name",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_parameter_identifier"
+            }
+          },
+          {
+            "type": "FIELD",
+            "name": "type",
+            "content": {
+              "type": "SYMBOL",
+              "name": "parameter_type"
+            }
+          }
+        ]
+      }
+    },
+    "parameter_type": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9\\[\\]]+"
+    },
+    "block": {
       "type": "SEQ",
       "members": [
         {
@@ -84,10 +133,171 @@
           "value": "{"
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "element"
+              }
+            ]
+          }
+        },
+        {
           "type": "STRING",
           "value": "}"
         }
       ]
+    },
+    "element": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "element_open_tag"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "element_content"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "element_close_tag"
+        }
+      ]
+    },
+    "element_open_tag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "element_identifier"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "element_attribute"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
+    "element_attribute": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "PATTERN",
+            "value": "[a-z\\-]+"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "=\""
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "REPEAT",
+            "content": {
+              "type": "PATTERN",
+              "value": "[^\"]"
+            }
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
+    },
+    "element_content": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "element"
+        },
+        {
+          "type": "STRING",
+          "value": "FOO"
+        }
+      ]
+    },
+    "element_close_tag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "</"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "element_identifier"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
+    "identifier": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9_]+"
+    },
+    "_package_identifier": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      },
+      "named": true,
+      "value": "package_identifier"
+    },
+    "_component_identifier": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      },
+      "named": true,
+      "value": "component_identifier"
+    },
+    "_parameter_identifier": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      },
+      "named": true,
+      "value": "parameter_identifier"
+    },
+    "element_identifier": {
+      "type": "PATTERN",
+      "value": "[a-z\\-]+"
     }
   },
   "extras": [

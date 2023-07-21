@@ -1,11 +1,51 @@
 [
   {
-    "type": "component_block",
+    "type": "block",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "element",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "component_definition",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "component_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "parameter_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "element",
     "named": true,
     "fields": {},
     "children": {
@@ -13,24 +53,86 @@
       "required": true,
       "types": [
         {
-          "type": "component_block",
+          "type": "element_close_tag",
           "named": true
         },
         {
-          "type": "component_identifier",
+          "type": "element_content",
           "named": true
         },
         {
-          "type": "component_parameter_list",
+          "type": "element_open_tag",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "component_parameter_list",
+    "type": "element_attribute",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "element_close_tag",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "element_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "element_identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "element_open_tag",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "element_attribute",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "package_definition",
@@ -42,6 +144,47 @@
       "types": [
         {
           "type": "package_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parameter_declaration",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter_identifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "parameter_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "parameter_declaration",
           "named": true
         }
       ]
@@ -67,11 +210,39 @@
     }
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
   {
     "type": ")",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "</",
+    "named": false
+  },
+  {
+    "type": "=\"",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": "FOO",
     "named": false
   },
   {
@@ -84,6 +255,14 @@
   },
   {
     "type": "package_identifier",
+    "named": true
+  },
+  {
+    "type": "parameter_identifier",
+    "named": true
+  },
+  {
+    "type": "parameter_type",
     "named": true
   },
   {
