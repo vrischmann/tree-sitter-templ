@@ -1,0 +1,27 @@
+====
+href attribute with an expression
+====
+
+package testahref
+
+templ render() {
+	<a href={ templ.URL("javascript:alert('should be sanitized')") }>Sanitized</a>
+}
+
+---
+
+(source_file
+  (package_declaration
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (element
+      (open_tag
+        name: (element_identifier)
+        (attribute
+          name: (attribute_name)
+          value: (expression)))
+      (text)
+      (close_tag
+        name: (element_identifier)))))

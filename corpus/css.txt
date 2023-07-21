@@ -13,8 +13,7 @@ css myClass() {}
     (package_identifier))
   (css_declaration
     name: (css_identifier)
-    (parameter_list)
-    (css_block)))
+    (parameter_list)))
 
 ====
 CSS expression
@@ -34,10 +33,9 @@ css myClass() {
   (css_declaration
     name: (css_identifier)
     (parameter_list)
-    (css_block
-      (css_property
-        name: (css_property_name)
-        value: (css_property_value)))))
+    (css_property
+      name: (css_property_name)
+      value: (css_property_value))))
 
 ====
 CSS expression with templ expression
@@ -61,10 +59,9 @@ css myClass(color string) {
       (parameter_declaration
         name: (parameter_identifier)
         type: (parameter_type)))
-    (css_block
-      (css_property
-        name: (css_property_name)
-        value: (expression))
-      (css_property
-        name: (css_property_name)
-        value: (css_property_value)))))
+    (css_property
+      name: (css_property_name)
+      value: (expression))
+    (css_property
+      name: (css_property_name)
+      value: (css_property_value))))

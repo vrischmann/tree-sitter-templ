@@ -25,8 +25,7 @@ templ Foo() {}
     (package_identifier))
   (component_declaration
     (component_identifier)
-    (parameter_list)
-    (block)))
+    (parameter_list)))
 
 =========
 Empty component with arguments
@@ -52,8 +51,7 @@ templ Foo(name string, foo int, bar []string) {}
         type: (parameter_type))
       (parameter_declaration
         name: (parameter_identifier)
-        type: (parameter_type)))
-    (block)))
+        type: (parameter_type)))))
 
 =========
 Component with a single element taking a parameter
@@ -76,13 +74,12 @@ templ Foo(text string) {
       (parameter_declaration
         name: (parameter_identifier)
         type: (parameter_type)))
-    (block
-      (element
-        (open_tag
-          name: (element_identifier)
-          (attribute
-            name: (attribute_name)
-            value: (attribute_value)))
-        (element_content)
-        (close_tag
-          name: (element_identifier))))))
+    (element
+      (open_tag
+        name: (element_identifier)
+        (attribute
+          name: (attribute_name)
+          value: (attribute_value)))
+      (text)
+      (close_tag
+        name: (element_identifier)))))
