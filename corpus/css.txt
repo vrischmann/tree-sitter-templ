@@ -1,0 +1,67 @@
+====
+CSS expression with empty block
+====
+
+package main
+
+css myClass() {}
+
+---
+
+(source_file
+  (package_declaration
+    (package_identifier))
+  (css_declaration
+    name: (css_identifier)
+    (parameter_list)
+    (css_block)))
+
+====
+CSS expression
+====
+
+package main
+
+css myClass() {
+  display: grid;
+}
+
+---
+
+(source_file
+  (package_declaration
+    (package_identifier))
+  (css_declaration
+    name: (css_identifier)
+    (parameter_list)
+    (css_block
+      (css_property
+        name: (css_property_name)
+        value: (css_property_value)))))
+
+====
+CSS expression with templ expression
+====
+
+package main
+
+css myClass(color string) {
+  color: { color };
+}
+
+---
+
+(source_file
+  (package_declaration
+    (package_identifier))
+  (css_declaration
+    name: (css_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (parameter_identifier)
+        type: (parameter_type)))
+    (css_block
+      (css_property
+        name: (css_property_name)
+        value: (expression
+          content: (expression_content))))))

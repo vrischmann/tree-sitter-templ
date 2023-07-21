@@ -2,17 +2,22 @@ module.exports = grammar({
     name: 'templ',
 
     rules: {
-        source_file: $ => repeat($._definition),
+        source_file: $ => seq(
+            $.package_declaration,
+            repeat($._definition),
+        ),
 
         _definition: $ => choice(
-            $.package_declaration,
             $.component_declaration,
+            $.css_declaration,
         ),
 
         package_declaration: $ => seq(
             'package',
             $._package_identifier,
         ),
+
+        // Component stuff
 
         component_declaration: $ => seq(
             'templ',
@@ -62,6 +67,7 @@ module.exports = grammar({
         ),
         element_content: $ => choice(
             $.element,
+            // TODO
             'FOO',
             // $.statement
             // $.expression,
@@ -72,10 +78,48 @@ module.exports = grammar({
             '>',
         ),
 
+        // TODO
+        expression: $ => seq(
+            '{',
+            field('content', $.expression_content),
+            '}',
+        ),
+        expression_content: $ => 'color',
+
+        // CSS stuff
+
+        css_declaration: $ => seq(
+            'css',
+            field('name', $._css_identifier),
+            $.parameter_list,
+            $.css_block,
+        ),
+        css_block: $ => seq(
+            '{',
+            repeat($.css_property),
+            '}',
+        ),
+        css_property: $ => seq(
+            field('name', $.css_property_name),
+            ':',
+            field('value', choice(
+                $.expression,
+                $.css_property_value
+            )),
+            ';'
+        ),
+        css_property_name: $ => /[a-zA-Z\-]+/,
+        css_property_value: $ => choice(
+            /[a-zA-Z0-9-+]+/,
+        ),
+
+        //
+
         identifier: $ => /[a-zA-Z0-9_]+/,
         _package_identifier: $ => alias($.identifier, $.package_identifier),
         _component_identifier: $ => alias($.identifier, $.component_identifier),
         _parameter_identifier: $ => alias($.identifier, $.parameter_identifier),
+        _css_identifier: $ => alias($.identifier, $.css_identifier),
 
         element_identifier: $ => /[a-z0-9\-]+/,
 
