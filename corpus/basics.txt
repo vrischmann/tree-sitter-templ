@@ -78,9 +78,11 @@ templ Foo(text string) {
         type: (parameter_type)))
     (block
       (element
-        (element_open_tag
+        (open_tag
           name: (element_identifier)
-          (element_attribute))
+          (attribute
+            name: (attribute_name)
+            value: (attribute_value)))
         (element_content)
-        (element_close_tag
+        (close_tag
           name: (element_identifier))))))
