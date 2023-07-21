@@ -75,11 +75,56 @@ templ Foo(text string) {
         name: (parameter_identifier)
         type: (parameter_type)))
     (element
-      (open_tag
+      (tag_start
         name: (element_identifier)
         (attribute
           name: (attribute_name)
           value: (attribute_value)))
       (text)
-      (close_tag
+      (tag_end
+        name: (element_identifier)))))
+
+====
+Component with multiple elements and an expression
+====
+
+package testhtml
+
+templ BasicTemplate(url string) {
+  <div>
+    <a href={ templ.URL(url) } class="red">text</a>
+  </div>
+  <hr/>
+}
+
+---
+
+(source_file
+  (package_declaration
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (parameter_identifier)
+        type: (parameter_type)))
+    (element
+      (tag_start
+        name: (element_identifier))
+      (element
+        (tag_start
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (expression))
+          (attribute
+            name: (attribute_name)
+            value: (attribute_value)))
+        (text)
+        (tag_end
+          name: (element_identifier)))
+      (tag_end
+        name: (element_identifier)))
+    (element
+      (self_closing_tag
         name: (element_identifier)))))
