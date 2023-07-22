@@ -12,6 +12,7 @@ module.exports = grammar(GO, {
     externals: $ => [
         $.expression,
         $.css_property_value,
+        $.element_text,
     ],
 
     rules: {
@@ -37,13 +38,15 @@ module.exports = grammar(GO, {
 
         component_block: $ => seq(
             '{',
-            repeat(choice(
-                $.element,
-                $.expression,
-                $.component_if_statement,
-                $.component_import,
-            )),
+            repeat($._component_node),
             '}',
+        ),
+        _component_node: $ => choice(
+            $.element,
+            $.component_if_statement,
+            $.component_import,
+            $.expression,
+            $.element_text,
         ),
 
         // Based on the if_statement of the Go grammar
@@ -74,13 +77,12 @@ module.exports = grammar(GO, {
         // Templ element, which is basically a HTML node
 
         element: $ => choice(
-            $._tag,
+            seq(
+                $.tag_start,
+                repeat($._component_node),
+                $.tag_end,
+            ),
             $.self_closing_tag,
-        ),
-        _tag: $ => seq(
-            $.tag_start,
-            repeat($._element_content),
-            $.tag_end,
         ),
         tag_start: $ => seq(
             '<',
@@ -112,13 +114,6 @@ module.exports = grammar(GO, {
                 $.attribute_value,
                 '"',
             ),
-        ),
-
-        _element_content: $ => choice(
-            $.element,
-            $.text,
-            // $.statement
-            $.expression,
         ),
 
         // CSS stuff

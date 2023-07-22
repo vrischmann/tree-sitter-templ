@@ -84,7 +84,7 @@ templ Foo(text string) {
           (attribute
             name: (attribute_name)
             value: (attribute_value)))
-        (text)
+        (element_text)
         (tag_end
           name: (element_identifier))))))
 
