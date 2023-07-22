@@ -30,7 +30,7 @@
 
 (attribute_value) @string
 
-(text) @string.special
+(element_text) @string.special
 
 (css_property
   name: (css_property_name) @attribute)
