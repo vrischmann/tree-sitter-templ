@@ -236,3 +236,72 @@ templ MyComponent(loggedIn bool, n int) {
               (element
                 (self_closing_tag
                   name: (element_identifier))))))))))
+
+====
+Composition of components
+====
+
+package foobar
+
+templ Header(title string) {
+  <h1>{ title }</h1>
+}
+
+templ Body(body string) {
+  <p>{ body }</p>
+}
+
+templ Page(title string, body string) {
+  @Header(title)
+  @Body(body)
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (text)
+        (tag_end
+          name: (element_identifier)))))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (text)
+        (tag_end
+          name: (element_identifier)))))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier))
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (component_import
+        name: (component_identifier)
+        arguments: (argument_list
+          (identifier)))
+      (component_import
+        name: (component_identifier)
+        arguments: (argument_list
+          (identifier))))))
