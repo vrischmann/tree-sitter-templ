@@ -1,4 +1,6 @@
-module.exports = grammar({
+const GO = require("tree-sitter-go/grammar")
+
+module.exports = grammar(GO, {
     name: 'templ',
 
     word: $ => $.identifier,
@@ -9,19 +11,10 @@ module.exports = grammar({
     ],
 
     rules: {
-        source_file: $ => seq(
-            $.package_declaration,
-            repeat($._definition),
-        ),
-
-        _definition: $ => choice(
+        _top_level_declaration: ($, original) => choice(
+            original,
             $.component_declaration,
             $.css_declaration,
-        ),
-
-        package_declaration: $ => seq(
-            'package',
-            $._package_identifier,
         ),
 
         // Component stuff
@@ -130,7 +123,6 @@ module.exports = grammar({
         //
 
         identifier: $ => /[a-zA-Z0-9_]+/,
-        _package_identifier: $ => alias($.identifier, $.package_identifier),
         _component_identifier: $ => alias($.identifier, $.component_identifier),
         _parameter_identifier: $ => alias($.identifier, $.parameter_identifier),
         _css_identifier: $ => alias($.identifier, $.css_identifier),
