@@ -1749,11 +1749,15 @@
     "named": true,
     "fields": {
       "name": {
-        "multiple": false,
-        "required": true,
+        "multiple": true,
+        "required": false,
         "types": [
           {
-            "type": "parameter_identifier",
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "identifier",
             "named": true
           }
         ]
@@ -1763,7 +1767,7 @@
         "required": true,
         "types": [
           {
-            "type": "parameter_type",
+            "type": "_type",
             "named": true
           }
         ]
@@ -1780,6 +1784,10 @@
       "types": [
         {
           "type": "parameter_declaration",
+          "named": true
+        },
+        {
+          "type": "variadic_parameter_declaration",
           "named": true
         }
       ]
@@ -2528,6 +2536,32 @@
     }
   },
   {
+    "type": "variadic_parameter_declaration",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "\n",
     "named": false
   },
@@ -2865,14 +2899,6 @@
   },
   {
     "type": "package_identifier",
-    "named": true
-  },
-  {
-    "type": "parameter_identifier",
-    "named": true
-  },
-  {
-    "type": "parameter_type",
     "named": true
   },
   {
