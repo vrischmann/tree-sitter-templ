@@ -2,13 +2,72 @@
 // https://github.com/tree-sitter/tree-sitter-html/blob/master/src/scanner.c
 
 #include <stdio.h>
+#include <string.h>
 #include <wctype.h>
 
 #include "tree_sitter/parser.h"
 
+// Helper struct to have multicharacter lookahead
+
+#define LOOKAHEAD_BUFFER_SIZE 8
+
+typedef struct {
+  int buf[LOOKAHEAD_BUFFER_SIZE];
+  size_t pos;
+} LookaheadBuffer;
+
+void lookahead_buffer_init(LookaheadBuffer *buffer) {
+  memset(&buffer->buf[0], 0, LOOKAHEAD_BUFFER_SIZE);
+  buffer->pos = 0;
+}
+
+// Tries to find the keyword `str` in the character stream of `lexer`.
+//
+// Since TSLexer doesn't allow backtracking and we need it to lookup different
+// keywords, we have to implement backtracking ourselves.
+//
+// It's relatively simple:
+// * if we have any buffered data, try it first
+// * otherwise pull from the stream while simultaneously adding to the buffer
+//
+// The next call will have the buffer populated.
+static bool find_keyword(TSLexer *lexer, LookaheadBuffer *buffer,
+                         const char *str) {
+  size_t length = strlen(str);
+  size_t buf_idx = 0;
+
+  // First look in the buffer
+  for (size_t i = 0; i < buffer->pos && i < length; i++) {
+    if (buffer->buf[i] != str[i]) {
+      return false;
+    }
+
+    buf_idx++;
+    length--;
+  }
+
+  // Otherwise fetch data from the lexer
+  for (size_t i = 0; i < length; i++) {
+    if (lexer->eof(lexer)) {
+      return false;
+    }
+    if (lexer->lookahead != str[i]) {
+      return false;
+    }
+
+    buffer->buf[buf_idx] = lexer->lookahead;
+    lexer->advance(lexer, false);
+  }
+
+  return true;
+}
+
+//
+
 enum TokenType {
   EXPRESSION,
   CSS_PROPERTY_VALUE,
+  ELEMENT_TEXT,
 };
 
 typedef struct {
@@ -68,6 +127,61 @@ static bool scan_expression(Scanner *scanner, TSLexer *lexer) {
   return false;
 }
 
+static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
+  lexer->result_symbol = ELEMENT_TEXT;
+
+  // Start by marking the end so the following calls to advance don't
+  // increase the token size
+  lexer->mark_end(lexer);
+
+  LookaheadBuffer buffer;
+  lookahead_buffer_init(&buffer);
+
+  bool has_marked = false;
+
+  size_t count = 0;
+  while (!lexer->eof(lexer)) {
+    buffer.pos = 0;
+
+    switch (lexer->lookahead) {
+    case '<':
+    case '{':
+    case '}':
+    case '\n':
+    case '@':
+      goto done;
+    }
+
+    // Try for "if"
+    if (find_keyword(lexer, &buffer, "if")) {
+      goto done;
+    }
+    // Try for "else"
+    if (find_keyword(lexer, &buffer, "else")) {
+      goto done;
+    }
+    // Try for "for"
+    if (find_keyword(lexer, &buffer, "for")) {
+      goto done;
+    }
+    // Try for "switch"
+    if (find_keyword(lexer, &buffer, "switch")) {
+      goto done;
+    }
+
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    has_marked = true;
+    count++;
+  }
+
+done:
+
+  printf("done: %b, chars: %zu\n", has_marked, count);
+
+  return has_marked;
+}
+
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   while (!lexer->eof(lexer) && iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
@@ -79,6 +193,10 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   }
 
   if (valid_symbols[EXPRESSION] && scan_expression(scanner, lexer)) {
+    return true;
+  }
+
+  if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer)) {
     return true;
   }
 
