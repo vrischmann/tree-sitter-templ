@@ -21,6 +21,27 @@ void lookahead_buffer_init(LookaheadBuffer *buffer) {
   buffer->pos = 0;
 }
 
+void lookahead_buffer_dump(LookaheadBuffer *buffer) {
+  printf("\"");
+  for (size_t i = 0; i < buffer->pos; i++) {
+    printf("%c", buffer->buf[i]);
+  }
+  printf("\"\n");
+}
+
+int next_char(LookaheadBuffer *buffer, TSLexer *lexer) {
+  if (buffer->pos > 0) {
+    int ch = buffer->buf[buffer->pos];
+    buffer->pos--;
+    return ch;
+  }
+
+  int ch = lexer->lookahead;
+  lexer->advance(lexer, false);
+
+  return ch;
+}
+
 // Tries to find the keyword `str` in the character stream of `lexer`.
 //
 // Since TSLexer doesn't allow backtracking and we need it to lookup different
@@ -31,10 +52,8 @@ void lookahead_buffer_init(LookaheadBuffer *buffer) {
 // * otherwise pull from the stream while simultaneously adding to the buffer
 //
 // The next call will have the buffer populated.
-static bool find_keyword(TSLexer *lexer, LookaheadBuffer *buffer,
-                         const char *str) {
+bool find_keyword(TSLexer *lexer, LookaheadBuffer *buffer, const char *str) {
   size_t length = strlen(str);
-  size_t buf_idx = 0;
 
   // First look in the buffer
   for (size_t i = 0; i < buffer->pos && i < length; i++) {
@@ -42,20 +61,19 @@ static bool find_keyword(TSLexer *lexer, LookaheadBuffer *buffer,
       return false;
     }
 
-    buf_idx++;
     length--;
   }
 
   // Otherwise fetch data from the lexer
+  bool found = true;
   for (size_t i = 0; i < length; i++) {
-    if (lexer->eof(lexer)) {
-      return false;
-    }
-    if (lexer->lookahead != str[i]) {
+    if (lexer->eof(lexer) || lexer->lookahead != str[i]) {
       return false;
     }
 
-    buffer->buf[buf_idx] = lexer->lookahead;
+    buffer->buf[buffer->pos] = lexer->lookahead;
+    buffer->pos++;
+
     lexer->advance(lexer, false);
   }
 
@@ -138,34 +156,49 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   lookahead_buffer_init(&buffer);
 
   bool has_marked = false;
-
   size_t count = 0;
-  while (!lexer->eof(lexer)) {
-    buffer.pos = 0;
 
-    switch (lexer->lookahead) {
+  // These keywords can only be present at the start of an element node
+
+  // Try for "if"
+  if (find_keyword(lexer, &buffer, "if")) {
+    goto done;
+  }
+  lookahead_buffer_dump(&buffer);
+  // Try for "else"
+  if (find_keyword(lexer, &buffer, "else")) {
+    goto done;
+  }
+  lookahead_buffer_dump(&buffer);
+  // Try for "for"
+  if (find_keyword(lexer, &buffer, "for")) {
+    goto done;
+  }
+  lookahead_buffer_dump(&buffer);
+  // Try for "switch"
+  if (find_keyword(lexer, &buffer, "switch")) {
+    goto done;
+  }
+  lookahead_buffer_dump(&buffer);
+
+  //
+
+  while (true) {
+    if (lexer->eof(lexer)) {
+      break;
+    }
+
+    lookahead_buffer_dump(&buffer);
+
+    int next_char = lexer->lookahead;
+    /* int next_char = next_char(&buffer,,lexer); */
+
+    switch (next_char) {
     case '<':
     case '{':
     case '}':
     case '\n':
     case '@':
-      goto done;
-    }
-
-    // Try for "if"
-    if (find_keyword(lexer, &buffer, "if")) {
-      goto done;
-    }
-    // Try for "else"
-    if (find_keyword(lexer, &buffer, "else")) {
-      goto done;
-    }
-    // Try for "for"
-    if (find_keyword(lexer, &buffer, "for")) {
-      goto done;
-    }
-    // Try for "switch"
-    if (find_keyword(lexer, &buffer, "switch")) {
       goto done;
     }
 
