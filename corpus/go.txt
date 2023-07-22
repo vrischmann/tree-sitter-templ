@@ -1,0 +1,79 @@
+====
+Standard go code in template
+====
+
+package ui
+
+type Foobar struct {
+	Element int
+}
+
+templ MyComponent(slice []Foobar) {
+  <hr/>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier))))))
+  (component_declaration
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (slice_type
+          (type_identifier))))
+    (element
+      (self_closing_tag
+        (element_identifier)))))
+
+====
+Only go code in template
+====
+
+package ui
+
+var Foo string = "foobar"
+
+type Flag int
+
+const (
+  Hello Flag = iota
+  Hallo
+  Hullo
+)
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+    (var_declaration
+      (var_spec
+        (identifier)
+        (type_identifier)
+        (expression_list
+          (interpreted_string_literal))))
+    (type_declaration
+      (type_spec
+        (type_identifier)
+        (type_identifier)))
+    (const_declaration
+      (const_spec
+        (identifier)
+        (type_identifier)
+        (expression_list
+          (identifier)))
+      (const_spec
+        (identifier))
+      (const_spec
+        (identifier))))
