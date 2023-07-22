@@ -44,14 +44,15 @@ templ Foo(name string, foo int, bar []string) {}
     name: (component_identifier)
     (parameter_list
       (parameter_declaration
-        name: (parameter_identifier)
-        type: (parameter_type))
+        name: (identifier)
+        type: (type_identifier))
       (parameter_declaration
-        name: (parameter_identifier)
-        type: (parameter_type))
+        name: (identifier)
+        type: (type_identifier))
       (parameter_declaration
-        name: (parameter_identifier)
-        type: (parameter_type)))))
+        name: (identifier)
+        type: (slice_type
+          element: (type_identifier))))))
 
 =========
 Component with a single element taking a parameter
@@ -72,8 +73,8 @@ templ Foo(text string) {
     name: (component_identifier)
     (parameter_list
       (parameter_declaration
-        name: (parameter_identifier)
-        type: (parameter_type)))
+        name: (identifier)
+        type: (type_identifier)))
     (element
       (tag_start
         name: (element_identifier)
@@ -106,8 +107,8 @@ templ BasicTemplate(url string) {
     name: (component_identifier)
     (parameter_list
       (parameter_declaration
-        name: (parameter_identifier)
-        type: (parameter_type)))
+        name: (identifier)
+        type: (type_identifier)))
     (element
       (tag_start
         name: (element_identifier))
