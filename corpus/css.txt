@@ -9,7 +9,7 @@ css myClass() {}
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (css_declaration
     name: (css_identifier)
@@ -28,7 +28,7 @@ css myClass() {
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (css_declaration
     name: (css_identifier)
@@ -51,7 +51,7 @@ css myClass(color string) {
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (css_declaration
     name: (css_identifier)

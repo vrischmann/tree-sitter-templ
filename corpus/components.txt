@@ -7,7 +7,7 @@ package foobar
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier)))
 
 =========
@@ -21,7 +21,7 @@ templ Foo() {}
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (component_declaration
     (component_identifier)
@@ -38,7 +38,7 @@ templ Foo(name string, foo int, bar []string) {}
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (component_declaration
     name: (component_identifier)
@@ -66,7 +66,7 @@ templ Foo(text string) {
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (component_declaration
     name: (component_identifier)
@@ -100,7 +100,7 @@ templ BasicTemplate(url string) {
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (component_declaration
     name: (component_identifier)

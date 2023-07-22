@@ -11,7 +11,7 @@ templ render() {
 ---
 
 (source_file
-  (package_declaration
+  (package_clause
     (package_identifier))
   (component_declaration
     name: (component_identifier)
