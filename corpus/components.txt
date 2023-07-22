@@ -354,6 +354,7 @@ package main
 
 templ Foobar() {
   <div>foobar_foobar_foobariflolhahah</div>
+  <div>if</div>
 }
 
 ---
@@ -365,6 +366,12 @@ templ Foobar() {
     name: (component_identifier)
     (parameter_list)
     (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (element_text)
+        (tag_end
+          name: (element_identifier)))
       (element
         (tag_start
           name: (element_identifier))
