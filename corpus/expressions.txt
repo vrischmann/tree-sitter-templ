@@ -26,3 +26,27 @@ templ render() {
         (text)
         (tag_end
           name: (element_identifier))))))
+
+====
+direct expression
+====
+
+package testahref
+
+templ render(foo string) {
+	{ foo }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (expression))))
