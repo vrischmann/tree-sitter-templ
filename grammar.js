@@ -1,5 +1,9 @@
 const GO = require("tree-sitter-go/grammar")
 
+// NOTE(vincent): we base this grammar on the Go grammar because a templ file is basically a Go file except for components and css expressions.
+//
+// If you see a rule mentioned below but do _not_ see it in the rules, go look at the Go grammar.
+
 module.exports = grammar(GO, {
     name: 'templ',
 
@@ -18,7 +22,12 @@ module.exports = grammar(GO, {
         ),
 
         // Component stuff
-
+        //
+        // This matches the entire component:
+        //
+        //     templ Name(a int, b string, ...) {}
+        //
+        // Note that we use $.parameter_list which is from the Go grammar.
         component_declaration: $ => seq(
             'templ',
             field('name', $._component_identifier),
@@ -31,6 +40,7 @@ module.exports = grammar(GO, {
             repeat(choice(
                 $.element,
                 $.component_if_statement,
+                $.component_import,
             )),
             '}',
         ),
@@ -53,6 +63,14 @@ module.exports = grammar(GO, {
                 )
             ))
         ),
+
+        component_import: $ => seq(
+            '@',
+            field('name', $._component_identifier),
+            field('arguments', $.argument_list),
+        ),
+
+        // Templ element, which is basically a HTML node
 
         element: $ => choice(
             $._tag,
