@@ -655,6 +655,10 @@
           "named": true
         },
         {
+          "type": "element_text",
+          "named": true
+        },
+        {
           "type": "expression",
           "named": true
         }
@@ -1006,7 +1010,19 @@
       "required": true,
       "types": [
         {
+          "type": "component_if_statement",
+          "named": true
+        },
+        {
+          "type": "component_import",
+          "named": true
+        },
+        {
           "type": "element",
+          "named": true
+        },
+        {
+          "type": "element_text",
           "named": true
         },
         {
@@ -1023,10 +1039,6 @@
         },
         {
           "type": "tag_start",
-          "named": true
-        },
-        {
-          "type": "text",
           "named": true
         }
       ]
@@ -2925,6 +2937,10 @@
     "named": true
   },
   {
+    "type": "element_text",
+    "named": true
+  },
+  {
     "type": "else",
     "named": false
   },
@@ -3043,10 +3059,6 @@
   {
     "type": "templ",
     "named": false
-  },
-  {
-    "type": "text",
-    "named": true
   },
   {
     "type": "true",
