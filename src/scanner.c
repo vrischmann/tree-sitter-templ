@@ -170,6 +170,10 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   bool has_marked = false;
   size_t count = 0;
 
+  if (lexer->eof(lexer)) {
+    return false;
+  }
+
   // 1. Detect if the node starts with a keyword that makes it a statement
   // instead of a text element
   //
@@ -177,29 +181,29 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   // TSLexer doesn't provide it so we have to do it ourselves.
 
   // Try for "if"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "if")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "if ")) {
     goto done;
   }
-  printf("if: ");
-  lookahead_buffer_dump(&buffer);
+  /* printf("if: "); */
+  /* lookahead_buffer_dump(&buffer); */
   // Try for "else"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "else")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "else ")) {
     goto done;
   }
-  printf("else: ");
-  lookahead_buffer_dump(&buffer);
+  /* printf("else: "); */
+  /* lookahead_buffer_dump(&buffer); */
   // Try for "for"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "for")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "for ")) {
     goto done;
   }
-  printf("for: ");
-  lookahead_buffer_dump(&buffer);
+  /* printf("for: "); */
+  /* lookahead_buffer_dump(&buffer); */
   // Try for "switch"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "switch")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "switch ")) {
     goto done;
   }
-  printf("switch: ");
-  lookahead_buffer_dump(&buffer);
+  /* printf("switch: "); */
+  /* lookahead_buffer_dump(&buffer); */
 
   // 2. We looked for a statement keyword but found none. Process the remaining
   // data in the buffer to look for the terminator characters.
@@ -207,10 +211,12 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
     goto done;
   }
-  // Make sure the buffer is reset
-  lookahead_buffer_init(&buffer);
 
-  lexer->mark_end(lexer);
+  /* printf("text element: "); */
+  /* lookahead_buffer_dump(&buffer); */
+
+  // Everything up to this
+  count += buffer.write_pos;
 
   // 3. We looked for a terminator in the buffer but found none. Now we can
   // start processing the lexer stream itself.
@@ -225,11 +231,15 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
 
     lexer->advance(lexer, false);
     lexer->mark_end(lexer);
-    has_marked = true;
     count++;
   }
 
 done:
+
+  if (count > 0) {
+    lexer->mark_end(lexer);
+    has_marked = true;
+  }
 
   printf("done: %b, chars: %zu\n", has_marked, count);
 
