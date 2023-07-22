@@ -653,6 +653,10 @@
         {
           "type": "element",
           "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
         }
       ]
     }
@@ -1003,6 +1007,10 @@
       "types": [
         {
           "type": "element",
+          "named": true
+        },
+        {
+          "type": "expression",
           "named": true
         },
         {

@@ -6490,6 +6490,10 @@
               },
               {
                 "type": "SYMBOL",
+                "name": "expression"
+              },
+              {
+                "type": "SYMBOL",
                 "name": "component_if_statement"
               },
               {
@@ -6772,6 +6776,10 @@
         {
           "type": "SYMBOL",
           "name": "text"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
         }
       ]
     },
@@ -6894,7 +6902,7 @@
     },
     "text": {
       "type": "PATTERN",
-      "value": "[^<>&\\s]([^<>&]*[^<>&\\s])?"
+      "value": "[^<>&{}\\s]([^<>&{}]*[^<>&\\s{}])?"
     }
   },
   "extras": [
