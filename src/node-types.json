@@ -647,6 +647,10 @@
           "named": true
         },
         {
+          "type": "component_import",
+          "named": true
+        },
+        {
           "type": "element",
           "named": true
         }
@@ -727,6 +731,32 @@
         "types": [
           {
             "type": "_simple_statement",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "component_import",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "argument_list",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "component_identifier",
             "named": true
           }
         ]
@@ -2796,6 +2826,10 @@
   },
   {
     "type": ">>=",
+    "named": false
+  },
+  {
+    "type": "@",
     "named": false
   },
   {
