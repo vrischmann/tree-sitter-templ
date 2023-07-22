@@ -16,12 +16,13 @@ templ render() {
   (component_declaration
     name: (component_identifier)
     (parameter_list)
-    (element
-      (tag_start
-        name: (element_identifier)
-        (attribute
-          name: (attribute_name)
-          value: (expression)))
-      (text)
-      (tag_end
-        name: (element_identifier)))))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (expression)))
+        (text)
+        (tag_end
+          name: (element_identifier))))))

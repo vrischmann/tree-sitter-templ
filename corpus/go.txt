@@ -32,9 +32,10 @@ templ MyComponent(slice []Foobar) {
         (identifier)
         (slice_type
           (type_identifier))))
-    (element
-      (self_closing_tag
-        (element_identifier)))))
+    (component_block
+      (element
+        (self_closing_tag
+          (element_identifier))))))
 
 ====
 Only go code in template
