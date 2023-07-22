@@ -77,3 +77,36 @@ const (
         (identifier))
       (const_spec
         (identifier))))
+
+====
+Importing Go code
+====
+
+package hello
+
+import "foo"
+
+import (
+  "bar"
+  "baz"
+)
+
+css foo() {}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (import_declaration
+    (import_spec
+      (interpreted_string_literal)))
+  (import_declaration
+    (import_spec_list
+      (import_spec
+        (interpreted_string_literal))
+      (import_spec
+        (interpreted_string_literal))))
+  (css_declaration
+    (css_identifier)
+    (parameter_list)))
