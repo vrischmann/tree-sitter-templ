@@ -26,20 +26,6 @@ module.exports = grammar(GO, {
             $._block,
         ),
 
-        parameter_list: $ => seq(
-            '(',
-            repeat(seq(
-                $.parameter_declaration,
-                optional(','),
-            )),
-            ')'
-        ),
-        parameter_declaration: $ => prec.left(seq(
-            field('name', $._parameter_identifier),
-            field('type', $.parameter_type),
-        )),
-        parameter_type: $ => /[a-zA-Z0-9\[\]]+/,
-
         _block: $ => seq(
             '{',
             repeat(choice(
@@ -124,7 +110,6 @@ module.exports = grammar(GO, {
 
         identifier: $ => /[a-zA-Z0-9_]+/,
         _component_identifier: $ => alias($.identifier, $.component_identifier),
-        _parameter_identifier: $ => alias($.identifier, $.parameter_identifier),
         _css_identifier: $ => alias($.identifier, $.css_identifier),
 
         element_identifier: $ => /[a-z0-9\-]+/,
