@@ -18,4 +18,5 @@
   "package"
   "templ"
   "css"
+  "type"
 ] @keyword
