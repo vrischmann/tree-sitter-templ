@@ -360,4 +360,14 @@ templ Foobar() {
 
 (source_file
   (package_clause
-    (package_identifier)))
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
