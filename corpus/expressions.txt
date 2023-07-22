@@ -23,7 +23,7 @@ templ render() {
           (attribute
             name: (attribute_name)
             value: (expression)))
-        (text)
+        (element_text)
         (tag_end
           name: (element_identifier))))))
 

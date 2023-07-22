@@ -125,7 +125,7 @@ templ BasicTemplate(url string) {
             (attribute
               name: (attribute_name)
               value: (attribute_value)))
-          (text)
+          (element_text)
           (tag_end
             name: (element_identifier)))
         (tag_end
@@ -169,7 +169,7 @@ templ MyComponent(loggedIn bool) {
               (attribute
                 name: (attribute_name)
                 value: (attribute_value)))
-            (text)
+            (element_text)
             (tag_end
               name: (element_identifier))))
         alternative: (component_block
@@ -179,7 +179,7 @@ templ MyComponent(loggedIn bool) {
               (attribute
                 name: (attribute_name)
                 value: (attribute_value)))
-            (text)
+            (element_text)
             (tag_end
               name: (element_identifier))))))))
 
@@ -305,3 +305,19 @@ templ Page(title string, body string) {
         name: (component_identifier)
         arguments: (argument_list
           (identifier))))))
+
+=====
+Long text
+=====
+
+package main
+
+templ Foobar() {
+  <div>foobar_foobar_foobariflolhahah</div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier)))
