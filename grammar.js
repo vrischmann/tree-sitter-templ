@@ -39,6 +39,7 @@ module.exports = grammar(GO, {
             '{',
             repeat(choice(
                 $.element,
+                $.expression,
                 $.component_if_statement,
                 $.component_import,
             )),
