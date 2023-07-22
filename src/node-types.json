@@ -635,6 +635,25 @@
     }
   },
   {
+    "type": "component_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "component_if_statement",
+          "named": true
+        },
+        {
+          "type": "element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "component_declaration",
     "named": true,
     "fields": {
@@ -654,7 +673,7 @@
       "required": true,
       "types": [
         {
-          "type": "element",
+          "type": "component_block",
           "named": true
         },
         {
@@ -662,6 +681,56 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "component_if_statement",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "component_block",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "component_block",
+            "named": true
+          }
+        ]
+      },
+      "initializer": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_simple_statement",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

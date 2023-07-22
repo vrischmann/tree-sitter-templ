@@ -6468,11 +6468,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_block"
+          "name": "component_block"
         }
       ]
     },
-    "_block": {
+    "component_block": {
       "type": "SEQ",
       "members": [
         {
@@ -6487,6 +6487,10 @@
               {
                 "type": "SYMBOL",
                 "name": "element"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "component_if_statement"
               }
             ]
           }
@@ -6494,6 +6498,90 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "component_if_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "if"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "initializer",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_simple_statement"
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": ";"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "condition",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "consequence",
+          "content": {
+            "type": "SYMBOL",
+            "name": "component_block"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "else"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "alternative",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "component_block"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "if_statement"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
