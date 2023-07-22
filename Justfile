@@ -10,4 +10,5 @@ test FILTER="": gen
 	end
 
 build: gen
+	node-gyp configure
 	node-gyp build
