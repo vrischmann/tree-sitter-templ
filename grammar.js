@@ -23,15 +23,35 @@ module.exports = grammar(GO, {
             'templ',
             field('name', $._component_identifier),
             $.parameter_list,
-            $._block,
+            $.component_block,
         ),
 
-        _block: $ => seq(
+        component_block: $ => seq(
             '{',
             repeat(choice(
                 $.element,
+                $.component_if_statement,
             )),
             '}',
+        ),
+
+        // Based on the if_statement of the Go grammar
+        // Not sure if it can be reused because the Go grammar uses $.block; we want our $._block
+        component_if_statement: $ => seq(
+            'if',
+            optional(seq(
+                field('initializer', $._simple_statement),
+                ';'
+            )),
+            field('condition', $._expression),
+            field('consequence', $.component_block),
+            optional(seq(
+                'else',
+                field('alternative', choice(
+                    $.component_block,
+                    $.if_statement)
+                )
+            ))
         ),
 
         element: $ => choice(
