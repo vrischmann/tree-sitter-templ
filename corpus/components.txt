@@ -238,6 +238,46 @@ templ MyComponent(loggedIn bool, n int) {
                   name: (element_identifier))))))))))
 
 ====
+If in an element
+====
+
+package foobar
+
+templ MyComponent(n int) {
+	<ul>
+  if n > 10 {
+      <hr/>
+  }
+  </ul>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (component_if_statement
+          condition: (binary_expression
+            left: (identifier)
+            right: (identifier))
+          consequence: (component_block
+            (element
+              (self_closing_tag
+                name: (element_identifier)))))
+        (tag_end
+          name: (element_identifier))))))
+
+====
 Composition of components
 ====
 
