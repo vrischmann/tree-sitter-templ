@@ -13,33 +13,31 @@
 
 typedef struct {
   int buf[LOOKAHEAD_BUFFER_SIZE];
-  size_t pos;
+  size_t write_pos;
 } LookaheadBuffer;
 
 void lookahead_buffer_init(LookaheadBuffer *buffer) {
   memset(&buffer->buf[0], 0, LOOKAHEAD_BUFFER_SIZE);
-  buffer->pos = 0;
+  buffer->write_pos = 0;
 }
 
 void lookahead_buffer_dump(LookaheadBuffer *buffer) {
   printf("\"");
-  for (size_t i = 0; i < buffer->pos; i++) {
+  for (size_t i = 0; i < buffer->write_pos; i++) {
     printf("%c", buffer->buf[i]);
   }
   printf("\"\n");
 }
 
-int next_char(LookaheadBuffer *buffer, TSLexer *lexer) {
-  if (buffer->pos > 0) {
-    int ch = buffer->buf[buffer->pos];
-    buffer->pos--;
-    return ch;
+bool lookahead_buffer_find_char(LookaheadBuffer *buffer,
+                                bool (*callback)(int ch)) {
+  for (size_t i = 0; i < buffer->write_pos; i++) {
+    if (callback(buffer->buf[i])) {
+      return true;
+    }
   }
 
-  int ch = lexer->lookahead;
-  lexer->advance(lexer, false);
-
-  return ch;
+  return false;
 }
 
 // Tries to find the keyword `str` in the character stream of `lexer`.
@@ -52,11 +50,12 @@ int next_char(LookaheadBuffer *buffer, TSLexer *lexer) {
 // * otherwise pull from the stream while simultaneously adding to the buffer
 //
 // The next call will have the buffer populated.
-bool find_keyword(TSLexer *lexer, LookaheadBuffer *buffer, const char *str) {
+bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
+                                   const char *str) {
   size_t length = strlen(str);
 
   // First look in the buffer
-  for (size_t i = 0; i < buffer->pos && i < length; i++) {
+  for (size_t i = 0; i < buffer->write_pos && i < length; i++) {
     if (buffer->buf[i] != str[i]) {
       return false;
     }
@@ -71,8 +70,8 @@ bool find_keyword(TSLexer *lexer, LookaheadBuffer *buffer, const char *str) {
       return false;
     }
 
-    buffer->buf[buffer->pos] = lexer->lookahead;
-    buffer->pos++;
+    buffer->buf[buffer->write_pos] = lexer->lookahead;
+    buffer->write_pos++;
 
     lexer->advance(lexer, false);
   }
@@ -145,6 +144,19 @@ static bool scan_expression(Scanner *scanner, TSLexer *lexer) {
   return false;
 }
 
+static bool is_element_text_terminator(int ch) {
+  switch (ch) {
+  case '<':
+  case '{':
+  case '}':
+  case '\n':
+  case '@':
+    return true;
+  }
+
+  return false;
+}
+
 static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   lexer->result_symbol = ELEMENT_TEXT;
 
@@ -158,47 +170,56 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   bool has_marked = false;
   size_t count = 0;
 
-  // These keywords can only be present at the start of an element node
+  // 1. Detect if the node starts with a keyword that makes it a statement
+  // instead of a text element
+  //
+  // Since we're looking for a multicharacter token we need backtracking but
+  // TSLexer doesn't provide it so we have to do it ourselves.
 
   // Try for "if"
-  if (find_keyword(lexer, &buffer, "if")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "if")) {
     goto done;
   }
+  printf("if: ");
   lookahead_buffer_dump(&buffer);
   // Try for "else"
-  if (find_keyword(lexer, &buffer, "else")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "else")) {
     goto done;
   }
+  printf("else: ");
   lookahead_buffer_dump(&buffer);
   // Try for "for"
-  if (find_keyword(lexer, &buffer, "for")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "for")) {
     goto done;
   }
+  printf("for: ");
   lookahead_buffer_dump(&buffer);
   // Try for "switch"
-  if (find_keyword(lexer, &buffer, "switch")) {
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "switch")) {
     goto done;
   }
+  printf("switch: ");
   lookahead_buffer_dump(&buffer);
 
+  // 2. We looked for a statement keyword but found none. Process the remaining
+  // data in the buffer to look for the terminator characters.
+
+  if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
+    goto done;
+  }
+  // Make sure the buffer is reset
+  lookahead_buffer_init(&buffer);
+
+  lexer->mark_end(lexer);
+
+  // 3. We looked for a terminator in the buffer but found none. Now we can
+  // start processing the lexer stream itself.
   //
+  // There's no need for backtracking here since we only need a single character
+  // lookahead.
 
-  while (true) {
-    if (lexer->eof(lexer)) {
-      break;
-    }
-
-    lookahead_buffer_dump(&buffer);
-
-    int next_char = lexer->lookahead;
-    /* int next_char = next_char(&buffer,,lexer); */
-
-    switch (next_char) {
-    case '<':
-    case '{':
-    case '}':
-    case '\n':
-    case '@':
+  while (!lexer->eof(lexer)) {
+    if (is_element_text_terminator(lexer->lookahead)) {
       goto done;
     }
 
