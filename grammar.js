@@ -117,7 +117,7 @@ module.exports = grammar(GO, {
             $.element,
             $.text,
             // $.statement
-            // $.expression,
+            $.expression,
         ),
 
         // CSS stuff
@@ -155,6 +155,6 @@ module.exports = grammar(GO, {
         // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
         attribute_name: _ => /[^<>"'/=\s]+/,
         attribute_value: _ => /[^<>"'=\s]+/,
-        text: _ => /[^<>&\s]([^<>&]*[^<>&\s])?/,
+        text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
     },
 });
