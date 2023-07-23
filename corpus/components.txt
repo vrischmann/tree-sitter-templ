@@ -390,3 +390,34 @@ templ Foobar() {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+====
+Component as parameter
+====
+
+package main
+
+templ Foobar(component templ.Component) {
+  <hr/>
+  {! component }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (qualified_type
+          package: (package_identifier)
+          name: (type_identifier))))
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)))
+      (component_render
+        name: (component_identifier)))))
