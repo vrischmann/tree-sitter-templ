@@ -82,7 +82,6 @@ bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
 //
 
 enum TokenType {
-  EXPRESSION,
   CSS_PROPERTY_VALUE,
   ELEMENT_TEXT,
 };
@@ -109,36 +108,6 @@ static bool scan_css_property_value(Scanner *scanner, TSLexer *lexer) {
       return true;
     }
     lexer->advance(lexer, false);
-  }
-
-  return false;
-}
-
-static bool scan_expression(Scanner *scanner, TSLexer *lexer) {
-  lexer->result_symbol = EXPRESSION;
-
-  // An expression always starts with a {
-  if (lexer->lookahead != '{') {
-    return false;
-  }
-
-  int brace_count = 0;
-
-  while (!lexer->eof(lexer)) {
-    switch (lexer->lookahead) {
-    case '{':
-      brace_count++;
-      break;
-    case '}':
-      brace_count--;
-      break;
-    }
-
-    lexer->advance(lexer, false);
-
-    if (brace_count == 0) {
-      return true;
-    }
   }
 
   return false;
@@ -253,10 +222,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
   if (valid_symbols[CSS_PROPERTY_VALUE] &&
       scan_css_property_value(scanner, lexer)) {
-    return true;
-  }
-
-  if (valid_symbols[EXPRESSION] && scan_expression(scanner, lexer)) {
     return true;
   }
 
