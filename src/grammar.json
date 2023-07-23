@@ -6521,6 +6521,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "component_for_statement"
+        },
+        {
+          "type": "SYMBOL",
           "name": "component_import"
         },
         {
@@ -6614,6 +6618,48 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "component_for_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "for"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "for_clause"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "range_clause"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "component_block"
+          }
         }
       ]
     },
