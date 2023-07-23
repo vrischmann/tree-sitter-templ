@@ -655,6 +655,10 @@
           "named": true
         },
         {
+          "type": "component_render",
+          "named": true
+        },
+        {
           "type": "element",
           "named": true
         },
@@ -797,6 +801,22 @@
           }
         ]
       },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "component_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "component_render",
+    "named": true,
+    "fields": {
       "name": {
         "multiple": false,
         "required": true,
@@ -1057,6 +1077,10 @@
         },
         {
           "type": "component_import",
+          "named": true
+        },
+        {
+          "type": "component_render",
           "named": true
         },
         {
@@ -3150,6 +3174,10 @@
   },
   {
     "type": "{",
+    "named": false
+  },
+  {
+    "type": "{!",
     "named": false
   },
   {
