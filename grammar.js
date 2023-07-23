@@ -10,7 +10,6 @@ module.exports = grammar(GO, {
     word: $ => $.identifier,
 
     externals: $ => [
-        $.expression,
         $.css_property_value,
         $.element_text,
     ],
@@ -20,6 +19,12 @@ module.exports = grammar(GO, {
             original,
             $.component_declaration,
             $.css_declaration,
+        ),
+
+        expression: $ => seq(
+            '{',
+            optional($._expression),
+            '}',
         ),
 
         // Component stuff
