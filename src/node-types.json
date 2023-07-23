@@ -643,6 +643,10 @@
       "required": false,
       "types": [
         {
+          "type": "component_for_statement",
+          "named": true
+        },
+        {
           "type": "component_if_statement",
           "named": true
         },
@@ -690,6 +694,40 @@
         },
         {
           "type": "parameter_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "component_for_statement",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "component_block",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "for_clause",
+          "named": true
+        },
+        {
+          "type": "range_clause",
           "named": true
         }
       ]
@@ -1009,6 +1047,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "component_for_statement",
+          "named": true
+        },
         {
           "type": "component_if_statement",
           "named": true

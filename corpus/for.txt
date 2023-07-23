@@ -1,0 +1,88 @@
+====
+for statement as a top level node in a component
+====
+
+package main
+
+templ Foobar() {
+  for i := 0; i < 20; i++ {
+    <p>{ i }</p>
+  }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_for_statement
+        (for_clause
+          initializer: (short_var_declaration
+            left: (expression_list
+              (identifier))
+            right: (expression_list
+              (identifier)))
+          condition: (binary_expression
+            left: (identifier)
+            right: (identifier))
+            update: (inc_statement
+              (identifier)))
+        body: (component_block
+          (element
+            (tag_start
+              name: (element_identifier))
+            (expression)
+            (tag_end
+              name: (element_identifier))))))))
+
+====
+for statement inside an element
+====
+
+package main
+
+templ Foobar() {
+  <ul>
+  for i := 0; i < 20; i++ {
+    <li>{ i }</li>
+  }
+  </ul>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (component_for_statement
+          (for_clause
+            initializer: (short_var_declaration
+              left: (expression_list
+                (identifier))
+              right: (expression_list
+                (identifier)))
+            condition: (binary_expression
+              left: (identifier)
+              right: (identifier))
+              update: (inc_statement
+                (identifier)))
+          body: (component_block
+            (element
+              (tag_start
+                name: (element_identifier))
+              (expression)
+              (tag_end
+                name: (element_identifier)))))
+        (tag_end
+          name: (element_identifier))))))

@@ -44,13 +44,14 @@ module.exports = grammar(GO, {
         _component_node: $ => choice(
             $.element,
             $.component_if_statement,
+            $.component_for_statement,
             $.component_import,
             $.expression,
             $.element_text,
         ),
 
-        // Based on the if_statement of the Go grammar
-        // Not sure if it can be reused because the Go grammar uses $.block; we want our $._block
+        // Based on the $.if_statement rule of the Go grammar
+        // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block
         component_if_statement: $ => seq(
             'if',
             optional(seq(
@@ -66,6 +67,13 @@ module.exports = grammar(GO, {
                     $.if_statement)
                 )
             ))
+        ),
+        // Based on the $.for_statement rule of the Go grammar
+        // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block
+        component_for_statement: $ => seq(
+            'for',
+            optional(choice($._expression, $.for_clause, $.range_clause)),
+            field('body', $.component_block)
         ),
 
         component_import: $ => seq(
