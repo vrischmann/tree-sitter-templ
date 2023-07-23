@@ -21,14 +21,21 @@ module.exports = grammar(GO, {
             $.css_declaration,
         ),
 
+        // This matches a templ expression:
+        //
+        //     <h1>{ title }</h1>
+        //
+        // Note that we use $._expression which is from the Go grammar.
         expression: $ => seq(
             '{',
             optional($._expression),
             '}',
         ),
 
+        //
         // Component stuff
         //
+
         // This matches the entire component:
         //
         //     templ Name(a int, b string, ...) {}
@@ -41,6 +48,7 @@ module.exports = grammar(GO, {
             $.component_block,
         ),
 
+        // This matches block of a component.
         component_block: $ => seq(
             '{',
             repeat($._component_node),
@@ -51,10 +59,13 @@ module.exports = grammar(GO, {
             $.component_if_statement,
             $.component_for_statement,
             $.component_import,
+            $.component_render,
             $.expression,
             $.element_text,
         ),
 
+        // This matches an if statement in a component block.
+        //
         // Based on the $.if_statement rule of the Go grammar
         // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block
         component_if_statement: $ => seq(
@@ -73,6 +84,9 @@ module.exports = grammar(GO, {
                 )
             ))
         ),
+
+        // This matches a for statement in a component block.
+        //
         // Based on the $.for_statement rule of the Go grammar
         // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block
         component_for_statement: $ => seq(
@@ -81,13 +95,28 @@ module.exports = grammar(GO, {
             field('body', $.component_block)
         ),
 
+        // This matches an import statement:
+        //
+        //     @Foobar(a, b, c)
+        //
+        // Note that we use $.argument_list which is from the Go grammar.
         component_import: $ => seq(
             '@',
             field('name', $._component_identifier),
             field('arguments', $.argument_list),
         ),
 
-        // Templ element, which is basically a HTML node
+        // This matches a render statement:
+        //
+        //     {! myComponent }
+        //
+        component_render: $ => seq(
+            '{!',
+            field('name', $._component_identifier),
+            '}'
+        ),
+
+        // a templ element, which is basically a HTML node
 
         element: $ => choice(
             seq(
