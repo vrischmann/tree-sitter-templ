@@ -49,6 +49,9 @@
 (component_import
   name: (component_identifier) @function)
 
+(component_render
+  name: (component_identifier) @function)
+
 [
   "@"
 ] @operator
