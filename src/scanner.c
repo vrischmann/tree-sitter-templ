@@ -119,7 +119,6 @@ static bool is_element_text_terminator(int ch) {
   case '{':
   case '}':
   case '\n':
-  case '@':
     return true;
   }
 
@@ -153,36 +152,29 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   if (lookahead_buffer_find_keyword(&buffer, lexer, "if ")) {
     goto done;
   }
-  /* printf("if: "); */
-  /* lookahead_buffer_dump(&buffer); */
   // Try for "else"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "else ")) {
     goto done;
   }
-  /* printf("else: "); */
-  /* lookahead_buffer_dump(&buffer); */
   // Try for "for"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "for ")) {
     goto done;
   }
-  /* printf("for: "); */
-  /* lookahead_buffer_dump(&buffer); */
   // Try for "switch"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "switch ")) {
     goto done;
   }
-  /* printf("switch: "); */
-  /* lookahead_buffer_dump(&buffer); */
-
-  // 2. We looked for a statement keyword but found none. Process the remaining
-  // data in the buffer to look for the terminator characters.
-
-  if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
+  // Try for a "@" which signals a component import statement
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
     goto done;
   }
 
-  /* printf("text element: "); */
-  /* lookahead_buffer_dump(&buffer); */
+  // 2. We looked for a statement keyword but found none.
+
+  // Process the remaining data in the buffer to look for terminator characters.
+  if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
+    goto done;
+  }
 
   // Everything up to this
   count += buffer.write_pos;
