@@ -241,7 +241,7 @@ done:
     has_marked = true;
   }
 
-  printf("done: %b, chars: %zu\n", has_marked, count);
+  /* printf("done: %b, chars: %zu\n", has_marked, count); */
 
   return has_marked;
 }
