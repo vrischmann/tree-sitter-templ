@@ -61,7 +61,8 @@ css myClass(color string) {
         type: (type_identifier)))
     (css_property
       name: (css_property_name)
-      value: (expression))
+      value: (expression
+        (identifier)))
     (css_property
       name: (css_property_name)
       value: (css_property_value))))

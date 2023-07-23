@@ -22,7 +22,13 @@ templ render() {
           name: (element_identifier)
           (attribute
             name: (attribute_name)
-            value: (expression)))
+            value: (expression
+              (call_expression
+                function: (selector_expression
+                  operand: (identifier)
+                  field: (field_identifier))
+                arguments: (argument_list
+                  (interpreted_string_literal))))))
         (element_text)
         (tag_end
           name: (element_identifier))))))
@@ -49,4 +55,5 @@ templ render(foo string) {
         name: (identifier)
         type: (type_identifier)))
     (component_block
-      (expression))))
+      (expression
+      	(identifier)))))

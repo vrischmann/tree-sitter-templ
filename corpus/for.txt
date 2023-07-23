@@ -35,7 +35,8 @@ templ Foobar() {
           (element
             (tag_start
               name: (element_identifier))
-            (expression)
+            (expression
+              (identifier))
             (tag_end
               name: (element_identifier))))))))
 
@@ -81,7 +82,8 @@ templ Foobar() {
             (element
               (tag_start
                 name: (element_identifier))
-              (expression)
+              (expression
+                (identifier))
               (tag_end
                 name: (element_identifier)))))
         (tag_end
