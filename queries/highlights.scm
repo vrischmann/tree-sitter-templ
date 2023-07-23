@@ -37,6 +37,13 @@
 
 (expression) @function.method
 
+(component_import
+  name: (component_identifier) @function)
+
+[
+  "@"
+] @operator
+
 [
   "func"
   "var"
