@@ -6463,6 +6463,31 @@
         ]
       }
     },
+    "expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_expression"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
     "component_declaration": {
       "type": "SEQ",
       "members": [
@@ -6971,10 +6996,6 @@
   ],
   "precedences": [],
   "externals": [
-    {
-      "type": "SYMBOL",
-      "name": "expression"
-    },
     {
       "type": "SYMBOL",
       "name": "css_property_value"
