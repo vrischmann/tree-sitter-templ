@@ -117,16 +117,14 @@ module.exports = grammar(GO, {
 
         attribute: $ => seq(
             field('name', $.attribute_name),
-            '=',
-            field('value', $._attribute_value),
-        ),
-        _attribute_value: $ => choice(
-            $.expression,
-            seq(
-                '"',
-                $.attribute_value,
-                '"',
-            ),
+            optional(seq(
+                '=',
+                field('value', choice(
+                    $.expression,
+                    $.attribute_value,
+                    $.quoted_attribute_value
+                )),
+            )),
         ),
 
         // CSS stuff
@@ -164,6 +162,10 @@ module.exports = grammar(GO, {
         // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
         attribute_name: _ => /[^<>"'/=\s]+/,
         attribute_value: _ => /[^<>"'=\s]+/,
+        quoted_attribute_value: $ => choice(
+            seq('\'', optional(alias(/[^']+/, $.attribute_value)), '\''),
+            seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
+        ),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
     },
 });
