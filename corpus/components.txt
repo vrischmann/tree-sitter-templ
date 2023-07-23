@@ -83,7 +83,8 @@ templ Foo(text string) {
           name: (element_identifier)
           (attribute
             name: (attribute_name)
-            value: (attribute_value)))
+            value: (quoted_attribute_value
+              (attribute_value))))
         (element_text)
         (tag_end
           name: (element_identifier))))))
@@ -130,7 +131,8 @@ templ BasicTemplate(url string) {
                     (identifier)))))
             (attribute
               name: (attribute_name)
-              value: (attribute_value)))
+              value: (quoted_attribute_value
+                (attribute_value))))
           (element_text)
           (tag_end
             name: (element_identifier)))
@@ -174,7 +176,8 @@ templ MyComponent(loggedIn bool) {
               name: (element_identifier)
               (attribute
                 name: (attribute_name)
-                value: (attribute_value)))
+                value: (quoted_attribute_value
+                  (attribute_value))))
             (element_text)
             (tag_end
               name: (element_identifier))))
@@ -184,7 +187,8 @@ templ MyComponent(loggedIn bool) {
               name: (element_identifier)
               (attribute
                 name: (attribute_name)
-                value: (attribute_value)))
+                value: (quoted_attribute_value
+                  (attribute_value))))
             (element_text)
             (tag_end
               name: (element_identifier))))))))
