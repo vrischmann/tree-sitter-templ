@@ -17,6 +17,15 @@
 (field_identifier) @property
 (identifier) @variable
 
+; Function calls
+
+(call_expression
+  function: (identifier) @function.call)
+
+(call_expression
+  function: (selector_expression
+    field: (field_identifier) @method.call))
+
 ;
 ; These are Templ specific
 ;
