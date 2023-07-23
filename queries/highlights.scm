@@ -37,7 +37,7 @@
 (tag_end) @tag
 (self_closing_tag) @tag
 
-(attribute_value) @string
+(quoted_attribute_value) @string
 
 (element_text) @string.special
 
