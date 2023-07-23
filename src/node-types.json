@@ -405,19 +405,19 @@
         ]
       },
       "value": {
-        "multiple": true,
-        "required": true,
+        "multiple": false,
+        "required": false,
         "types": [
-          {
-            "type": "\"",
-            "named": false
-          },
           {
             "type": "attribute_value",
             "named": true
           },
           {
             "type": "expression",
+            "named": true
+          },
+          {
+            "type": "quoted_attribute_value",
             "named": true
           }
         ]
@@ -2041,6 +2041,21 @@
     }
   },
   {
+    "type": "quoted_attribute_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "attribute_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "range_clause",
     "named": true,
     "fields": {
@@ -2779,6 +2794,10 @@
   },
   {
     "type": "&^=",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
