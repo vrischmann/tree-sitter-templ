@@ -53,6 +53,7 @@
   "type"
   "return"
   "struct"
+  "range"
 ] @keyword
 
 [
