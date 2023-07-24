@@ -673,6 +673,10 @@
         {
           "type": "expression",
           "named": true
+        },
+        {
+          "type": "style_element",
+          "named": true
         }
       ]
     }
@@ -1136,6 +1140,10 @@
         },
         {
           "type": "self_closing_tag",
+          "named": true
+        },
+        {
+          "type": "style_element",
           "named": true
         },
         {
@@ -2425,6 +2433,36 @@
     }
   },
   {
+    "type": "style_element",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "style",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "attribute",
+          "named": true
+        },
+        {
+          "type": "style_element_text",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "tag_end",
     "named": true,
     "fields": {
@@ -3194,6 +3232,14 @@
   {
     "type": "struct",
     "named": false
+  },
+  {
+    "type": "style",
+    "named": false
+  },
+  {
+    "type": "style_element_text",
+    "named": true
   },
   {
     "type": "switch",
