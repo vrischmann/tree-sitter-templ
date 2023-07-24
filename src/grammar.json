@@ -6726,10 +6726,10 @@
         },
         {
           "type": "FIELD",
-          "name": "name",
+          "name": "expression",
           "content": {
             "type": "SYMBOL",
-            "name": "_component_identifier"
+            "name": "_expression"
           }
         },
         {
