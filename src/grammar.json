@@ -6853,6 +6853,10 @@
                       {
                         "type": "SYMBOL",
                         "name": "quoted_attribute_value"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "dynamic_class_attribute_value"
                       }
                     ]
                   }
@@ -6952,6 +6956,74 @@
     "css_property_name": {
       "type": "PATTERN",
       "value": "[a-zA-Z\\-]+"
+    },
+    "dynamic_class_attribute_value": {
+      "type": "PREC",
+      "value": -1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "{"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_string_literal"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "_expression"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "_string_literal"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "_expression"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "STRING",
+            "value": "}"
+          }
+        ]
+      }
     },
     "_component_identifier": {
       "type": "ALIAS",
@@ -7082,6 +7154,14 @@
     [
       "parameter_declaration",
       "_simple_type"
+    ],
+    [
+      "expression",
+      "dynamic_class_attribute_value"
+    ],
+    [
+      "_expression",
+      "dynamic_class_attribute_value"
     ]
   ],
   "precedences": [],

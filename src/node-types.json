@@ -413,6 +413,10 @@
             "named": true
           },
           {
+            "type": "dynamic_class_attribute_value",
+            "named": true
+          },
+          {
             "type": "expression",
             "named": true
           },
@@ -1058,6 +1062,21 @@
     "type": "dot",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "dynamic_class_attribute_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "element",
