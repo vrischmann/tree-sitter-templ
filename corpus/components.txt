@@ -420,4 +420,66 @@ templ Foobar(component templ.Component) {
         (self_closing_tag
           name: (element_identifier)))
       (component_render
-        name: (component_identifier)))))
+        expression: (identifier)))))
+
+====
+Render with argument
+====
+
+package main
+
+templ email(name string, email string) {
+  <a href={ email }>{ name }</a>
+}
+
+templ Foobar(name string, email string) {
+  <p>{! email(name, email) }</p>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier))
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (expression
+              (identifier))))
+        (expression
+          (identifier))
+        (tag_end
+          name: (element_identifier)))))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier))
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (component_render
+          expression: (call_expression
+            function: (identifier)
+            arguments: (argument_list
+              (identifier)
+              (identifier))))
+        (tag_end
+          name: (element_identifier))))))
