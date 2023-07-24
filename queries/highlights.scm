@@ -45,11 +45,12 @@
   name: (css_property_name) @attribute)
 
 (expression) @function.method
+(dynamic_class_attribute_value) @function.method
 
 (component_import
   name: (component_identifier) @function)
 
-(component_render) @function
+(component_render) @function.call
 
 [
   "@"
