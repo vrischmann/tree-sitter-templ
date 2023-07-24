@@ -36,10 +36,12 @@
 (tag_start) @tag
 (tag_end) @tag
 (self_closing_tag) @tag
+(style_element) @tag
 
 (quoted_attribute_value) @string
 
 (element_text) @string.special
+(style_element_text) @string.special
 
 (css_property
   name: (css_property_name) @attribute)
