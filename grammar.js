@@ -109,10 +109,11 @@ module.exports = grammar(GO, {
         // This matches a render statement:
         //
         //     {! myComponent }
+        //     {! Component(foo, bar) }
         //
         component_render: $ => seq(
             '{!',
-            field('name', $._component_identifier),
+            field('expression', $._expression),
             '}'
         ),
 
