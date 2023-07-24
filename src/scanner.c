@@ -9,7 +9,7 @@
 
 // Helper struct to have multicharacter lookahead
 
-#define LOOKAHEAD_BUFFER_SIZE 8
+#define LOOKAHEAD_BUFFER_SIZE 16
 
 typedef struct {
   int buf[LOOKAHEAD_BUFFER_SIZE];
@@ -84,6 +84,7 @@ bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
 enum TokenType {
   CSS_PROPERTY_VALUE,
   ELEMENT_TEXT,
+  STYLE_ELEMENT_TEXT,
 };
 
 typedef struct {
@@ -207,6 +208,33 @@ done:
   return has_marked;
 }
 
+static bool scan_style_element_text(Scanner *scanner, TSLexer *lexer) {
+  lexer->result_symbol = STYLE_ELEMENT_TEXT;
+
+  // Start by marking the end so the following calls to advance don't
+  // increase the token size
+  lexer->mark_end(lexer);
+
+  if (lexer->eof(lexer)) {
+    return false;
+  }
+
+  bool has_marked = false;
+
+  // A < is the only terminator for a style element
+  while (!lexer->eof(lexer)) {
+    if (lexer->lookahead == '<') {
+      break;
+    }
+
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    has_marked = true;
+  }
+
+  return has_marked;
+}
+
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   while (!lexer->eof(lexer) && iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
@@ -218,6 +246,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   }
 
   if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer)) {
+    return true;
+  }
+
+  if (valid_symbols[STYLE_ELEMENT_TEXT] &&
+      scan_style_element_text(scanner, lexer)) {
     return true;
   }
 
