@@ -817,12 +817,12 @@
     "type": "component_render",
     "named": true,
     "fields": {
-      "name": {
+      "expression": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "component_identifier",
+            "type": "_expression",
             "named": true
           }
         ]
