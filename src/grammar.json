@@ -3693,6 +3693,10 @@
         {
           "type": "SYMBOL",
           "name": "self_closing_tag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "doctype"
         }
       ]
     },
@@ -6815,6 +6819,31 @@
         }
       ]
     },
+    "doctype": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<!"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "element_identifier"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "html"
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
     "attribute": {
       "type": "SEQ",
       "members": [
@@ -7045,7 +7074,7 @@
     },
     "element_identifier": {
       "type": "PATTERN",
-      "value": "[a-z0-9\\-]+"
+      "value": "[a-zA-Z0-9\\-]+"
     },
     "attribute_name": {
       "type": "PATTERN",

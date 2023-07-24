@@ -1059,6 +1059,22 @@
     }
   },
   {
+    "type": "doctype",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "element_identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "dot",
     "named": true,
     "fields": {}
@@ -1100,6 +1116,10 @@
         },
         {
           "type": "component_render",
+          "named": true
+        },
+        {
+          "type": "doctype",
           "named": true
         },
         {
@@ -2924,6 +2944,10 @@
     "named": false
   },
   {
+    "type": "<!",
+    "named": false
+  },
+  {
     "type": "<-",
     "named": false
   },
@@ -3097,6 +3121,10 @@
   },
   {
     "type": "goto",
+    "named": false
+  },
+  {
+    "type": "html",
     "named": false
   },
   {
