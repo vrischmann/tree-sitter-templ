@@ -14,6 +14,12 @@ module.exports = grammar(GO, {
         $.element_text,
     ],
 
+    conflicts: ($, original) => [
+        ...original,
+        [$.expression, $.dynamic_class_attribute_value],
+        [$._expression, $.dynamic_class_attribute_value],
+    ],
+
     rules: {
         _top_level_declaration: ($, original) => choice(
             original,
@@ -152,7 +158,8 @@ module.exports = grammar(GO, {
                 field('value', choice(
                     $.expression,
                     $.attribute_value,
-                    $.quoted_attribute_value
+                    $.quoted_attribute_value,
+                    $.dynamic_class_attribute_value,
                 )),
             )),
         ),
@@ -181,6 +188,20 @@ module.exports = grammar(GO, {
         ),
         css_property_name: $ => /[a-zA-Z\-]+/,
 
+        // This matches a dynamic class attribute.
+        // See https://templ.guide/syntax-and-usage/css-style-management#dynamic-classes
+        //
+        //     <div class={ `foo`, templ.SafeCSS(`color: red`), templ.KV("is-primary", true), myCssClass() }
+        //
+        dynamic_class_attribute_value: $ => prec(-1, seq(
+            '{',
+            commaSep(choice(
+                $._string_literal,
+                $._expression,
+            )),
+            '}',
+        )),
+
         //
 
         identifier: $ => /[a-zA-Z0-9_]+/,
@@ -199,3 +220,13 @@ module.exports = grammar(GO, {
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
     },
 });
+
+// Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js#L909-L915
+
+function commaSep1(rule) {
+  return seq(rule, repeat(seq(',', rule)))
+}
+
+function commaSep(rule) {
+  return optional(commaSep1(rule))
+}
