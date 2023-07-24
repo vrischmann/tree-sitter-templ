@@ -21,6 +21,7 @@ module.exports = grammar(GO, {
         ...original,
         [$.expression, $.dynamic_class_attribute_value],
         [$._expression, $.dynamic_class_attribute_value],
+        [$.tag_start, $.self_closing_tag],
     ],
 
     rules: {
@@ -188,7 +189,7 @@ module.exports = grammar(GO, {
         tag_start: $ => seq(
             '<',
             field('name', $.element_identifier),
-            repeat($.attribute),
+            repeat($._attribute),
             '>',
         ),
         tag_end: $ => seq(
@@ -199,7 +200,7 @@ module.exports = grammar(GO, {
         self_closing_tag: $ => seq(
             '<',
             field('name', $.element_identifier),
-            repeat($.attribute),
+            repeat($._attribute),
             '/>',
         ),
 
@@ -221,6 +222,11 @@ module.exports = grammar(GO, {
             '>'
         ),
 
+        _attribute: $ => choice(
+            $.attribute,
+            $.conditional_attribute_if_statement,
+        ),
+
         attribute: $ => seq(
             field('name', $.attribute_name),
             optional(seq(
@@ -230,6 +236,30 @@ module.exports = grammar(GO, {
                     $.attribute_value,
                     $.quoted_attribute_value,
                     $.dynamic_class_attribute_value,
+                )),
+            )),
+        ),
+
+        conditional_attribute_block: $ => seq(
+            '{',
+            '\n',
+            repeat($.attribute),
+            '}',
+        ),
+
+        conditional_attribute_if_statement: $ => seq(
+            token(prec(10, 'if')),
+            optional(seq(
+                field('initializer', $._simple_statement),
+                ';'
+            )),
+            field('condition', $._expression),
+            field('consequence', $.conditional_attribute_block),
+            optional(seq(
+                'else',
+                field('alternative', choice(
+                    $.conditional_attribute_block,
+                    $.conditional_attribute_if_statement,
                 )),
             )),
         ),
