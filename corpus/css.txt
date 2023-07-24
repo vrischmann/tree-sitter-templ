@@ -66,3 +66,66 @@ css myClass(color string) {
     (css_property
       name: (css_property_name)
       value: (css_property_value))))
+
+====
+CSS dynamic class
+====
+
+package main
+
+css myClass() {
+  font-size: 20px;
+}
+
+templ Foo() {
+  <div
+    name="vincent"
+    class={ `foo`, templ.SafeCSS(`color: red`), templ.KV("is-primary", true), myClass() }
+  >
+  </div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+    (css_declaration
+      (css_identifier)
+      (parameter_list)
+      (css_property
+        (css_property_name)
+        (css_property_value)))
+    (component_declaration
+      (component_identifier)
+      (parameter_list)
+      (component_block
+        (element
+          (tag_start
+            (element_identifier)
+            (attribute
+              (attribute_name)
+              (quoted_attribute_value
+                (attribute_value)))
+            (attribute
+              (attribute_name)
+              (dynamic_class_attribute_value
+                (raw_string_literal)
+                (call_expression
+                  (selector_expression
+                    (identifier)
+                    (field_identifier))
+                  (argument_list
+                    (raw_string_literal)))
+                (call_expression
+                  (selector_expression
+                    (identifier)
+                    (field_identifier))
+                  (argument_list
+                    (interpreted_string_literal)
+                    (true)))
+                (call_expression
+                  (identifier)
+                  (argument_list)))))
+          (tag_end
+            (element_identifier))))))
