@@ -12,6 +12,7 @@ module.exports = grammar(GO, {
     externals: $ => [
         $.css_property_value,
         $.element_text,
+        $.style_element_text,
     ],
 
     conflicts: ($, original) => [
@@ -62,6 +63,7 @@ module.exports = grammar(GO, {
         ),
         _component_node: $ => choice(
             $.element,
+            $.style_element,
             $.component_if_statement,
             $.component_for_statement,
             $.component_import,
@@ -151,10 +153,22 @@ module.exports = grammar(GO, {
             repeat($.attribute),
             '/>',
         ),
+
         doctype: $ => seq(
             '<!',
             field('name', $.element_identifier),
             'html',
+            '>'
+        ),
+
+        style_element: $ => seq(
+            '<',
+            field('name', 'style'),
+            repeat($.attribute),
+            '>',
+            $.style_element_text,
+            '</',
+            'style',
             '>'
         ),
 

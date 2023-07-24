@@ -31,3 +31,44 @@ templ Foobar() {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+===
+Style element
+===
+
+package main
+
+templ Foobar() {
+  <style type="text/css">
+    #foo {
+      color: red;
+    }
+  </style>
+  <h1 id="foo">Foobar</h1>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (attribute
+          name: (attribute_name)
+          value: (quoted_attribute_value
+            (attribute_value)))
+        (style_element_text))
+      (element
+        (tag_start
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
