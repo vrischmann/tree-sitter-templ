@@ -68,6 +68,7 @@ module.exports = grammar(GO, {
             $.style_element,
             $.component_if_statement,
             $.component_for_statement,
+            $.component_switch_statement,
             $.component_import,
             $.component_render,
             $.component_children_expression,
@@ -105,6 +106,35 @@ module.exports = grammar(GO, {
             optional(choice($._expression, $.for_clause, $.range_clause)),
             field('body', $.component_block)
         ),
+
+        // This matches a switch statement in a component block.
+        //
+        // Based on the $.expression_switch_statement rule of the Go grammar
+        component_switch_statement: $ => prec.right(seq(
+            'switch',
+            optional(seq(
+                field('initializer', $._simple_statement),
+                ';'
+            )),
+            field('value', optional($._expression)),
+            '{',
+            repeat(choice(
+                $.component_switch_expression_case,
+                $.component_switch_default_case,
+            )),
+            '}',
+        )),
+        component_switch_expression_case: $ => prec.right(seq(
+            'case',
+            field('value', $.expression_list),
+            ':',
+            optional($._component_node),
+        )),
+        component_switch_default_case: $ => prec.right(seq(
+            'default',
+            ':',
+            optional($._component_node),
+        )),
 
         // This matches an import statement:
         //

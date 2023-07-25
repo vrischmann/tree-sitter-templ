@@ -667,6 +667,10 @@
           "named": true
         },
         {
+          "type": "component_switch_statement",
+          "named": true
+        },
+        {
           "type": "element",
           "named": true
         },
@@ -854,6 +858,159 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "component_switch_default_case",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "component_children_expression",
+          "named": true
+        },
+        {
+          "type": "component_for_statement",
+          "named": true
+        },
+        {
+          "type": "component_if_statement",
+          "named": true
+        },
+        {
+          "type": "component_import",
+          "named": true
+        },
+        {
+          "type": "component_render",
+          "named": true
+        },
+        {
+          "type": "component_switch_statement",
+          "named": true
+        },
+        {
+          "type": "element",
+          "named": true
+        },
+        {
+          "type": "element_text",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "style_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "component_switch_expression_case",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression_list",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "component_children_expression",
+          "named": true
+        },
+        {
+          "type": "component_for_statement",
+          "named": true
+        },
+        {
+          "type": "component_if_statement",
+          "named": true
+        },
+        {
+          "type": "component_import",
+          "named": true
+        },
+        {
+          "type": "component_render",
+          "named": true
+        },
+        {
+          "type": "component_switch_statement",
+          "named": true
+        },
+        {
+          "type": "element",
+          "named": true
+        },
+        {
+          "type": "element_text",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "style_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "component_switch_statement",
+    "named": true,
+    "fields": {
+      "initializer": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_simple_statement",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "component_switch_default_case",
+          "named": true
+        },
+        {
+          "type": "component_switch_expression_case",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1143,6 +1300,10 @@
         },
         {
           "type": "component_render",
+          "named": true
+        },
+        {
+          "type": "component_switch_statement",
           "named": true
         },
         {

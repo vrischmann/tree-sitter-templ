@@ -81,6 +81,7 @@
   "case"
   "switch"
   "if"
+  "default"
 ] @conditional
 
 "for" @repeat
