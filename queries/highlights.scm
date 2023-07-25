@@ -38,7 +38,10 @@
 (self_closing_tag) @tag
 (style_element) @tag
 
-(quoted_attribute_value) @string
+(attribute
+  name: (attribute_name) @tag.attribute)
+(attribute
+  value: (quoted_attribute_value) @string)
 
 (element_text) @string.special
 (style_element_text) @string.special
