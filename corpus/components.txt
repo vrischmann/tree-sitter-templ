@@ -365,7 +365,10 @@ Long text
 package main
 
 templ Foobar() {
-  <div>foobar_foobar_foobariflolhahah</div>
+  <div>
+    foobar_foobar_foobariflolhahah
+    hello if hello
+    </div>
   <div>if</div>
 }
 
@@ -381,6 +384,7 @@ templ Foobar() {
       (element
         (tag_start
           name: (element_identifier))
+        (element_text)
         (element_text)
         (tag_end
           name: (element_identifier)))
