@@ -88,3 +88,40 @@ templ Foobar() {
                 name: (element_identifier)))))
         (tag_end
           name: (element_identifier))))))
+
+===
+for range as a top level node in a component
+===
+
+templ jsAssets(assets Assets) {
+  for _, asset := range assets.JS {
+    <script src={ "assets/"+asset }></script>
+  }
+}
+
+---
+
+(source_file
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (component_for_statement
+        (range_clause
+          left: (expression_list
+            (identifier)
+            (identifier))
+          right: (selector_expression
+            operand: (identifier)
+            field: (field_identifier)))
+        body: (component_block
+          (script_element
+            (attribute
+              name: (attribute_name)
+              value: (expression
+                (binary_expression
+                  left: (interpreted_string_literal)
+                  right: (identifier))))))))))
