@@ -216,22 +216,37 @@ static bool scan_style_element_text(Scanner *scanner, TSLexer *lexer) {
   // increase the token size
   lexer->mark_end(lexer);
 
-  if (lexer->eof(lexer)) {
-    return false;
-  }
-
   bool has_marked = false;
 
-  // A < is the only terminator for a style element
+  const char *end_keyword = "</style>";
+  size_t length = strlen(end_keyword);
+
+  // Look for the closing tag
+
+outer:
   while (!lexer->eof(lexer)) {
-    if (lexer->lookahead == '<') {
-      break;
+    for (size_t i = 0; i < length; i++) {
+      if (lexer->lookahead != end_keyword[i]) {
+        // This branch means the keyword was not found at this point, therefore
+        // we have to extend the current token.
+
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+        has_marked = true;
+
+        goto outer;
+      }
+
+      // Otherwise continue and try to find the next character in the keyword
+
+      lexer->advance(lexer, false);
     }
 
-    lexer->advance(lexer, false);
-    lexer->mark_end(lexer);
-    has_marked = true;
+    // The keyword was found
+    break;
   }
+
+done:
 
   return has_marked;
 }
