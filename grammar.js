@@ -68,6 +68,7 @@ module.exports = grammar(GO, {
             $.component_for_statement,
             $.component_import,
             $.component_render,
+            $.component_children_expression,
             $.expression,
             $.element_text,
         ),
@@ -121,9 +122,21 @@ module.exports = grammar(GO, {
         //     {! myComponent }
         //     {! Component(foo, bar) }
         //
+        // See https://templ.guide/syntax-and-usage/template-composition
         component_render: $ => seq(
             '{!',
             field('expression', $._expression),
+            '}'
+        ),
+
+        // This matches a children expression:
+        //
+        //     { children... }
+        //
+        // See https://templ.guide/syntax-and-usage/template-composition
+        component_children_expression: $ => seq(
+            '{',
+            'children...',
             '}'
         ),
 
