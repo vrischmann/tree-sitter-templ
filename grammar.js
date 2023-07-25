@@ -291,7 +291,7 @@ module.exports = grammar(GO, {
             field('name', 'script'),
             repeat($.attribute),
             '>',
-            $.script_element_text,
+            optional($.script_element_text),
             '</',
             'script',
             '>'
