@@ -7368,8 +7368,16 @@
           "value": ">"
         },
         {
-          "type": "SYMBOL",
-          "name": "script_element_text"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "script_element_text"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
