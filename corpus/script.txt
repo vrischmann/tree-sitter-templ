@@ -1,0 +1,26 @@
+====
+Script template
+====
+
+package main
+
+script graph(data []TimeValue) {
+    const chart = LightweightCharts.createChart(document.body, { width: 400, height: 300 });
+    const lineSeries = chart.addLineSeries();
+    lineSeries.setData(data);
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (script_declaration
+    (script_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (slice_type
+          (type_identifier))))
+    (script_block
+      (script_element_text))))

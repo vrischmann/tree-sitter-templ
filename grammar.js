@@ -13,6 +13,7 @@ module.exports = grammar(GO, {
         $.css_property_value,
         $.element_text,
         $.style_element_text,
+        $.script_element_text,
     ],
 
     conflicts: ($, original) => [
@@ -26,6 +27,7 @@ module.exports = grammar(GO, {
             original,
             $.component_declaration,
             $.css_declaration,
+            $.script_declaration,
         ),
 
         // This matches a templ expression:
@@ -238,11 +240,26 @@ module.exports = grammar(GO, {
             '}',
         )),
 
+        // JavaScript stuff
+
+        script_declaration: $ => seq(
+            'script',
+            field('name', $._script_identifier),
+            $.parameter_list,
+            $.script_block,
+        ),
+        script_block: $ => seq(
+            '{',
+            $.script_element_text,
+            '}',
+        ),
+
         //
 
         identifier: $ => /[a-zA-Z0-9_]+/,
         _component_identifier: $ => alias($.identifier, $.component_identifier),
         _css_identifier: $ => alias($.identifier, $.css_identifier),
+        _script_identifier: $ => alias($.identifier, $.script_identifier),
 
         element_identifier: $ => /[a-zA-Z0-9\-]+/,
 

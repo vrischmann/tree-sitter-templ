@@ -2217,6 +2217,51 @@
     }
   },
   {
+    "type": "script_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "script_element_text",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "script_declaration",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "script_identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "parameter_list",
+          "named": true
+        },
+        {
+          "type": "script_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "select_statement",
     "named": true,
     "fields": {},
@@ -2435,6 +2480,10 @@
         },
         {
           "type": "package_clause",
+          "named": true
+        },
+        {
+          "type": "script_declaration",
           "named": true
         }
       ]
@@ -3250,6 +3299,18 @@
   },
   {
     "type": "rune_literal",
+    "named": true
+  },
+  {
+    "type": "script",
+    "named": false
+  },
+  {
+    "type": "script_element_text",
+    "named": true
+  },
+  {
+    "type": "script_identifier",
     "named": true
   },
   {

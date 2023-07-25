@@ -93,6 +93,10 @@
         {
           "type": "SYMBOL",
           "name": "css_declaration"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "script_declaration"
         }
       ]
     },
@@ -7143,6 +7147,48 @@
         ]
       }
     },
+    "script_declaration": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "script"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_script_identifier"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "parameter_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "script_block"
+        }
+      ]
+    },
+    "script_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "script_element_text"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
     "_component_identifier": {
       "type": "ALIAS",
       "content": {
@@ -7160,6 +7206,15 @@
       },
       "named": true,
       "value": "css_identifier"
+    },
+    "_script_identifier": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      },
+      "named": true,
+      "value": "script_identifier"
     },
     "element_identifier": {
       "type": "PATTERN",
@@ -7295,6 +7350,10 @@
     {
       "type": "SYMBOL",
       "name": "style_element_text"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "script_element_text"
     }
   ],
   "inline": [
