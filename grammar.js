@@ -68,6 +68,7 @@ module.exports = grammar(GO, {
             $.component_for_statement,
             $.component_import,
             $.component_render,
+            $.component_children_expression,
             $.expression,
             $.element_text,
         ),
@@ -106,22 +107,36 @@ module.exports = grammar(GO, {
         // This matches an import statement:
         //
         //     @Foobar(a, b, c)
+        //     @Foobar(a, b, c) { ... }
         //
         // Note that we use $.argument_list which is from the Go grammar.
-        component_import: $ => seq(
+        component_import: $ => prec.right(seq(
             '@',
             field('name', $._component_identifier),
             field('arguments', $.argument_list),
-        ),
+            optional(field('body', $.component_block)),
+        )),
 
         // This matches a render statement:
         //
         //     {! myComponent }
         //     {! Component(foo, bar) }
         //
+        // See https://templ.guide/syntax-and-usage/template-composition
         component_render: $ => seq(
             '{!',
             field('expression', $._expression),
+            '}'
+        ),
+
+        // This matches a children expression:
+        //
+        //     { children... }
+        //
+        // See https://templ.guide/syntax-and-usage/template-composition
+        component_children_expression: $ => seq(
+            '{',
+            'children...',
             '}'
         ),
 

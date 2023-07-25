@@ -647,6 +647,10 @@
       "required": false,
       "types": [
         {
+          "type": "component_children_expression",
+          "named": true
+        },
+        {
           "type": "component_for_statement",
           "named": true
         },
@@ -680,6 +684,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "component_children_expression",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "component_declaration",
@@ -805,6 +814,16 @@
         "types": [
           {
             "type": "argument_list",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "component_block",
             "named": true
           }
         ]
@@ -1106,6 +1125,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "component_children_expression",
+          "named": true
+        },
         {
           "type": "component_for_statement",
           "named": true
@@ -3071,6 +3094,10 @@
   },
   {
     "type": "chan",
+    "named": false
+  },
+  {
+    "type": "children...",
     "named": false
   },
   {

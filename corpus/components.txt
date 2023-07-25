@@ -487,3 +487,55 @@ templ Foobar(name string, email string) {
               (identifier))))
         (tag_end
           name: (element_identifier))))))
+
+====
+Wrap children
+====
+
+package main
+
+templ showAll() {
+    @wrapChildren() {
+        <div>Inserted from the top</div>
+    }
+}
+
+templ wrapChildren() {
+    <div id="wrapper">
+        { children... }
+    </div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        (component_identifier)
+        (argument_list)
+        (component_block
+          (element
+            (tag_start
+              (element_identifier))
+            (element_text)
+            (tag_end
+              (element_identifier)))))))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value))))
+        (component_children_expression)
+        (tag_end
+          (element_identifier))))))
