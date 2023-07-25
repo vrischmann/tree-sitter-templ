@@ -23,4 +23,35 @@ script graph(data []TimeValue) {
         (slice_type
           (type_identifier))))
     (script_block
-      (script_element_text))))
+      (script_block_text))))
+
+===
+Script element
+===
+
+package main
+
+templ Foobar() {
+  <script type="text/javascript">
+    $("div").marquee();
+    function test() {
+          window.open("https://example.com")
+    }
+  </script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (script_element
+        (attribute
+          name: (attribute_name)
+          value: (quoted_attribute_value
+            (attribute_value)))
+        (script_element_text)))))

@@ -539,3 +539,37 @@ templ wrapChildren() {
         (component_children_expression)
         (tag_end
           (element_identifier))))))
+
+===
+Doctype element
+===
+
+package main
+
+templ Foobar() {
+  <!doctype html>
+  <!DOCTYPE html>
+  <h1>Foobar</h1>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (doctype
+          name: (element_identifier)))
+      (element
+        (doctype
+          name: (element_identifier)))
+      (element
+        (tag_start
+          name: (element_identifier))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
