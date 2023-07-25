@@ -13,6 +13,7 @@ module.exports = grammar(GO, {
         $.css_property_value,
         $.element_text,
         $.style_element_text,
+        $.script_block_text,
         $.script_element_text,
     ],
 
@@ -66,6 +67,7 @@ module.exports = grammar(GO, {
         _component_node: $ => choice(
             $.element,
             $.style_element,
+            $.script_element,
             $.component_if_statement,
             $.component_for_statement,
             $.component_switch_statement,
@@ -280,8 +282,19 @@ module.exports = grammar(GO, {
         ),
         script_block: $ => seq(
             '{',
-            $.script_element_text,
+            $.script_block_text,
             '}',
+        ),
+
+        script_element: $ => seq(
+            '<',
+            field('name', 'script'),
+            repeat($.attribute),
+            '>',
+            $.script_element_text,
+            '</',
+            'script',
+            '>'
         ),
 
         //

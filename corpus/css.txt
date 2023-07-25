@@ -66,7 +66,6 @@ css myClass(color string) {
     (css_property
       name: (css_property_name)
       value: (css_property_value))))
-
 ====
 CSS dynamic class
 ====
@@ -129,3 +128,79 @@ templ Foo() {
                   (argument_list)))))
           (tag_end
             (element_identifier))))))
+
+===
+Style element
+===
+
+package main
+
+templ Foobar() {
+  <style type="text/css">
+    #foo {
+      color: red;
+    }
+  </style>
+  <h1 id="foo">Foobar</h1>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (attribute
+          name: (attribute_name)
+          value: (quoted_attribute_value
+            (attribute_value)))
+        (style_element_text))
+      (element
+        (tag_start
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
+
+===
+Raw style elements
+===
+
+package main
+
+templ Foobar() {
+  <style><!-- this is a comment {} <foobar> --></style>
+  <style>
+    #foo {
+      color: red;
+    }
+
+.customClass { display: grid }
+
+/* foo */
+font-size: 20px;
+
+  </style>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (style_element_text))
+      (style_element
+        (style_element_text)))))
