@@ -85,6 +85,7 @@ enum TokenType {
   CSS_PROPERTY_VALUE,
   ELEMENT_TEXT,
   STYLE_ELEMENT_TEXT,
+  SCRIPT_BLOCK_TEXT,
   SCRIPT_ELEMENT_TEXT,
 };
 
@@ -258,6 +259,48 @@ static bool scan_script_element_text(Scanner *scanner, TSLexer *lexer) {
   // increase the token size
   lexer->mark_end(lexer);
 
+  bool has_marked = false;
+
+  const char *end_keyword = "</script>";
+  size_t length = strlen(end_keyword);
+
+  // Look for the closing tag
+
+outer:
+  while (!lexer->eof(lexer)) {
+    for (size_t i = 0; i < length; i++) {
+      if (lexer->lookahead != end_keyword[i]) {
+        // This branch means the keyword was not found at this point, therefore
+        // we have to extend the current token.
+
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+        has_marked = true;
+
+        goto outer;
+      }
+
+      // Otherwise continue and try to find the next character in the keyword
+
+      lexer->advance(lexer, false);
+    }
+
+    // The keyword was found
+    break;
+  }
+
+done:
+
+  return has_marked;
+}
+
+static bool scan_script_block_text(Scanner *scanner, TSLexer *lexer) {
+  lexer->result_symbol = SCRIPT_BLOCK_TEXT;
+
+  // Start by marking the end so the following calls to advance don't
+  // increase the token size
+  lexer->mark_end(lexer);
+
   if (lexer->eof(lexer)) {
     return false;
   }
@@ -310,6 +353,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
   if (valid_symbols[STYLE_ELEMENT_TEXT] &&
       scan_style_element_text(scanner, lexer)) {
+    return true;
+  }
+
+  if (valid_symbols[SCRIPT_BLOCK_TEXT] &&
+      scan_script_block_text(scanner, lexer)) {
     return true;
   }
 
