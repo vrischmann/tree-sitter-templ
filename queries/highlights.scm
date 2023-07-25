@@ -68,6 +68,7 @@
   "return"
   "struct"
   "range"
+  "script"
 ] @keyword
 
 [
