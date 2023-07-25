@@ -85,6 +85,7 @@ enum TokenType {
   CSS_PROPERTY_VALUE,
   ELEMENT_TEXT,
   STYLE_ELEMENT_TEXT,
+  SCRIPT_ELEMENT_TEXT,
 };
 
 typedef struct {
@@ -235,6 +236,49 @@ static bool scan_style_element_text(Scanner *scanner, TSLexer *lexer) {
   return has_marked;
 }
 
+static bool scan_script_element_text(Scanner *scanner, TSLexer *lexer) {
+  lexer->result_symbol = SCRIPT_ELEMENT_TEXT;
+
+  // Start by marking the end so the following calls to advance don't
+  // increase the token size
+  lexer->mark_end(lexer);
+
+  if (lexer->eof(lexer)) {
+    return false;
+  }
+
+  bool has_marked = false;
+
+  int brace_count = 1;
+  int count = 0;
+
+  while (!lexer->eof(lexer)) {
+    switch (lexer->lookahead) {
+    case '{':
+      brace_count++;
+      break;
+    case '}':
+      brace_count--;
+      if (brace_count == 0) {
+        goto done;
+      }
+      break;
+    }
+
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+
+    has_marked = true;
+    count++;
+  }
+
+done:
+
+  /* printf("done: %d, count: %d\n", has_marked, count); */
+
+  return has_marked;
+}
+
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   while (!lexer->eof(lexer) && iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
@@ -251,6 +295,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
   if (valid_symbols[STYLE_ELEMENT_TEXT] &&
       scan_style_element_text(scanner, lexer)) {
+    return true;
+  }
+
+  if (valid_symbols[SCRIPT_ELEMENT_TEXT] &&
+      scan_script_element_text(scanner, lexer)) {
     return true;
   }
 
