@@ -72,3 +72,38 @@ templ Foobar() {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+===
+Raw elements
+===
+
+package main
+
+templ Foobar() {
+  <style><!-- this is a comment {} <foobar> --></style>
+  <style>
+    #foo {
+      color: red;
+    }
+
+.customClass { display: grid }
+
+/* foo */
+font-size: 20px;
+
+  </style>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (style_element_text))
+      (style_element
+        (style_element_text)))))
