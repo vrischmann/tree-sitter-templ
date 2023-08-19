@@ -1076,6 +1076,71 @@
     }
   },
   {
+    "type": "conditional_attribute_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "attribute",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "conditional_attribute_if_statement",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "conditional_attribute_block",
+            "named": true
+          },
+          {
+            "type": "conditional_attribute_if_statement",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "conditional_attribute_block",
+            "named": true
+          }
+        ]
+      },
+      "initializer": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_simple_statement",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "const_declaration",
     "named": true,
     "fields": {},
@@ -2535,6 +2600,10 @@
         {
           "type": "attribute",
           "named": true
+        },
+        {
+          "type": "conditional_attribute_if_statement",
+          "named": true
         }
       ]
     }
@@ -2778,6 +2847,10 @@
       "types": [
         {
           "type": "attribute",
+          "named": true
+        },
+        {
+          "type": "conditional_attribute_if_statement",
           "named": true
         }
       ]

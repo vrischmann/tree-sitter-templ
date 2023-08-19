@@ -28,3 +28,124 @@ templ Foo() {
             name: (attribute_name)
             value: (quoted_attribute_value
               (attribute_value))))))))
+
+====
+Conditional attribute
+====
+
+package main
+
+templ Foo() {
+  <hr style="padding: 10px"
+    if true {
+      class="itIsTrue"
+    }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value)))
+          (conditional_attribute_if_statement
+            condition: (true)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))))))))
+
+===
+More complex conditional attribute
+===
+
+package foo
+
+type person struct {
+	important bool
+	name string
+}
+
+templ render(p person) {
+	<div style="width: 100;"
+		if p.important {
+			class={ important }
+		} else if p.name == "vincent" {
+			class={ unimportant }
+		} else {
+			class="vincent" }
+	>
+	Foobar
+	</div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier))
+          (field_declaration
+            (field_identifier)
+            (type_identifier))))))
+  (component_declaration
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value)))
+          (conditional_attribute_if_statement
+            (selector_expression
+              (identifier)
+              (field_identifier))
+            (conditional_attribute_block
+              (attribute
+                (attribute_name)
+                (expression
+                  (identifier))))
+            (conditional_attribute_if_statement
+              (binary_expression
+                (selector_expression
+                  (identifier)
+                  (field_identifier))
+                (interpreted_string_literal))
+              (conditional_attribute_block
+                (attribute
+                  (attribute_name)
+                  (expression
+                    (identifier))))
+              (conditional_attribute_block
+                (attribute
+                  (attribute_name)
+                  (quoted_attribute_value
+                    (attribute_value)))))))
+        (element_text)
+        (tag_end
+          (element_identifier))))))
