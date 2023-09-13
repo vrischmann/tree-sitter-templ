@@ -25,11 +25,11 @@ function M.setup(arg)
 		install_info = {
 			url = arg["local"]
 					and join_paths(vim.fn.stdpath("data"), "site", "pack", "packer", "start", "tree-sitter-templ")
-				or "https://github.com/probably-neb/tree-sitter-templ", -- local path or git repo
+				or "https://github.com/vrischmann/tree-sitter-templ", -- local path or git repo
 			files = { "src/parser.c", "src/scanner.cc" },
 			branch = "main",
 		},
-		maintainers = { "probably-neb" },
+		maintainers = { "vrischmann" },
 	}
 	local ok, ft = pcall(require, "filetype")
 	if ok then
