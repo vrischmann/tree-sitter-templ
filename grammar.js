@@ -77,6 +77,14 @@ module.exports = grammar(GO, {
             $.component_children_expression,
             $.expression,
             $.element_text,
+            $.element_comment,
+        ),
+
+        // This matches HTML comment.
+        element_comment: $ => seq(
+          '<!--',
+          /[^-]*(?:-+[^->]+)*/,
+          '-->'
         ),
 
         // This matches an if statement in a component block.

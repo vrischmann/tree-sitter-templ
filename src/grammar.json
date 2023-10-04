@@ -6587,6 +6587,27 @@
         {
           "type": "SYMBOL",
           "name": "element_text"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "element_comment"
+        }
+      ]
+    },
+    "element_comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<!--"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^-]*(?:-+[^->]+)*"
+        },
+        {
+          "type": "STRING",
+          "value": "-->"
         }
       ]
     },

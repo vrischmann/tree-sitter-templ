@@ -675,6 +675,10 @@
           "named": true
         },
         {
+          "type": "element_comment",
+          "named": true
+        },
+        {
           "type": "element_text",
           "named": true
         },
@@ -901,6 +905,10 @@
           "named": true
         },
         {
+          "type": "element_comment",
+          "named": true
+        },
+        {
           "type": "element_text",
           "named": true
         },
@@ -964,6 +972,10 @@
         },
         {
           "type": "element",
+          "named": true
+        },
+        {
+          "type": "element_comment",
           "named": true
         },
         {
@@ -1392,6 +1404,10 @@
           "named": true
         },
         {
+          "type": "element_comment",
+          "named": true
+        },
+        {
           "type": "element_text",
           "named": true
         },
@@ -1421,6 +1437,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "element_comment",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "empty_statement",
@@ -3294,6 +3315,10 @@
     "named": false
   },
   {
+    "type": "-->",
+    "named": false
+  },
+  {
     "type": "-=",
     "named": false
   },
@@ -3335,6 +3360,10 @@
   },
   {
     "type": "<!",
+    "named": false
+  },
+  {
+    "type": "<!--",
     "named": false
   },
   {
