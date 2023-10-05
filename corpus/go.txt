@@ -111,3 +111,77 @@ css foo() {}
   (css_declaration
     (css_identifier)
     (parameter_list)))
+
+====
+Recognize go variable with slice
+====
+
+package list
+
+var links = []string{
+	"/",
+	"/about",
+}
+
+type Link struct {
+	Name string
+	Url  string
+}
+
+var advancedLinks = []Link{
+	{Name: "Home", Url: "/"},
+	{Name: "About", Url: "/about"},
+}
+
+---
+
+(source_file
+      (package_clause
+        (package_identifier))
+      (var_declaration
+        (var_spec
+          (identifier)
+          (expression_list
+            (composite_literal
+              (slice_type
+                (type_identifier))
+              (literal_value
+                (literal_element
+                  (interpreted_string_literal))
+                (literal_element
+                  (interpreted_string_literal)))))))
+      (type_declaration
+        (type_spec
+          (type_identifier)
+          (struct_type
+            (field_declaration_list
+              (field_declaration
+                (field_identifier)
+                (type_identifier))
+              (field_declaration
+                (field_identifier)
+                (type_identifier))))))
+      (var_declaration
+        (var_spec
+          (identifier)
+          (expression_list
+            (composite_literal
+              (slice_type
+                (type_identifier))
+              (literal_value
+                (literal_element
+                  (literal_value
+                    (keyed_element
+                      (field_identifier)
+                      (interpreted_string_literal))
+                    (keyed_element
+                      (field_identifier)
+                      (interpreted_string_literal))))
+                (literal_element
+                  (literal_value
+                    (keyed_element
+                      (field_identifier)
+                      (interpreted_string_literal))
+                    (keyed_element
+                      (field_identifier)
+                      (interpreted_string_literal))))))))))

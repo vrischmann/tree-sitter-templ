@@ -352,6 +352,19 @@ module.exports = grammar(GO, {
             seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
         ),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
+
+        // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
+
+        literal_value: $ => seq(
+          '{',
+          optional(
+            seq(
+              commaSep(choice($.literal_element, $.keyed_element)),
+              optional(','))),
+          '}',
+        ),
+
+        literal_element: $ => choice($._expression, $.literal_value),
     },
 });
 
