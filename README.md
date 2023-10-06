@@ -4,7 +4,13 @@ A [tree-sitter](https://github.com/tree-sitter/tree-sitter) grammar for [Templ](
 
 # Using this with Neovim
 
-## Installation
+To use this with Neovim you need to do two things:
+* install the treesitter parser
+* install this repo as a neovim plugin
+
+If you're curious why we need a plugin, read the last paragraph.
+
+## Installing the treesitter parser
 
 To use this parser for syntax highlighting in Neovim, you need [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
 It is highly recommended you go through nvim-treesitter's quickstart, but in any case a minimal configuration to enable syntax highlighting looks like this:
@@ -58,7 +64,16 @@ Parser/Features         H L F I J
 
 Finally you can open a `templ` file and run `:InspectTree` to see the parse tree.
 
-## Installing the highlighting queries
+## Installing the plugin
+
+Use your plugin manager of choice, for example with packer:
+```lua
+return require("packer").startup(function(use)
+    use("vrischmann/tree-sitter-templ")
+end)
+```
+
+## Why is a plugin required
 
 Consuming a tree-sitter parse tree works by looking at _queries_ which are defined in different `*.scm` files:
 * `highlights.scm` for syntax highlighting
@@ -66,6 +81,4 @@ Consuming a tree-sitter parse tree works by looking at _queries_ which are defin
 * others which we won't go into
 
 `nvim-treesitter` maintains queries for the parser it includes but since our parser is not (yet) included we have to make them available to neovim ourselves.
-
-The easiest way is to copy the files under `queries` in the directory `$HOME/.config/nvim/queries/templ`.
-Pay attention that the queries must be in the directory corresponding to the parser name (`templ`).
+This is where the plugin comes in: it provides these queries files for neovim.
