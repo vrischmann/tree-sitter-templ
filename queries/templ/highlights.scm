@@ -94,3 +94,9 @@
   (raw_string_literal)
   (rune_literal)
 ] @string
+
+; Comments
+
+(comment) @comment @spell
+
+(element_comment) @comment @spell

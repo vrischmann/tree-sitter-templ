@@ -675,6 +675,10 @@
           "named": true
         },
         {
+          "type": "element_comment",
+          "named": true
+        },
+        {
           "type": "element_text",
           "named": true
         },
@@ -901,6 +905,10 @@
           "named": true
         },
         {
+          "type": "element_comment",
+          "named": true
+        },
+        {
           "type": "element_text",
           "named": true
         },
@@ -964,6 +972,10 @@
         },
         {
           "type": "element",
+          "named": true
+        },
+        {
+          "type": "element_comment",
           "named": true
         },
         {
@@ -1392,6 +1404,10 @@
           "named": true
         },
         {
+          "type": "element_comment",
+          "named": true
+        },
+        {
           "type": "element_text",
           "named": true
         },
@@ -1421,6 +1437,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "element_comment",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "empty_statement",
@@ -2074,6 +2095,25 @@
     }
   },
   {
+    "type": "literal_element",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "literal_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "literal_value",
     "named": true,
     "fields": {},
@@ -2082,11 +2122,11 @@
       "required": false,
       "types": [
         {
-          "type": "element",
+          "type": "keyed_element",
           "named": true
         },
         {
-          "type": "keyed_element",
+          "type": "literal_element",
           "named": true
         }
       ]
@@ -3294,6 +3334,10 @@
     "named": false
   },
   {
+    "type": "-->",
+    "named": false
+  },
+  {
     "type": "-=",
     "named": false
   },
@@ -3335,6 +3379,10 @@
   },
   {
     "type": "<!",
+    "named": false
+  },
+  {
+    "type": "<!--",
     "named": false
   },
   {

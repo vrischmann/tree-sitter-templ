@@ -77,6 +77,14 @@ module.exports = grammar(GO, {
             $.component_children_expression,
             $.expression,
             $.element_text,
+            $.element_comment,
+        ),
+
+        // This matches HTML comment.
+        element_comment: $ => seq(
+          '<!--',
+          /[^-]*(?:-+[^->]+)*/,
+          '-->'
         ),
 
         // This matches an if statement in a component block.
@@ -344,6 +352,19 @@ module.exports = grammar(GO, {
             seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
         ),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
+
+        // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
+
+        literal_value: $ => seq(
+          '{',
+          optional(
+            seq(
+              commaSep(choice($.literal_element, $.keyed_element)),
+              optional(','))),
+          '}',
+        ),
+
+        literal_element: $ => choice($._expression, $.literal_value),
     },
 });
 

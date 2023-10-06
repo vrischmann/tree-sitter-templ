@@ -573,3 +573,64 @@ templ Foobar() {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+====
+Component with comments
+====
+
+package foobar
+
+// This is the greatest component of all time
+templ MyComponent(loggedIn bool) {
+  if loggedIn {
+    <!-- <a href="/logout">Logout</a> -->
+    <a href="/logout">Exit</a>
+  } else {
+    <a href="/login">Login</a>
+    <!--
+      <div>The login page LOGO</div>
+    -->
+  }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (comment)
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (component_if_statement
+        condition: (identifier)
+        consequence: (component_block
+          (element_comment)
+          (element
+            (tag_start
+              name: (element_identifier)
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))
+            (element_text)
+            (tag_end
+              name: (element_identifier))))
+        alternative: (component_block
+          (element
+            (tag_start
+              name: (element_identifier)
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))
+            (element_text)
+            (tag_end
+               name: (element_identifier)))
+          (element_comment))))))
+
+
