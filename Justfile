@@ -1,5 +1,6 @@
 install-tools:
 	npm install -g tree-sitter-cli node-gyp
+	npm install
 
 gen:
 	tree-sitter generate
