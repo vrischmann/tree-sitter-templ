@@ -21,7 +21,7 @@ end
 
 function M.setup(arg)
 	local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-	parser_config.just = {
+	parser_config.templ = {
 		install_info = {
 			url = arg["local"]
 					and join_paths(vim.fn.stdpath("data"), "site", "pack", "packer", "start", "tree-sitter-templ")
