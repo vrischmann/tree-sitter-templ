@@ -23,11 +23,9 @@ function M.setup(arg)
 	local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 	parser_config.templ = {
 		install_info = {
-			url = arg["local"]
-					and join_paths(vim.fn.stdpath("data"), "site", "pack", "packer", "start", "tree-sitter-templ")
-				or "https://github.com/vrischmann/tree-sitter-templ", -- local path or git repo
-			files = { "src/parser.c", "src/scanner.cc" },
-			branch = "main",
+			url = "https://github.com/vrischmann/tree-sitter-templ.git",
+			files = { "src/parser.c", "src/scanner.c" },
+			branch = "master",
 		},
 		maintainers = { "vrischmann" },
 	}
