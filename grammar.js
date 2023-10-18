@@ -82,10 +82,20 @@ module.exports = grammar(GO, {
 
         // This matches HTML comment.
         element_comment: $ => seq(
-          '<!--',
-          /[^-]*(?:-+[^->]+)*/,
-          '-->'
+            '<!--',
+            /[^-]*(?:-+[^->]+)*/,
+            '-->'
         ),
+        // This is from the go grammar.js that matches go style comments
+        // Not sure this is how it should be done
+        go_comment: _ => token(choice(
+            seq('//', /.*/),
+            seq(
+                '/*',
+                /[^*]*\*+([^/*][^*]*\*+)*/,
+                '/',
+            ),
+        )),
 
         // This matches an if statement in a component block.
         //
@@ -356,12 +366,12 @@ module.exports = grammar(GO, {
         // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
 
         literal_value: $ => seq(
-          '{',
-          optional(
-            seq(
-              commaSep(choice($.literal_element, $.keyed_element)),
-              optional(','))),
-          '}',
+            '{',
+            optional(
+                seq(
+                    commaSep(choice($.literal_element, $.keyed_element)),
+                    optional(','))),
+            '}',
         ),
 
         literal_element: $ => choice($._expression, $.literal_value),
@@ -371,9 +381,9 @@ module.exports = grammar(GO, {
 // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js#L909-L915
 
 function commaSep1(rule) {
-  return seq(rule, repeat(seq(',', rule)))
+    return seq(rule, repeat(seq(',', rule)))
 }
 
 function commaSep(rule) {
-  return optional(commaSep1(rule))
+    return optional(commaSep1(rule))
 }
