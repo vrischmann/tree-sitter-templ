@@ -90,6 +90,7 @@ enum TokenType {
 };
 
 typedef struct {
+  bool dummy; // C2016: C requires that a struct or union have at least one member
 } Scanner;
 
 static unsigned serialize(Scanner *scanner, char *buffer) { return 0; }
