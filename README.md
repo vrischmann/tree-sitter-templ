@@ -82,3 +82,14 @@ Consuming a tree-sitter parse tree works by looking at _queries_ which are defin
 
 `nvim-treesitter` maintains queries for the parser it includes but since our parser is not (yet) included we have to make them available to neovim ourselves.
 This is where the plugin comes in: it provides these queries files for neovim.
+
+# Contributing
+
+The official tree-sitter [documentation](https://tree-sitter.github.io/tree-sitter/creating-parsers#getting-started) for creating a parser contains everything you need to start contributing to this parser.
+
+To make it slightly easier, we use a [Justfile](https://github.com/casey/just) to simplify some things:
+* `just test [filter...]` to run tests
+* `just gen` to only generate the parser
+* `just build` to generate then build the parser
+
+If you want to modify the parser, make sure to add a test or modify an existnig one in the `corpus` directory.
