@@ -78,6 +78,7 @@ module.exports = grammar(GO, {
             $.expression,
             $.element_text,
             $.element_comment,
+            prec.right(1, $.comment),
         ),
 
         // This matches HTML comment.
@@ -86,16 +87,6 @@ module.exports = grammar(GO, {
             /[^-]*(?:-+[^->]+)*/,
             '-->'
         ),
-        // This is from the go grammar.js that matches go style comments
-        // Not sure this is how it should be done
-        go_comment: _ => token(choice(
-            seq('//', /.*/),
-            seq(
-                '/*',
-                /[^*]*\*+([^/*][^*]*\*+)*/,
-                '/',
-            ),
-        )),
 
         // This matches an if statement in a component block.
         //
