@@ -6604,6 +6604,14 @@
         {
           "type": "SYMBOL",
           "name": "element_comment"
+        },
+        {
+          "type": "PREC_RIGHT",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "comment"
+          }
         }
       ]
     },

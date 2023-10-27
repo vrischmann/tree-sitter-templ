@@ -38,6 +38,33 @@ templ MyComponent(slice []Foobar) {
           (element_identifier))))))
 
 ====
+Go comments inside template
+====
+
+package ui
+
+templ MyComponent() {
+    // single line comment
+    <br/>
+    /* multi line comment */
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (comment)
+      (element
+        (self_closing_tag
+          (element_identifier)))
+      (comment))))
+
+====
 Only go code in template
 ====
 
@@ -185,3 +212,4 @@ var advancedLinks = []Link{
                     (keyed_element
                       (field_identifier)
                       (interpreted_string_literal))))))))))
+

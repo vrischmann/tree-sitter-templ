@@ -90,7 +90,8 @@ enum TokenType {
 };
 
 typedef struct {
-  bool dummy; // C2016: C requires that a struct or union have at least one member
+  bool dummy; // C2016: C requires that a struct or union have at least one
+              // member
 } Scanner;
 
 static unsigned serialize(Scanner *scanner, char *buffer) { return 0; }
@@ -123,6 +124,7 @@ static bool is_element_text_terminator(int ch) {
   case '{':
   case '}':
   case '\n':
+  case '/':
     return true;
   }
 
@@ -144,6 +146,14 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
 
   if (lexer->eof(lexer)) {
     return false;
+  }
+
+  // Detect if the node starts with a comment
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "//")) {
+    goto done;
+  }
+  if (lookahead_buffer_find_keyword(&buffer, lexer, "/*")) {
+    goto done;
   }
 
   // 1. Detect if the node starts with a keyword that makes it a statement
