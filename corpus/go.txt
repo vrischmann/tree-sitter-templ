@@ -46,7 +46,7 @@ package ui
 templ MyComponent() {
     // single line comment
     <br/>
-/* multi line comment */
+    /* multi line comment */
 }
 
 ---
@@ -56,13 +56,13 @@ templ MyComponent() {
     (package_identifier))
   (component_declaration
     (component_identifier)
-      (parameter_list))
-  (component_block
-    (go_comment)
-    (element
-     (self_closing_tag
-       (element_identifier))))
-    (go_comment))
+    (parameter_list)
+    (component_block
+      (comment)
+      (element
+        (self_closing_tag
+          (element_identifier)))
+      (comment))))
 
 ====
 Only go code in template
