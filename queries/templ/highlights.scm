@@ -46,8 +46,11 @@
 (element_text) @string.special
 (style_element_text) @string.special
 
+(css_identifier) @keyword
 (css_property
   name: (css_property_name) @attribute)
+(css_property
+  name: (css_property_value) @string)
 
 (expression) @function.method
 (dynamic_class_attribute_value) @function.method

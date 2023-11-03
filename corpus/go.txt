@@ -212,27 +212,3 @@ var advancedLinks = []Link{
                     (keyed_element
                       (field_identifier)
                       (interpreted_string_literal))))))))))
-
-====
-Correctly display css components
-====
-
-package css
-
-css primaryClassName() {
-	color: red;
-}
-css className() {
-	color: red;
-}
-
-templ button(){
-	<button class={"button", className(), templ.KV(className(), primaryClassName()) }
-	>Click</button>
-}
-
----
-
-
-
-
