@@ -194,6 +194,69 @@ templ MyComponent(loggedIn bool) {
               name: (element_identifier))))))))
 
 ====
+Component with if / else if / else
+====
+
+package foobar
+
+templ MyComponent() {
+  if true {
+    <a href="/A">A</a>
+  } else if false {
+    <a href="/B">B</a>
+  } else {
+    <a href="/C">C</a>
+  }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_if_statement
+        (true)
+        (component_block
+          (element
+            (tag_start
+              (element_identifier)
+              (attribute
+                (attribute_name)
+                (quoted_attribute_value
+                  (attribute_value))))
+            (element_text)
+            (tag_end
+              (element_identifier))))
+        (component_if_statement
+          (false)
+          (component_block
+            (element
+              (tag_start
+                (element_identifier)
+                (attribute
+                  (attribute_name)
+                  (quoted_attribute_value
+                    (attribute_value))))
+              (element_text)
+              (tag_end
+                (element_identifier))))
+          (component_block
+            (element
+              (tag_start
+                (element_identifier)
+                (attribute
+                  (attribute_name)
+                  (quoted_attribute_value
+                    (attribute_value))))
+              (element_text)
+              (tag_end
+                (element_identifier)))))))))
+
+====
 Component with nested ifs
 ====
 

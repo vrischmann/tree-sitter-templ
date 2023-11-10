@@ -104,7 +104,7 @@ module.exports = grammar(GO, {
                 'else',
                 field('alternative', choice(
                     $.component_block,
-                    $.if_statement)
+                    $.component_if_statement)
                 )
             ))
         ),
