@@ -783,7 +783,7 @@
             "named": true
           },
           {
-            "type": "if_statement",
+            "type": "component_if_statement",
             "named": true
           }
         ]

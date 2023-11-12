@@ -6702,7 +6702,7 @@
                       },
                       {
                         "type": "SYMBOL",
-                        "name": "if_statement"
+                        "name": "component_if_statement"
                       }
                     ]
                   }
