@@ -100,7 +100,7 @@ const (
         (identifier)
         (type_identifier)
         (expression_list
-          (identifier)))
+          (iota)))
       (const_spec
         (identifier))
       (const_spec
@@ -199,16 +199,24 @@ var advancedLinks = []Link{
             (literal_element
               (literal_value
                 (keyed_element
-                  (field_identifier)
-                  (interpreted_string_literal))
+                  (literal_element
+                    (identifier))
+                  (literal_element
+                    (interpreted_string_literal)))
                 (keyed_element
-                  (field_identifier)
-                  (interpreted_string_literal))))
+                  (literal_element
+                    (identifier))
+                  (literal_element
+                    (interpreted_string_literal)))))
             (literal_element
               (literal_value
                 (keyed_element
-                  (field_identifier)
-                  (interpreted_string_literal))
+                  (literal_element
+                    (identifier))
+                  (literal_element
+                    (interpreted_string_literal)))
                 (keyed_element
-                  (field_identifier)
-                  (interpreted_string_literal))))))))))
+                  (literal_element
+                    (identifier))
+                  (literal_element
+                    (interpreted_string_literal)))))))))))
