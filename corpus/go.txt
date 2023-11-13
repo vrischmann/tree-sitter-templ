@@ -212,4 +212,3 @@ var advancedLinks = []Link{
                     (keyed_element
                       (field_identifier)
                       (interpreted_string_literal))))))))))
-
