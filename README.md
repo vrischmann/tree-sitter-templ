@@ -69,7 +69,11 @@ Finally you can open a `templ` file and run `:InspectTree` to see the parse tree
 Use your plugin manager of choice, for example with packer:
 ```lua
 return require("packer").startup(function(use)
-    use("vrischmann/tree-sitter-templ")
+    use{"vrischmann/tree-sitter-templ",
+        config = function()
+            require("tree-sitter-templ").setup({})
+        end
+    }
 end)
 ```
 
