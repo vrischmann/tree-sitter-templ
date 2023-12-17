@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+
+      - name: Install Dependencies
+        run: |
+          npm install -g tree-sitter-cli node-gyp
+          npm install
+
+      - name: Test
+        run: |
+          tree-sitter generate
+          tree-sitter test
+
+      - name: Build bindings
+        run: |
+          node-gyp configure
+          node-gyp build
+
+  bindings-rust:
+    name: Rust Bindings
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Test
+        run: |
+          cargo test
