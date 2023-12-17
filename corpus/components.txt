@@ -697,3 +697,47 @@ templ MyComponent(loggedIn bool) {
           (element_comment))))))
 
 
+====
+Component from methods
+====
+
+package foobar
+
+type Data struct {
+	message string
+}
+
+templ (d Data) Method() {
+	<div>{ d.message }</div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      name: (type_identifier)
+      type: (struct_type
+        (field_declaration_list
+          (field_declaration
+            name: (field_identifier)
+            type: (type_identifier))))))
+  (component_declaration
+    receiver: (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (expression
+          (selector_expression
+            operand: (identifier)
+            field: (field_identifier)))
+        (tag_end
+          name: (element_identifier))))))
