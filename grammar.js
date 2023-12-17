@@ -51,9 +51,16 @@ module.exports = grammar(GO, {
         //
         //     templ Name(a int, b string, ...) {}
         //
+        // Or returned from a method:
+        //
+        //     templ (a Foobar) Name(a int, b string, ...) {}
+        //
         // Note that we use $.parameter_list which is from the Go grammar.
         component_declaration: $ => seq(
             'templ',
+            optional(
+                field('receiver', $.parameter_list)
+            ),
             field('name', $._component_identifier),
             $.parameter_list,
             $.component_block,
