@@ -258,8 +258,6 @@ outer:
     break;
   }
 
-done:
-
   return has_marked;
 }
 
@@ -288,8 +286,11 @@ static bool scan_element_comment(Scanner *scanner, TSLexer *lexer) {
         lexer->mark_end(lexer);
         return true;
       }
+      dashes = 0;
+      break;
     default:
       dashes = 0;
+      break;
     }
     lexer->advance(lexer, false);
   }
@@ -332,8 +333,6 @@ outer:
     // The keyword was found
     break;
   }
-
-done:
 
   return has_marked;
 }
