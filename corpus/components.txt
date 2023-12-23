@@ -741,3 +741,53 @@ templ (d Data) Method() {
             field: (field_identifier)))
         (tag_end
           name: (element_identifier))))))
+
+====
+HTML comment
+====
+
+package main
+
+templ Component() {
+  <html>
+    <head>
+      <!--
+        <link rel="stylesheet" href="/assets/css/bulma.min.css"/> What is bulma??
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
+      -->
+      <link href="/style.css" rel="stylesheet"/>
+    </head>
+  </html>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier))
+        (element
+          (tag_start
+            (element_identifier))
+          (element_comment)
+          (element
+            (self_closing_tag
+              (element_identifier)
+              (attribute
+                (attribute_name)
+                (quoted_attribute_value
+                  (attribute_value)))
+              (attribute
+                (attribute_name)
+                (quoted_attribute_value
+                  (attribute_value)))))
+          (tag_end
+            (element_identifier)))
+        (tag_end
+          (element_identifier))))))

@@ -1495,11 +1495,6 @@
     }
   },
   {
-    "type": "element_comment",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "empty_statement",
     "named": true,
     "fields": {}
@@ -3530,10 +3525,6 @@
     "named": false
   },
   {
-    "type": "-->",
-    "named": false
-  },
-  {
     "type": "-=",
     "named": false
   },
@@ -3575,10 +3566,6 @@
   },
   {
     "type": "<!",
-    "named": false
-  },
-  {
-    "type": "<!--",
     "named": false
   },
   {
@@ -3712,6 +3699,10 @@
   {
     "type": "defer",
     "named": false
+  },
+  {
+    "type": "element_comment",
+    "named": true
   },
   {
     "type": "element_identifier",
