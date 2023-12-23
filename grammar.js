@@ -12,6 +12,7 @@ module.exports = grammar(GO, {
     externals: $ => [
         $.css_property_value,
         $.element_text,
+        $.element_comment,
         $.style_element_text,
         $.script_block_text,
         $.script_element_text,
@@ -86,13 +87,6 @@ module.exports = grammar(GO, {
             $.element_text,
             $.element_comment,
             prec.right(1, $.comment),
-        ),
-
-        // This matches HTML comment.
-        element_comment: $ => seq(
-            '<!--',
-            /[^-]*(?:-+[^->]+)*/,
-            '-->'
         ),
 
         // This matches an if statement in a component block.

@@ -64,7 +64,6 @@ bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
   }
 
   // Otherwise fetch data from the lexer
-  bool found = true;
   for (size_t i = 0; i < length; i++) {
     if (lexer->eof(lexer) || lexer->lookahead != str[i]) {
       return false;
@@ -84,6 +83,7 @@ bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
 enum TokenType {
   CSS_PROPERTY_VALUE,
   ELEMENT_TEXT,
+  ELEMENT_COMMENT,
   STYLE_ELEMENT_TEXT,
   SCRIPT_BLOCK_TEXT,
   SCRIPT_ELEMENT_TEXT,
@@ -263,6 +263,39 @@ done:
   return has_marked;
 }
 
+static bool scan_element_comment(Scanner *scanner, TSLexer *lexer) {
+  // Start by marking the end so the following calls to advance don't
+  // increase the token size
+  lexer->mark_end(lexer);
+
+  LookaheadBuffer buffer;
+  lookahead_buffer_init(&buffer);
+
+  if (!lookahead_buffer_find_keyword(&buffer, lexer, "<!--")) {
+    return false;
+  }
+
+  size_t dashes = 0;
+  while (lexer->lookahead) {
+    switch (lexer->lookahead) {
+    case '-':
+      ++dashes;
+      break;
+    case '>':
+      if (dashes >= 2) {
+        lexer->result_symbol = ELEMENT_COMMENT;
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+        return true;
+      }
+    default:
+      dashes = 0;
+    }
+    lexer->advance(lexer, false);
+  }
+  return false;
+}
+
 static bool scan_script_element_text(Scanner *scanner, TSLexer *lexer) {
   lexer->result_symbol = SCRIPT_ELEMENT_TEXT;
 
@@ -359,6 +392,10 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   }
 
   if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer)) {
+    return true;
+  }
+
+  if (valid_symbols[ELEMENT_COMMENT] && scan_element_comment(scanner, lexer)) {
     return true;
   }
 
