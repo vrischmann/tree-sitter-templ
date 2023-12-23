@@ -14,10 +14,9 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
-
 ```
 
-Once `nvim-treesitter` is installed it's just a matter of installing the parser with the command `:TSInstall templ`.
+Once `nvim-treesitter` is installed you need to install the parser with the command `:TSInstall templ`.
 
 You can check its status with `:checkhealth`, you should see something like this:
 ```
@@ -37,6 +36,15 @@ Parser/Features         H L F I J
   Legend: H[ighlight], L[ocals], F[olds], I[ndents], In[j]ections
          +) multiple parsers found, only one will be used
          x) errors found in the query, try to run :TSUpdate {lang} ~
+```
+
+Finally you also need to add register the `templ` filetype:
+```lua
+vim.filetype.add({
+    extension = {
+        templ = "templ",
+    },
+})
 ```
 
 Finally you can open a `templ` file and run `:InspectTree` to see the parse tree.
