@@ -791,3 +791,31 @@ templ Component() {
             (element_identifier)))
         (tag_end
           (element_identifier))))))
+
+===
+Component import with package access
+===
+
+templ Example() {
+  <section>
+    @templ.Raw("<div></div>")
+  </section>
+}
+
+---
+
+(source_file
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (component_import
+          package: (package_identifier)
+          name: (component_identifier)
+          arguments: (argument_list
+            (interpreted_string_literal)))
+        (tag_end
+          name: (element_identifier))))))
