@@ -889,6 +889,16 @@
             "named": true
           }
         ]
+      },
+      "package": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "package_identifier",
+            "named": true
+          }
+        ]
       }
     }
   },
