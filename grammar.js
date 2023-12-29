@@ -153,11 +153,20 @@ module.exports = grammar(GO, {
         //
         //     @Foobar(a, b, c)
         //     @Foobar(a, b, c) { ... }
+        //     @pkg.Foobar(a, b, c)
+        //     @pkg.Foobar(a, b, c) { ... }
         //
         // Note that we use $.argument_list which is from the Go grammar.
         component_import: $ => prec.right(seq(
             '@',
-            field('name', $._component_identifier),
+            choice(
+                seq(
+                    field('package', $._package_identifier),
+                    '.',
+                    field('name', $._component_identifier),
+                ),
+                field('name', $._component_identifier),
+            ),
             field('arguments', $.argument_list),
             optional(field('body', $.component_block)),
         )),
@@ -340,6 +349,7 @@ module.exports = grammar(GO, {
         //
 
         identifier: $ => /[a-zA-Z0-9_]+/,
+        package_identifier: $ => alias($.identifier, $.package_identifier),
         _component_identifier: $ => alias($.identifier, $.component_identifier),
         _css_identifier: $ => alias($.identifier, $.css_identifier),
         _script_identifier: $ => alias($.identifier, $.script_identifier),
