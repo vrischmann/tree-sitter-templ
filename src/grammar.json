@@ -7939,8 +7939,16 @@
           "value": "{"
         },
         {
-          "type": "SYMBOL",
-          "name": "script_block_text"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "script_block_text"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
