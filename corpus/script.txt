@@ -55,3 +55,21 @@ templ Foobar() {
           value: (quoted_attribute_value
             (attribute_value)))
         (script_element_text)))))
+
+===
+Empty script
+===
+
+package main
+
+script noScript() {}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (script_declaration
+    (script_identifier)
+    (parameter_list)
+    (script_block)))
