@@ -331,7 +331,7 @@ module.exports = grammar(GO, {
         ),
         script_block: $ => seq(
             '{',
-            $.script_block_text,
+            optional($.script_block_text),
             '}',
         ),
 
