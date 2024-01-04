@@ -204,3 +204,40 @@ font-size: 20px;
         (style_element_text))
       (style_element
         (style_element_text)))))
+
+===
+Empty style element
+===
+
+package main
+
+templ Foobar() {
+  <style type="text/css">
+  </style>
+  <h1 id="foo">Foobar</h1>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (attribute
+          name: (attribute_name)
+          value: (quoted_attribute_value
+            (attribute_value))))
+      (element
+        (tag_start
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
