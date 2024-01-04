@@ -73,3 +73,29 @@ script noScript() {}
     (script_identifier)
     (parameter_list)
     (script_block)))
+
+===
+Empty script in a templ element
+===
+
+package main
+
+templ Foobar() {
+  <script type="text/javascript">
+  </script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (script_element
+        (attribute
+          name: (attribute_name)
+          value: (quoted_attribute_value
+            (attribute_value)))))))

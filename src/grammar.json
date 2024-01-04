@@ -7551,8 +7551,16 @@
           "value": ">"
         },
         {
-          "type": "SYMBOL",
-          "name": "style_element_text"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "style_element_text"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",

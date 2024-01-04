@@ -235,7 +235,7 @@ module.exports = grammar(GO, {
             field('name', 'style'),
             repeat($.attribute),
             '>',
-            $.style_element_text,
+            optional($.style_element_text),
             '</',
             'style',
             '>'
