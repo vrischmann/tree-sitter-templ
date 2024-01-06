@@ -819,3 +819,30 @@ templ Example() {
             (interpreted_string_literal)))
         (tag_end
           name: (element_identifier))))))
+
+===
+Self closing tag
+===
+
+package main
+
+templ Foobar() {
+  <input type="text"/>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))))))
