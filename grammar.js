@@ -230,15 +230,23 @@ module.exports = grammar(GO, {
             '>'
         ),
 
-        style_element: $ => seq(
-            '<',
-            field('name', 'style'),
-            repeat($.attribute),
-            '>',
-            optional($.style_element_text),
-            '</',
-            'style',
-            '>'
+        style_element: $ => choice(
+            seq(
+                '<',
+                field('name', 'style'),
+                repeat($.attribute),
+                '>',
+                optional($.style_element_text),
+                '</',
+                'style',
+                '>'
+            ),
+            seq(
+                '<',
+                field('name', 'style'),
+                repeat($.attribute),
+                '/>',
+            ),
         ),
 
         _attribute: $ => choice(
@@ -335,15 +343,23 @@ module.exports = grammar(GO, {
             '}',
         ),
 
-        script_element: $ => seq(
-            '<',
-            field('name', 'script'),
-            repeat($.attribute),
-            '>',
-            optional($.script_element_text),
-            '</',
-            'script',
-            '>'
+        script_element: $ => choice(
+            seq(
+                '<',
+                field('name', 'script'),
+                repeat($.attribute),
+                '>',
+                optional($.script_element_text),
+                '</',
+                'script',
+                '>'
+            ),
+            seq(
+                '<',
+                field('name', 'script'),
+                repeat($.attribute),
+                '/>',
+            ),
         ),
 
         //

@@ -241,3 +241,28 @@ templ Foobar() {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+===
+Self closing style tag
+===
+
+package main
+
+templ Foobar() {
+  <style src="/app.js" />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (attribute
+          name: (attribute_name)
+          value: (quoted_attribute_value
+            (attribute_value)))))))
