@@ -343,15 +343,23 @@ module.exports = grammar(GO, {
             '}',
         ),
 
-        script_element: $ => seq(
-            '<',
-            field('name', 'script'),
-            repeat($.attribute),
-            '>',
-            optional($.script_element_text),
-            '</',
-            'script',
-            '>'
+        script_element: $ => choice(
+            seq(
+                '<',
+                field('name', 'script'),
+                repeat($.attribute),
+                '>',
+                optional($.script_element_text),
+                '</',
+                'script',
+                '>'
+            ),
+            seq(
+                '<',
+                field('name', 'script'),
+                repeat($.attribute),
+                '/>',
+            ),
         ),
 
         //
