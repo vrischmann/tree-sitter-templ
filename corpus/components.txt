@@ -846,3 +846,29 @@ templ Foobar() {
             name: (attribute_name)
             value: (quoted_attribute_value
               (attribute_value))))))))
+
+===
+Forward slash in the text between elements
+===
+
+package main
+
+templ Foobar() {
+  <p>First/given name</p>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
