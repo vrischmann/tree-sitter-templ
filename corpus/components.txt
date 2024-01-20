@@ -789,8 +789,8 @@ templ Component() {
                   (attribute_value)))))
           (tag_end
             (element_identifier)))
-        (tag_end
-          (element_identifier))))))
+          (tag_end
+            (element_identifier))))))
 
 ===
 Component import with package access
