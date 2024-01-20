@@ -63,9 +63,11 @@ bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
     length--;
   }
 
+  const char *str_remaining = &str[buffer->write_pos];
+
   // Otherwise fetch data from the lexer
   for (size_t i = 0; i < length; i++) {
-    if (lexer->eof(lexer) || lexer->lookahead != str[i]) {
+    if (lexer->eof(lexer) || lexer->lookahead != str_remaining[i]) {
       return false;
     }
 
@@ -124,7 +126,6 @@ static bool is_element_text_terminator(int ch) {
   case '{':
   case '}':
   case '\n':
-  case '/':
     return true;
   }
 
