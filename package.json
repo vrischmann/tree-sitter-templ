@@ -17,7 +17,9 @@
       "scope": "source.templ",
       "file-types": [
         "templ"
-      ]
+      ],
+      "highlights": "queries/templ/highlights.scm",
+      "injections": "queries/templ/injections.scm"
     }
   ]
 }
