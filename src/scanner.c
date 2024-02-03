@@ -16,12 +16,12 @@ typedef struct {
   size_t write_pos;
 } LookaheadBuffer;
 
-void lookahead_buffer_init(LookaheadBuffer *buffer) {
+static void lookahead_buffer_init(LookaheadBuffer *buffer) {
   memset(&buffer->buf[0], 0, LOOKAHEAD_BUFFER_SIZE);
   buffer->write_pos = 0;
 }
 
-void lookahead_buffer_dump(LookaheadBuffer *buffer) {
+static void lookahead_buffer_dump(LookaheadBuffer *buffer) {
   printf("\"");
   for (size_t i = 0; i < buffer->write_pos; i++) {
     printf("%c", buffer->buf[i]);
@@ -29,8 +29,8 @@ void lookahead_buffer_dump(LookaheadBuffer *buffer) {
   printf("\"\n");
 }
 
-bool lookahead_buffer_find_char(LookaheadBuffer *buffer,
-                                bool (*callback)(int ch)) {
+static bool lookahead_buffer_find_char(LookaheadBuffer *buffer,
+                                       bool (*callback)(int ch)) {
   for (size_t i = 0; i < buffer->write_pos; i++) {
     if (callback(buffer->buf[i])) {
       return true;
@@ -50,8 +50,8 @@ bool lookahead_buffer_find_char(LookaheadBuffer *buffer,
 // * otherwise pull from the stream while simultaneously adding to the buffer
 //
 // The next call will have the buffer populated.
-bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer, TSLexer *lexer,
-                                   const char *str) {
+static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
+                                          TSLexer *lexer, const char *str) {
   size_t length = strlen(str);
 
   // First look in the buffer
