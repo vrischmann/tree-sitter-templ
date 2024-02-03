@@ -20,9 +20,7 @@ module.exports = grammar(GO, {
 
     conflicts: ($, original) => [
         ...original,
-        [$.expression, $.dynamic_class_attribute_value],
         [$._expression, $.dynamic_class_attribute_value],
-        [$.tag_start, $.self_closing_tag],
     ],
 
     rules: {
