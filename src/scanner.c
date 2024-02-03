@@ -186,23 +186,19 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   // Since we're looking for a multicharacter token we need backtracking but
   // TSLexer doesn't provide it so we have to do it ourselves.
 
-  // Try for "if"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "if ")) {
     goto done;
   }
-  // Try for "else"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "else ")) {
     goto done;
   }
-  // Try for "for"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "for ")) {
     goto done;
   }
-  // Try for "switch"
   if (lookahead_buffer_find_keyword(&buffer, lexer, "switch ")) {
     goto done;
   }
-  // Try for a "@" which signals a component import statement
+  // Try for a "@" which signals a component import expression
   if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
     scanner->saw_at_symbol = true;
     goto done;
