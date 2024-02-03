@@ -92,13 +92,25 @@ enum TokenType {
 };
 
 typedef struct {
-  bool dummy; // C2016: C requires that a struct or union have at least one
-              // member
+  bool saw_at_symbol;
 } Scanner;
 
-static unsigned serialize(Scanner *scanner, char *buffer) { return 0; }
+static unsigned serialize(Scanner *scanner, char *buffer) {
+  buffer[0] = scanner->saw_at_symbol ? 1 : 0;
+
+  return 0;
+}
 
 static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
+  if (length <= 0) {
+    return;
+  }
+
+  if (buffer[0] == 1) {
+    scanner->saw_at_symbol = true;
+  } else {
+    scanner->saw_at_symbol = false;
+  }
 }
 
 static bool scan_css_property_value(Scanner *scanner, TSLexer *lexer) {
@@ -126,6 +138,17 @@ static bool is_element_text_terminator(int ch) {
   case '{':
   case '}':
   case '\n':
+    return true;
+  }
+
+  return false;
+}
+
+static bool is_element_text_terminator_for_import_expression(int ch) {
+  switch (ch) {
+  case '.':
+  case '(':
+  case ')':
     return true;
   }
 
@@ -181,6 +204,7 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   }
   // Try for a "@" which signals a component import statement
   if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
+    scanner->saw_at_symbol = true;
     goto done;
   }
 
@@ -189,6 +213,14 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   // Process the remaining data in the buffer to look for terminator characters.
   if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
     goto done;
+  }
+
+  // If we saw a @ symbol, we could be in an import expression.
+  if (scanner->saw_at_symbol) {
+    if (lookahead_buffer_find_char(
+            &buffer, is_element_text_terminator_for_import_expression)) {
+      goto done;
+    }
   }
 
   // Everything up to this
@@ -202,6 +234,10 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
 
   while (!lexer->eof(lexer)) {
     if (is_element_text_terminator(lexer->lookahead)) {
+      goto done;
+    }
+    if (scanner->saw_at_symbol &&
+        is_element_text_terminator_for_import_expression(lexer->lookahead)) {
       goto done;
     }
 
@@ -218,6 +254,10 @@ done:
   }
 
   /* printf("done: %b, chars: %zu\n", has_marked, count); */
+
+  if (has_marked) {
+    scanner->saw_at_symbol = false;
+  }
 
   return has_marked;
 }
@@ -420,6 +460,9 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
 void *tree_sitter_templ_external_scanner_create() {
   Scanner *scanner = (Scanner *)calloc(1, sizeof(Scanner));
+
+  scanner->saw_at_symbol = false;
+
   return scanner;
 }
 
