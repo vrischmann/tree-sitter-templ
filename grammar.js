@@ -165,7 +165,7 @@ module.exports = grammar(GO, {
                 ),
                 field('name', $._component_identifier),
             ),
-            field('arguments', $.argument_list),
+            optional(field('arguments', $.argument_list)),
             optional(field('body', $.component_block)),
         )),
 
