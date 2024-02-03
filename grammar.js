@@ -154,7 +154,14 @@ module.exports = grammar(GO, {
         //     @pkg.Foobar(a, b, c)
         //     @pkg.Foobar(a, b, c) { ... }
         //
-        // Note that we use $.argument_list which is from the Go grammar.
+        // Note that we use $._package_identifier and $.argument_list which are from the Go grammar.
+        //
+        // TODO(vincent): this doesn't handle importing components defined as fields in a struct correctly.
+        // Something like this:
+        //
+        //     @foo.bar.baz(a, b, c)
+        //
+        // Fails to parse.
         component_import: $ => prec.right(seq(
             '@',
             choice(
@@ -165,7 +172,7 @@ module.exports = grammar(GO, {
                 ),
                 field('name', $._component_identifier),
             ),
-            field('arguments', $.argument_list),
+            optional(field('arguments', $.argument_list)),
             optional(field('body', $.component_block)),
         )),
 

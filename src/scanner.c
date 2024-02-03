@@ -42,12 +42,13 @@ static bool lookahead_buffer_find_char(LookaheadBuffer *buffer,
 
 // Tries to find the keyword `str` in the character stream of `lexer`.
 //
-// Since TSLexer doesn't allow backtracking and we need it to lookup different
-// keywords, we have to implement backtracking ourselves.
+// Since TSLexer doesn't allow backtracking and we need it to lookup
+// different keywords, we have to implement backtracking ourselves.
 //
 // It's relatively simple:
 // * if we have any buffered data, try it first
-// * otherwise pull from the stream while simultaneously adding to the buffer
+// * otherwise pull from the stream while simultaneously adding to the
+// buffer
 //
 // The next call will have the buffer populated.
 static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
@@ -92,13 +93,25 @@ enum TokenType {
 };
 
 typedef struct {
-  bool dummy; // C2016: C requires that a struct or union have at least one
-              // member
+  bool saw_at_symbol;
 } Scanner;
 
-static unsigned serialize(Scanner *scanner, char *buffer) { return 0; }
+static unsigned serialize(Scanner *scanner, char *buffer) {
+  buffer[0] = scanner->saw_at_symbol ? 1 : 0;
+
+  return 0;
+}
 
 static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
+  if (length <= 0) {
+    return;
+  }
+
+  if (buffer[0] == 1) {
+    scanner->saw_at_symbol = true;
+  } else {
+    scanner->saw_at_symbol = false;
+  }
 }
 
 static bool scan_css_property_value(Scanner *scanner, TSLexer *lexer) {
@@ -132,6 +145,30 @@ static bool is_element_text_terminator(int ch) {
   return false;
 }
 
+static bool is_element_text_terminator_for_import_expression(int ch) {
+  switch (ch) {
+  case '.':
+  case '(':
+  case ')':
+    return true;
+  }
+
+  return false;
+}
+
+const char *statement_keywords[] = {
+    // Comments
+    "//",
+    "/*",
+    // Other statements
+    "if ",
+    "else ",
+    "for ",
+    "switch ",
+};
+const int statement_keywords_count =
+    sizeof(statement_keywords) / sizeof(const char *);
+
 static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   lexer->result_symbol = ELEMENT_TEXT;
 
@@ -149,38 +186,20 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
     return false;
   }
 
-  // Detect if the node starts with a comment
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "//")) {
-    goto done;
-  }
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "/*")) {
-    goto done;
+  // Detect if the node starts with a keyword that makes it a statement instead.
+  for (size_t i = 0; i < statement_keywords_count; i++) {
+    const char *keyword = statement_keywords[i];
+
+    // Since we're looking for a multicharacter token we need backtracking but
+    // TSLexer doesn't provide it so we have to do it ourselves.
+    if (lookahead_buffer_find_keyword(&buffer, lexer, keyword)) {
+      goto done;
+    }
   }
 
-  // 1. Detect if the node starts with a keyword that makes it a statement
-  // instead of a text element
-  //
-  // Since we're looking for a multicharacter token we need backtracking but
-  // TSLexer doesn't provide it so we have to do it ourselves.
-
-  // Try for "if"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "if ")) {
-    goto done;
-  }
-  // Try for "else"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "else ")) {
-    goto done;
-  }
-  // Try for "for"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "for ")) {
-    goto done;
-  }
-  // Try for "switch"
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "switch ")) {
-    goto done;
-  }
-  // Try for a "@" which signals a component import statement
+  // Try for a "@" which signals a component import expression
   if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
+    scanner->saw_at_symbol = true;
     goto done;
   }
 
@@ -189,6 +208,15 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   // Process the remaining data in the buffer to look for terminator characters.
   if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
     goto done;
+  }
+
+  // If we saw a @ symbol, we could be in an import expression and the
+  // terminator characters differ.
+  if (scanner->saw_at_symbol) {
+    if (lookahead_buffer_find_char(
+            &buffer, is_element_text_terminator_for_import_expression)) {
+      goto done;
+    }
   }
 
   // Everything up to this
@@ -202,6 +230,10 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
 
   while (!lexer->eof(lexer)) {
     if (is_element_text_terminator(lexer->lookahead)) {
+      goto done;
+    }
+    if (scanner->saw_at_symbol &&
+        is_element_text_terminator_for_import_expression(lexer->lookahead)) {
       goto done;
     }
 
@@ -218,6 +250,10 @@ done:
   }
 
   /* printf("done: %b, chars: %zu\n", has_marked, count); */
+
+  if (has_marked) {
+    scanner->saw_at_symbol = false;
+  }
 
   return has_marked;
 }
@@ -420,6 +456,9 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
 void *tree_sitter_templ_external_scanner_create() {
   Scanner *scanner = (Scanner *)calloc(1, sizeof(Scanner));
+
+  scanner->saw_at_symbol = false;
+
   return scanner;
 }
 

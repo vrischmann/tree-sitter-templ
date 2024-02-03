@@ -872,3 +872,54 @@ templ Foobar() {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+===
+Import expression using struct field
+===
+
+package main
+
+type Item struct {
+  Icon templ.Component
+}
+
+templ Foobar(item Item) {
+  <p>
+    foo
+    @item.Icon
+    bar
+  </p>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      name: (type_identifier)
+      type: (struct_type
+        (field_declaration_list
+          (field_declaration
+            name: (field_identifier)
+            type: (qualified_type
+              package: (package_identifier)
+              name: (type_identifier)))))))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (element_text)
+        (component_import
+          package: (package_identifier)
+          name: (component_identifier))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
