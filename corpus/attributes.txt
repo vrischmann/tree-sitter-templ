@@ -149,3 +149,82 @@ templ render(p person) {
         (element_text)
         (tag_end
           (element_identifier))))))
+
+===
+Spread attributes
+===
+
+package main
+
+templ Foobar() {
+  <hr
+    disabled
+    { attrs... }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name))
+          (spread_attributes
+            name: (identifier)))))))
+
+===
+Spread attributes in if branch
+===
+
+package main
+
+templ component(shouldBeUsed bool, attrs templ.Attributes) {
+  <p { attrs... }>foobar</p>
+  <hr
+    if shouldBeUsed {
+      { attrs... }
+    }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier))
+      (parameter_declaration
+        name: (identifier)
+        type: (qualified_type
+          package: (package_identifier)
+          name: (type_identifier))))
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier)
+          (spread_attributes
+            name: (identifier)))
+        (element_text)
+        (tag_end
+          name: (element_identifier)))
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (conditional_attribute_if_statement
+            condition: (identifier)
+            consequence: (conditional_attribute_block
+              (spread_attributes
+                name: (identifier)))))))))

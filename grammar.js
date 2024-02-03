@@ -256,6 +256,7 @@ module.exports = grammar(GO, {
 
         _attribute: $ => choice(
             $.attribute,
+            $.spread_attributes,
             $.conditional_attribute_if_statement,
         ),
 
@@ -272,10 +273,36 @@ module.exports = grammar(GO, {
             )),
         ),
 
+        // This matches spread attributes.
+        // See https://templ.guide/syntax-and-usage/attributes#spread-attributes
+        //
+        //     <div
+        //       disabled
+        //       { attrs... }
+        //     </div>
+        //
+        // Or
+        //
+        //     <hr
+        //       if shouldBeUsed {
+        //         { attrs... }
+        //       }
+        //     />
+        //
+        spread_attributes: $ => seq(
+            '{',
+            field('name', $.identifier),
+            '...',
+            '}',
+        ),
+
         conditional_attribute_block: $ => seq(
             '{',
             '\n',
-            repeat($.attribute),
+            choice(
+                repeat($.attribute),
+                $.spread_attributes,
+            ),
             '}',
         ),
 

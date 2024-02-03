@@ -1160,6 +1160,10 @@
         {
           "type": "attribute",
           "named": true
+        },
+        {
+          "type": "spread_attributes",
+          "named": true
         }
       ]
     }
@@ -2756,6 +2760,10 @@
         {
           "type": "conditional_attribute_if_statement",
           "named": true
+        },
+        {
+          "type": "spread_attributes",
+          "named": true
         }
       ]
     }
@@ -2918,6 +2926,22 @@
     }
   },
   {
+    "type": "spread_attributes",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "struct_elem",
     "named": true,
     "fields": {},
@@ -3033,6 +3057,10 @@
         },
         {
           "type": "conditional_attribute_if_statement",
+          "named": true
+        },
+        {
+          "type": "spread_attributes",
           "named": true
         }
       ]
