@@ -376,6 +376,7 @@ static bool scan_script_block_text(Scanner *scanner, TSLexer *lexer) {
 
 done:
 
+  (void)count;
   /* printf("done: %d, count: %d\n", has_marked, count); */
 
   return has_marked;
