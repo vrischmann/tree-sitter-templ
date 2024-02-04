@@ -7726,20 +7726,20 @@
           "value": "\n"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "REPEAT",
-              "content": {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
                 "type": "SYMBOL",
                 "name": "attribute"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "spread_attributes"
               }
-            },
-            {
-              "type": "SYMBOL",
-              "name": "spread_attributes"
-            }
-          ]
+            ]
+          }
         },
         {
           "type": "STRING",
