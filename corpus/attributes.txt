@@ -228,3 +228,50 @@ templ component(shouldBeUsed bool, attrs templ.Attributes) {
             consequence: (conditional_attribute_block
               (spread_attributes
                 name: (identifier)))))))))
+
+===
+Multiple conditional attributes with spread attributes
+===
+
+package main
+
+templ component(attrs templ.Attributes) {
+  <hr
+    if true {
+      name="foobar"
+      { attrs... }
+      foo="bar"
+    }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (qualified_type
+          package: (package_identifier)
+          name: (type_identifier))))
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (conditional_attribute_if_statement
+            condition: (true)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value)))
+              (spread_attributes
+                name: (identifier))
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))))))))
