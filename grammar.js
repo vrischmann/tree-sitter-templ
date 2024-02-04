@@ -299,10 +299,10 @@ module.exports = grammar(GO, {
         conditional_attribute_block: $ => seq(
             '{',
             '\n',
-            choice(
-                repeat($.attribute),
+            repeat(choice(
+                $.attribute,
                 $.spread_attributes,
-            ),
+            )),
             '}',
         ),
 
