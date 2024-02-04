@@ -275,3 +275,42 @@ templ component(attrs templ.Attributes) {
                 name: (attribute_name)
                 value: (quoted_attribute_value
                   (attribute_value))))))))))
+
+===
+Attribute after if
+===
+
+package main
+
+templ Foobar() {
+  <hr
+    if true {
+      name={ name }
+    }
+    id="id"
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (conditional_attribute_if_statement
+            condition: (true)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (expression
+                  (identifier)))))
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))))))
