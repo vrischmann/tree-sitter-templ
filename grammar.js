@@ -315,7 +315,7 @@ module.exports = grammar(GO, {
             field('condition', $._expression),
             field('consequence', $.conditional_attribute_block),
             optional(seq(
-                'else',
+                token(prec(10, 'else')),
                 field('alternative', choice(
                     $.conditional_attribute_block,
                     $.conditional_attribute_if_statement,
