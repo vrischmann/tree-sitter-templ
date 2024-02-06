@@ -353,3 +353,63 @@ templ Foobar() {
                 name: (attribute_name)
                 value: (expression
                   (identifier))))))))))
+
+===
+Spread attributes accessing a field
+===
+
+package main
+
+type Props struct {
+  Attrs templ.Attributes
+}
+
+templ test(props Props) {
+  <hr
+    { props.Attrs... }
+  />
+  <hr
+    { (*(&props)).Attrs... }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      name: (type_identifier)
+      type: (struct_type
+        (field_declaration_list
+          (field_declaration
+            name: (field_identifier)
+            type: (qualified_type
+              package: (package_identifier)
+              name: (type_identifier)))))))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (spread_attributes
+            name: (selector_expression
+              operand: (identifier)
+              field: (field_identifier)))))
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (spread_attributes
+            name: (selector_expression
+              operand: (parenthesized_expression
+                (unary_expression
+                  operand: (parenthesized_expression
+                    (unary_expression
+                      operand: (identifier)))))
+              field: (field_identifier))))))))
