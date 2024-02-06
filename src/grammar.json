@@ -7701,7 +7701,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_expression"
           }
         },
         {
