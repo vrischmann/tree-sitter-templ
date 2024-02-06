@@ -291,7 +291,7 @@ module.exports = grammar(GO, {
         //
         spread_attributes: $ => seq(
             '{',
-            field('name', $.identifier),
+            field('name', $._expression),
             '...',
             '}',
         ),
