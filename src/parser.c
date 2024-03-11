@@ -1,7 +1,6 @@
 #include "tree_sitter/parser.h"
 
 #if defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
@@ -4590,7 +4589,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
   switch (state) {
     case 0:
       if (eof) ADVANCE(82);
-      if (!eof && lookahead == 0) ADVANCE(85);
+      if (!eof && (lookahead == 0)) ADVANCE(85);
       if (lookahead == '!') ADVANCE(135);
       if (lookahead == '"') ADVANCE(222);
       if (lookahead == '%') ADVANCE(145);
@@ -4630,7 +4629,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (('A' <= lookahead && lookahead <= 'z')) ADVANCE(219);
       END_STATE();
     case 1:
-      if (!eof && lookahead == 0) ADVANCE(85);
+      if (!eof && (lookahead == 0)) ADVANCE(85);
       if (lookahead == '\n') ADVANCE(83);
       if (lookahead == '!') ADVANCE(37);
       if (lookahead == '%') ADVANCE(145);
@@ -4660,7 +4659,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(219);
       END_STATE();
     case 2:
-      if (!eof && lookahead == 0) ADVANCE(85);
+      if (!eof && (lookahead == 0)) ADVANCE(85);
       if (lookahead == '\n') ADVANCE(83);
       if (lookahead == '!') ADVANCE(37);
       if (lookahead == '%') ADVANCE(144);
@@ -5287,7 +5286,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 78:
       if (eof) ADVANCE(82);
-      if (!eof && lookahead == 0) ADVANCE(85);
+      if (!eof && (lookahead == 0)) ADVANCE(85);
       if (lookahead == '\n') ADVANCE(83);
       if (lookahead == '!') ADVANCE(134);
       if (lookahead == '"') ADVANCE(221);
@@ -5318,7 +5317,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 79:
       if (eof) ADVANCE(82);
-      if (!eof && lookahead == 0) ADVANCE(85);
+      if (!eof && (lookahead == 0)) ADVANCE(85);
       if (lookahead == '\n') ADVANCE(83);
       if (lookahead == '!') ADVANCE(37);
       if (lookahead == '"') ADVANCE(221);
@@ -5352,7 +5351,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       END_STATE();
     case 80:
       if (eof) ADVANCE(82);
-      if (!eof && lookahead == 0) ADVANCE(85);
+      if (!eof && (lookahead == 0)) ADVANCE(85);
       if (lookahead == '!') ADVANCE(135);
       if (lookahead == '"') ADVANCE(221);
       if (lookahead == '%') ADVANCE(145);
@@ -72440,10 +72439,12 @@ unsigned tree_sitter_templ_external_scanner_serialize(void *, char *);
 void tree_sitter_templ_external_scanner_deserialize(void *, const char *, unsigned);
 
 #ifdef _WIN32
-#define extern __declspec(dllexport)
+#define TS_PUBLIC __declspec(dllexport)
+#else
+#define TS_PUBLIC __attribute__((visibility("default")))
 #endif
 
-extern const TSLanguage *tree_sitter_templ(void) {
+TS_PUBLIC const TSLanguage *tree_sitter_templ() {
   static const TSLanguage language = {
     .version = LANGUAGE_VERSION,
     .symbol_count = SYMBOL_COUNT,
