@@ -354,10 +354,13 @@ module.exports = grammar(GO, {
         //
         dynamic_class_attribute_value: $ => prec(-1, seq(
             '{',
-            commaSep(choice(
-                $._string_literal,
-                $._expression,
-            )),
+            seq(
+                commaSep(choice(
+                    $._string_literal,
+                    $._expression,
+                )),
+                optional(','),
+            ),
             '}',
         )),
 
