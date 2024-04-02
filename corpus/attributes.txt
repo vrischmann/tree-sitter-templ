@@ -413,3 +413,85 @@ templ test(props Props) {
                     (unary_expression
                       operand: (identifier)))))
               field: (field_identifier))))))))
+
+===
+Multi-line attribute value
+===
+
+package main
+
+templ test() {
+  <a
+    href="https://example.com"
+    class={
+      "class1",
+      "class2",
+    }
+  >Test</a>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value)))
+          (attribute
+            (attribute_name)
+            (dynamic_class_attribute_value
+              (interpreted_string_literal)
+              (interpreted_string_literal))))
+        (element_text)
+        (tag_end
+          (element_identifier))))))
+
+===
+Multi-line attribute value without trailing comma
+===
+
+package main
+
+templ test() {
+  <a
+    href="https://example.com"
+    class={
+      "class1",
+      "class2"
+    }
+  >Test</a>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value)))
+          (attribute
+            (attribute_name)
+            (dynamic_class_attribute_value
+              (interpreted_string_literal)
+              (interpreted_string_literal))))
+        (element_text)
+        (tag_end
+          (element_identifier))))))
