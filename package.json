@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-templ",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "tree-sitter parser for templ files (https://templ.guide)",
   "main": "gramma.js",
   "types": "bindings/node",
