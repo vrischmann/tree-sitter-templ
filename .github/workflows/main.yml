@@ -11,44 +11,47 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v1
+      - name: Run tests
+        uses: tree-sitter/parser-test-action@v2
         with:
-          node-version: '20.x'
+          test-rust: ${{ runner.os == 'Linux' }}
 
-      - name: Install Dependencies
+      - name: Setup examples
         run: |
-          npm install -g tree-sitter-cli node-gyp
-          npm install
+          git clone https://github.com/a-h/templ.git examples/templ --single-branch --depth=1 --filter=blob:none
+      - name: Parse examples
+        id: examples
+        continue-on-error: true
+        uses: tree-sitter/parse-action@v4
+        with:
+          files: examples/**/*.templ
+      - uses: actions/upload-artifact@v4
+        if: steps.examples.outputs.failures != ''
+        with:
+          name: failures-${{ matrix.os }}
+          path: ${{ steps.examples.outputs.failures }}
 
-      - name: Test
-        run: |
-          tree-sitter generate
-          tree-sitter test
-
-      - name: Build bindings
-        run: |
-          node-gyp configure
-          node-gyp build
-
-  bindings-rust:
-    needs: test
-    name: Rust Bindings
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [macos-latest, ubuntu-latest]
+  fuzz:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Test
-        run: |
-          cargo test
+        with:
+          fetch-depth: 2
+      - name: Check for scanner changes
+        id: scanner-changes
+        run: |-
+          if git diff --quiet HEAD^ -- src/scanner.c; then
+            printf 'changed=false\n' >> "$GITHUB_OUTPUT"
+          else
+            printf 'changed=true\n' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Fuzz parser
+        uses: tree-sitter/fuzz-action@v4
+        if: steps.scanner-changes.outputs.changed == 'true'
