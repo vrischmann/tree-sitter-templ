@@ -15,11 +15,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v1
-
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
           test-rust: ${{ runner.os == 'Linux' }}
+
+      - name: Setup examples
+        run: |
+          git clone https://github.com/a-h/templ.git examples/templ --single-branch --depth=1 --filter=blob:none
+      - name: Parse examples
+        id: examples
+        continue-on-error: true
+        uses: tree-sitter/parse-action@v4
+        with:
+          files: examples/**/*.templ
+      - uses: actions/upload-artifact@v4
+        if: steps.examples.outputs.failures != ''
+        with:
+          name: failures-${{ matrix.os }}
+          path: ${{ steps.examples.outputs.failures }}
