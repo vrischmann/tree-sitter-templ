@@ -923,3 +923,60 @@ templ Foobar(item Item) {
         (element_text)
         (tag_end
           name: (element_identifier))))))
+
+===
+Component with generics
+===
+
+package main
+
+type WithName interface {
+  Name() string
+}
+
+templ ServiceList[V WithName](services []V) {
+}
+
+templ NumberList[N int | uint](numbers []N) {
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      name: (type_identifier)
+      type: (interface_type
+        (method_elem
+          name: (field_identifier)
+          parameters: (parameter_list)
+          result: (type_identifier)))))
+  (component_declaration
+    name: (component_identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter_declaration
+        name: (identifier)
+        type: (type_constraint
+          (type_identifier))))
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (slice_type
+          element: (type_identifier))))
+    (component_block))
+  (component_declaration
+    name: (component_identifier)
+    type_parameters: (type_parameter_list
+      (type_parameter_declaration
+        name: (identifier)
+        type: (type_constraint
+          (type_identifier)
+          (type_identifier))))
+      (parameter_list
+        (parameter_declaration
+          name: (identifier)
+          type: (slice_type
+            element: (type_identifier))))
+      (component_block)))
