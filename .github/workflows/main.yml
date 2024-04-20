@@ -3,6 +3,9 @@ name: CI
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
 
 jobs:
   test:
