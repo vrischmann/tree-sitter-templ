@@ -266,3 +266,78 @@ templ Foobar() {
           name: (attribute_name)
           value: (quoted_attribute_value
             (attribute_value)))))))
+
+===
+Style tag with conditional attributes
+===
+
+package main
+
+templ Foobar(ok bool) {
+  <style
+    if ok {
+      ok="true"
+    }
+  >
+  display: grid;
+  </style>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (style_element
+        (conditional_attribute_if_statement
+          condition: (identifier)
+          consequence: (conditional_attribute_block
+            (attribute
+              name: (attribute_name)
+              value: (quoted_attribute_value
+                (attribute_value)))))
+        (style_element_text)))))
+
+===
+Style tag with spread attributes
+===
+
+package main
+
+templ Foobar(attrs templ.Attributes) {
+  <style { attrs... }>
+    display: grid;
+  </style>
+  <style
+      { attrs... }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (qualified_type
+          package: (package_identifier)
+          name: (type_identifier))))
+    (component_block
+      (style_element
+        (spread_attributes
+          name: (identifier))
+        (style_element_text))
+      (style_element
+        (spread_attributes
+          name: (identifier))))))
