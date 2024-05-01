@@ -304,3 +304,40 @@ templ Foobar(ok bool) {
               value: (quoted_attribute_value
                 (attribute_value)))))
         (style_element_text)))))
+
+===
+Style tag with spread attributes
+===
+
+package main
+
+templ Foobar(attrs templ.Attributes) {
+  <style { attrs... }>
+    display: grid;
+  </style>
+  <style
+      { attrs... }
+  />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (qualified_type
+          package: (package_identifier)
+          name: (type_identifier))))
+    (component_block
+      (style_element
+        (spread_attributes
+          name: (identifier))
+        (style_element_text))
+      (style_element
+        (spread_attributes
+          name: (identifier))))))
