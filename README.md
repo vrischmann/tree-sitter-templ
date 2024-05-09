@@ -38,7 +38,7 @@ Parser/Features         H L F I J
          x) errors found in the query, try to run :TSUpdate {lang} ~
 ```
 
-If you are runnning stable then you also need to add register the `templ` filetype:READ
+If you are runnning Neovim stable then you also need to add register the `templ` filetype
 ```lua
 vim.filetype.add({
     extension = {
