@@ -38,7 +38,7 @@ Parser/Features         H L F I J
          x) errors found in the query, try to run :TSUpdate {lang} ~
 ```
 
-Finally you also need to add register the `templ` filetype:
+If you are runnning stable then you also need to add register the `templ` filetype:READ
 ```lua
 vim.filetype.add({
     extension = {
@@ -46,6 +46,9 @@ vim.filetype.add({
     },
 })
 ```
+
+**Note**: _This is not required for nightly builds > NVIM
+v0.10.0-dev-3070+gcf9f002f3 (3rd May 2024)
 
 Finally you can open a `templ` file and run `:InspectTree` to see the parse tree.
 
