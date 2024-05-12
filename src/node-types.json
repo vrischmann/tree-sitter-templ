@@ -891,6 +891,10 @@
           {
             "type": "component_block",
             "named": true
+          },
+          {
+            "type": "composite_literal",
+            "named": true
           }
         ]
       },
