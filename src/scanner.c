@@ -1,7 +1,6 @@
 // Based on
 // https://github.com/tree-sitter/tree-sitter-html/blob/master/src/scanner.c
 
-#include <stdio.h>
 #include <string.h>
 #include <wctype.h>
 
@@ -21,13 +20,13 @@ static void lookahead_buffer_init(LookaheadBuffer *buffer) {
   buffer->write_pos = 0;
 }
 
-static void lookahead_buffer_dump(LookaheadBuffer *buffer) {
-  printf("\"");
-  for (size_t i = 0; i < buffer->write_pos; i++) {
-    printf("%c", buffer->buf[i]);
-  }
-  printf("\"\n");
-}
+// static void lookahead_buffer_dump(LookaheadBuffer *buffer) {
+//   printf("\"");
+//   for (size_t i = 0; i < buffer->write_pos; i++) {
+//     printf("%c", buffer->buf[i]);
+//   }
+//   printf("\"\n");
+// }
 
 static bool lookahead_buffer_find_char(LookaheadBuffer *buffer,
                                        bool (*callback)(int ch)) {
@@ -115,6 +114,8 @@ static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
 }
 
 static bool scan_css_property_value(Scanner *scanner, TSLexer *lexer) {
+  (void)scanner;
+
   // If we encounter the start of a templ expression, bail
   if (lexer->lookahead == '{') {
     return false;
@@ -166,7 +167,7 @@ const char *statement_keywords[] = {
     "for ",
     "switch ",
 };
-const int statement_keywords_count =
+const size_t statement_keywords_count =
     sizeof(statement_keywords) / sizeof(const char *);
 
 static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
@@ -259,6 +260,8 @@ done:
 }
 
 static bool scan_style_element_text(Scanner *scanner, TSLexer *lexer) {
+  (void)scanner;
+
   lexer->result_symbol = STYLE_ELEMENT_TEXT;
 
   // Start by marking the end so the following calls to advance don't
@@ -299,6 +302,8 @@ outer:
 }
 
 static bool scan_element_comment(Scanner *scanner, TSLexer *lexer) {
+  (void)scanner;
+
   // Start by marking the end so the following calls to advance don't
   // increase the token size
   lexer->mark_end(lexer);
@@ -335,6 +340,8 @@ static bool scan_element_comment(Scanner *scanner, TSLexer *lexer) {
 }
 
 static bool scan_script_element_text(Scanner *scanner, TSLexer *lexer) {
+  (void)scanner;
+
   lexer->result_symbol = SCRIPT_ELEMENT_TEXT;
 
   // Start by marking the end so the following calls to advance don't
@@ -375,6 +382,8 @@ outer:
 }
 
 static bool scan_script_block_text(Scanner *scanner, TSLexer *lexer) {
+  (void)scanner;
+
   lexer->result_symbol = SCRIPT_BLOCK_TEXT;
 
   // Start by marking the end so the following calls to advance don't
