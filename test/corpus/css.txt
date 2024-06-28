@@ -154,11 +154,13 @@ templ Foobar() {
     (parameter_list)
     (component_block
       (style_element
-        (attribute
-          name: (attribute_name)
-          value: (quoted_attribute_value
-            (attribute_value)))
-        (style_element_text))
+        (style_tag_start
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))
+        (style_element_text)
+        (style_tag_end))
       (element
         (tag_start
           name: (element_identifier)
@@ -201,9 +203,13 @@ font-size: 20px;
     (parameter_list)
     (component_block
       (style_element
-        (style_element_text))
+        (style_tag_start)
+        (style_element_text)
+        (style_tag_end))
       (style_element
-        (style_element_text)))))
+        (style_tag_start)
+        (style_element_text)
+        (style_tag_end)))))
 
 ===
 Empty style element
@@ -227,10 +233,12 @@ templ Foobar() {
     (parameter_list)
     (component_block
       (style_element
-        (attribute
-          name: (attribute_name)
-          value: (quoted_attribute_value
-            (attribute_value))))
+        (style_tag_start
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))
+        (style_tag_end))
       (element
         (tag_start
           name: (element_identifier)
@@ -262,10 +270,11 @@ templ Foobar() {
     (parameter_list)
     (component_block
       (style_element
-        (attribute
-          name: (attribute_name)
-          value: (quoted_attribute_value
-            (attribute_value)))))))
+        (self_closing_style_tag
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))))))
 
 ===
 Style tag with conditional attributes
@@ -296,14 +305,16 @@ templ Foobar(ok bool) {
         type: (type_identifier)))
     (component_block
       (style_element
-        (conditional_attribute_if_statement
-          condition: (identifier)
-          consequence: (conditional_attribute_block
-            (attribute
-              name: (attribute_name)
-              value: (quoted_attribute_value
-                (attribute_value)))))
-        (style_element_text)))))
+        (style_tag_start
+          (conditional_attribute_if_statement
+            condition: (identifier)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))))
+        (style_element_text)
+        (style_tag_end)))))
 
 ===
 Style tag with spread attributes
@@ -335,9 +346,38 @@ templ Foobar(attrs templ.Attributes) {
           name: (type_identifier))))
     (component_block
       (style_element
-        (spread_attributes
-          name: (identifier))
-        (style_element_text))
+        (style_tag_start
+          (spread_attributes
+            name: (identifier)))
+        (style_element_text)
+        (style_tag_end))
       (style_element
-        (spread_attributes
-          name: (identifier))))))
+        (self_closing_style_tag
+          (spread_attributes
+            name: (identifier)))))))
+
+===
+Self closing and non self closing style tag
+===
+
+package main
+
+templ Foobar() {
+  <style></style>
+  <style />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (style_element
+        (style_tag_start)
+        (style_tag_end))
+      (style_element
+        (self_closing_style_tag)))))

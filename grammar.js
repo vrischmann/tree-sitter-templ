@@ -244,21 +244,28 @@ module.exports = grammar(GO, {
 
         style_element: $ => choice(
             seq(
-                '<',
-                field('name', 'style'),
-                repeat($._attribute),
-                '>',
-                optional($.style_element_text),
-                '</',
-                'style',
-                '>'
+                $.style_tag_start,
+                repeat($.style_element_text),
+                $.style_tag_end,
             ),
-            seq(
-                '<',
-                field('name', 'style'),
-                repeat($._attribute),
-                '/>',
-            ),
+            $.self_closing_style_tag,
+        ),
+        style_tag_start: $ => seq(
+            '<',
+            'style',
+            repeat($._attribute),
+            '>'
+        ),
+        style_tag_end: $ => seq(
+            '</',
+            'style',
+            '>',
+        ),
+        self_closing_style_tag: $ => seq(
+            '<',
+            'style',
+            repeat($._attribute),
+            '/>',
         ),
 
         _attribute: $ => choice(
