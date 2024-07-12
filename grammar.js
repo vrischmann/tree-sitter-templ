@@ -21,7 +21,6 @@ module.exports = grammar(GO, {
     conflicts: ($, original) => [
         ...original,
         [$._expression, $.dynamic_class_attribute_value],
-        // [$.rawgo_block, $._component_identifier],
     ],
 
     rules: {
@@ -80,7 +79,6 @@ module.exports = grammar(GO, {
             '}',
         ),
         _component_node: $ => choice(
-            // $.rawgo_block,
             $.element,
             $.style_element,
             $.script_element,
@@ -416,6 +414,15 @@ module.exports = grammar(GO, {
 
         // rawgo block
         // https://templ.guide/syntax-and-usage/raw-go
+        // Example:
+        // package main
+        //
+        // templ nameList(items []Item) {
+        //     {{ first := items[0] }}
+        //     <p>
+        //         { first.Name }
+        //     </p>
+        // }
         rawgo_block: $ => seq(
             '{{',
             optional($._statement_list),
