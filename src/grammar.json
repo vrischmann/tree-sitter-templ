@@ -7045,6 +7045,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "rawgo_block"
+        },
+        {
+          "type": "SYMBOL",
           "name": "component_render"
         },
         {
@@ -8225,6 +8229,31 @@
               "value": "/>"
             }
           ]
+        }
+      ]
+    },
+    "rawgo_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "{{"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_statement_list"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "}}"
         }
       ]
     },

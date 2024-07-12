@@ -9,6 +9,7 @@
 
  (field_declaration_list)
  (block)
+ (rawgo_block)
  (interface_type)
  (comment)
  (const_declaration)

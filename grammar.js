@@ -21,6 +21,7 @@ module.exports = grammar(GO, {
     conflicts: ($, original) => [
         ...original,
         [$._expression, $.dynamic_class_attribute_value],
+        // [$.rawgo_block, $._component_identifier],
     ],
 
     rules: {
@@ -79,6 +80,7 @@ module.exports = grammar(GO, {
             '}',
         ),
         _component_node: $ => choice(
+            // $.rawgo_block,
             $.element,
             $.style_element,
             $.script_element,
@@ -86,6 +88,7 @@ module.exports = grammar(GO, {
             $.component_for_statement,
             $.component_switch_statement,
             $.component_import,
+            $.rawgo_block,
             $.component_render,
             $.component_children_expression,
             $.expression,
@@ -409,6 +412,14 @@ module.exports = grammar(GO, {
                 repeat($.attribute),
                 '/>',
             ),
+        ),
+
+        // rawgo block
+        // https://templ.guide/syntax-and-usage/raw-go
+        rawgo_block: $ => seq(
+            '{{',
+            optional($._statement_list),
+            '}}',
         ),
 
         //
