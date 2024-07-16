@@ -1,0 +1,43 @@
+====
+Rawgo example
+====
+
+package main
+
+templ nameList(items []Item) {
+    {{ first := items[0] }}
+    <p>
+        { first.Name }
+    </p>
+}
+
+---
+    (source_file
+      (package_clause
+        (package_identifier))
+      (component_declaration
+        (component_identifier)
+        (parameter_list
+          (parameter_declaration
+            (identifier)
+            (slice_type
+              (type_identifier))))
+        (component_block
+          (rawgo_block
+            (short_var_declaration
+              (expression_list
+                (identifier))
+              (expression_list
+                (index_expression
+                  (identifier)
+                  (identifier)))))
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (selector_expression
+                (identifier)
+                (field_identifier)))
+            (tag_end
+              (element_identifier))))))
+

@@ -86,6 +86,7 @@ module.exports = grammar(GO, {
             $.component_for_statement,
             $.component_switch_statement,
             $.component_import,
+            $.rawgo_block,
             $.component_render,
             $.component_children_expression,
             $.expression,
@@ -409,6 +410,23 @@ module.exports = grammar(GO, {
                 repeat($.attribute),
                 '/>',
             ),
+        ),
+
+        // rawgo block
+        // https://templ.guide/syntax-and-usage/raw-go
+        // Example:
+        // package main
+        //
+        // templ nameList(items []Item) {
+        //     {{ first := items[0] }}
+        //     <p>
+        //         { first.Name }
+        //     </p>
+        // }
+        rawgo_block: $ => seq(
+            '{{',
+            optional($._statement_list),
+            '}}',
         ),
 
         //
