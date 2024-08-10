@@ -107,7 +107,7 @@ module.exports = grammar(GO, {
             $.component_render,
             $.component_children_expression,
             $.expression,
-            $.switch_element_text,
+            alias($.switch_element_text, $.element_text),
             $.element_comment,
             prec.right(1, $.comment),
         ),

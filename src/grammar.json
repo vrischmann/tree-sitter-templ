@@ -7125,8 +7125,13 @@
           "name": "expression"
         },
         {
-          "type": "SYMBOL",
-          "name": "switch_element_text"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "switch_element_text"
+          },
+          "named": true,
+          "value": "element_text"
         },
         {
           "type": "SYMBOL",

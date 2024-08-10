@@ -977,6 +977,10 @@
           "named": true
         },
         {
+          "type": "element_text",
+          "named": true
+        },
+        {
           "type": "expression",
           "named": true
         },
@@ -990,10 +994,6 @@
         },
         {
           "type": "style_element",
-          "named": true
-        },
-        {
-          "type": "switch_element_text",
           "named": true
         }
       ]
@@ -1055,6 +1055,10 @@
           "named": true
         },
         {
+          "type": "element_text",
+          "named": true
+        },
+        {
           "type": "expression",
           "named": true
         },
@@ -1068,10 +1072,6 @@
         },
         {
           "type": "style_element",
-          "named": true
-        },
-        {
-          "type": "switch_element_text",
           "named": true
         }
       ]
@@ -4011,10 +4011,6 @@
   {
     "type": "switch",
     "named": false
-  },
-  {
-    "type": "switch_element_text",
-    "named": true
   },
   {
     "type": "templ",

@@ -101,7 +101,7 @@ templ userTypeDisplay(userType string) {
               (interpreted_string_literal))
             (tag_end
               (element_identifier)))
-          (switch_element_text)
+          (element_text)
           (element
             (tag_start
               (element_identifier))
