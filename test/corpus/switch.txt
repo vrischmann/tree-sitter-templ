@@ -57,3 +57,73 @@ templ userTypeDisplay(userType string) {
               (interpreted_string_literal))
             (tag_end
               (element_identifier))))))))
+
+====
+Switch statement
+====
+
+package main
+
+templ userTypeDisplay(userType string) {
+    switch userType {
+        case "test":
+            <span>{ "Test user" }</span>
+            text
+            <span>{ "Details" }</span>
+        case "admin":
+            <span>{ "Admin user" }</span>
+        default:
+            <span>{ "Unknown user" }</span>
+    }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (component_switch_statement
+        (identifier)
+        (component_switch_expression_case
+          (expression_list
+            (interpreted_string_literal))
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal))
+            (tag_end
+              (element_identifier)))
+          (switch_element_text)
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal))
+            (tag_end
+              (element_identifier))))
+        (component_switch_expression_case
+          (expression_list
+            (interpreted_string_literal))
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal))
+            (tag_end
+              (element_identifier))))
+        (component_switch_default_case
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal))
+            (tag_end
+              (element_identifier))))))))
