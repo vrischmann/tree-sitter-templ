@@ -16,6 +16,7 @@ module.exports = grammar(GO, {
         $.style_element_text,
         $.script_block_text,
         $.script_element_text,
+        $.switch_element_text,
     ],
 
     conflicts: ($, original) => [
@@ -94,6 +95,22 @@ module.exports = grammar(GO, {
             $.element_comment,
             prec.right(1, $.comment),
         ),
+        _switch_component_node: $ => choice(
+            $.element,
+            $.style_element,
+            $.script_element,
+            $.component_if_statement,
+            $.component_for_statement,
+            $.component_switch_statement,
+            $.component_import,
+            $.rawgo_block,
+            $.component_render,
+            $.component_children_expression,
+            $.expression,
+            alias($.switch_element_text, $.element_text),
+            $.element_comment,
+            prec.right(1, $.comment),
+        ),
 
         // This matches an if statement in a component block.
         //
@@ -147,12 +164,12 @@ module.exports = grammar(GO, {
             'case',
             field('value', $.expression_list),
             ':',
-            optional($._component_node),
+            repeat($._switch_component_node),
         )),
         component_switch_default_case: $ => prec.right(seq(
             'default',
             ':',
-            optional($._component_node),
+            repeat($._switch_component_node),
         )),
 
         // This matches an import statement:

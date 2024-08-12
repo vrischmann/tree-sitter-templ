@@ -7077,6 +7077,76 @@
         }
       ]
     },
+    "_switch_component_node": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "style_element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "script_element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_if_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_for_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_switch_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_import"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rawgo_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_render"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_children_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "switch_element_text"
+          },
+          "named": true,
+          "value": "element_text"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "element_comment"
+        },
+        {
+          "type": "PREC_RIGHT",
+          "value": 1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "comment"
+          }
+        }
+      ]
+    },
     "component_if_statement": {
       "type": "SEQ",
       "members": [
@@ -7304,16 +7374,11 @@
             "value": ":"
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_component_node"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_switch_component_node"
+            }
           }
         ]
       }
@@ -7333,16 +7398,11 @@
             "value": ":"
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_component_node"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_switch_component_node"
+            }
           }
         ]
       }
@@ -8452,6 +8512,10 @@
     {
       "type": "SYMBOL",
       "name": "script_element_text"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "switch_element_text"
     }
   ],
   "inline": [

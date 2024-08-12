@@ -89,6 +89,7 @@ enum TokenType {
   STYLE_ELEMENT_TEXT,
   SCRIPT_BLOCK_TEXT,
   SCRIPT_ELEMENT_TEXT,
+  SWITCH_ELEMENT_TEXT,
 };
 
 typedef struct {
@@ -166,12 +167,20 @@ const char *statement_keywords[] = {
     "else ",
     "for ",
     "switch ",
+    // Switch keywords
+    "case ",
+    "default:",
 };
 const size_t statement_keywords_count =
+    sizeof(statement_keywords) / sizeof(const char *) - 2;
+const size_t switch_statement_keywords_count =
     sizeof(statement_keywords) / sizeof(const char *);
 
-static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
-  lexer->result_symbol = ELEMENT_TEXT;
+static bool scan_element_text(Scanner *scanner, TSLexer *lexer, bool in_switch) {
+  int symbol = in_switch ? SWITCH_ELEMENT_TEXT : ELEMENT_TEXT;
+  lexer->result_symbol = symbol;
+
+  size_t keywords_count = (in_switch) ? switch_statement_keywords_count : statement_keywords_count;
 
   // Start by marking the end so the following calls to advance don't
   // increase the token size
@@ -188,7 +197,7 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer) {
   }
 
   // Detect if the node starts with a keyword that makes it a statement instead.
-  for (size_t i = 0; i < statement_keywords_count; i++) {
+  for (size_t i = 0; i < keywords_count; i++) {
     const char *keyword = statement_keywords[i];
 
     // Since we're looking for a multicharacter token we need backtracking but
@@ -437,7 +446,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     return true;
   }
 
-  if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer)) {
+  if (valid_symbols[SWITCH_ELEMENT_TEXT] && scan_element_text(scanner, lexer, true)) {
+    return true;
+  }
+
+  if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer, false)) {
     return true;
   }
 
