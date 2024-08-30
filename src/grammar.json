@@ -22,8 +22,8 @@
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "STRING",
-                        "value": "\n"
+                        "type": "PATTERN",
+                        "value": "\\n"
                       },
                       {
                         "type": "STRING",
@@ -48,8 +48,8 @@
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "STRING",
-                        "value": "\n"
+                        "type": "PATTERN",
+                        "value": "\\n"
                       },
                       {
                         "type": "STRING",
@@ -229,8 +229,8 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "\n"
+                            "type": "PATTERN",
+                            "value": "\\n"
                           },
                           {
                             "type": "STRING",
@@ -256,8 +256,8 @@
                       "type": "CHOICE",
                       "members": [
                         {
-                          "type": "STRING",
-                          "value": "\n"
+                          "type": "PATTERN",
+                          "value": "\\n"
                         },
                         {
                           "type": "STRING",
@@ -338,8 +338,8 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "\n"
+                            "type": "PATTERN",
+                            "value": "\\n"
                           },
                           {
                             "type": "STRING",
@@ -583,8 +583,8 @@
                 "type": "CHOICE",
                 "members": [
                   {
-                    "type": "STRING",
-                    "value": "\n"
+                    "type": "PATTERN",
+                    "value": "\\n"
                   },
                   {
                     "type": "STRING",
@@ -1122,8 +1122,8 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "\n"
+                            "type": "PATTERN",
+                            "value": "\\n"
                           },
                           {
                             "type": "STRING",
@@ -1570,8 +1570,8 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "\n"
+                            "type": "PATTERN",
+                            "value": "\\n"
                           },
                           {
                             "type": "STRING",
@@ -1597,8 +1597,8 @@
                       "type": "CHOICE",
                       "members": [
                         {
-                          "type": "STRING",
-                          "value": "\n"
+                          "type": "PATTERN",
+                          "value": "\\n"
                         },
                         {
                           "type": "STRING",
@@ -1768,8 +1768,8 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "\n"
+                            "type": "PATTERN",
+                            "value": "\\n"
                           },
                           {
                             "type": "STRING",
@@ -1795,8 +1795,8 @@
                       "type": "CHOICE",
                       "members": [
                         {
-                          "type": "STRING",
-                          "value": "\n"
+                          "type": "PATTERN",
+                          "value": "\\n"
                         },
                         {
                           "type": "STRING",
@@ -2109,8 +2109,8 @@
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "STRING",
-                        "value": "\n"
+                        "type": "PATTERN",
+                        "value": "\\n"
                       },
                       {
                         "type": "STRING",
@@ -2139,8 +2139,8 @@
                       "type": "CHOICE",
                       "members": [
                         {
-                          "type": "STRING",
-                          "value": "\n"
+                          "type": "PATTERN",
+                          "value": "\\n"
                         },
                         {
                           "type": "STRING",

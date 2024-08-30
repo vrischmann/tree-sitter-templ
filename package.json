@@ -1,13 +1,13 @@
 {
   "name": "tree-sitter-templ",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "tree-sitter parser for templ files (https://templ.guide)",
   "main": "gramma.js",
   "types": "bindings/node",
   "author": "Vincent Rischmann",
   "license": "MIT",
   "dependencies": {
-    "tree-sitter-go": "^0.21.2",
+    "tree-sitter-go": "^0.23.0",
     "node-addon-api": "^8.1.0",
     "node-gyp-build": "^4.8.1"
   },
