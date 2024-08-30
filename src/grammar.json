@@ -1,7 +1,6 @@
 {
-  "0": "g",
-  "1": "o",
   "name": "templ",
+  "inherits": "go",
   "word": "identifier",
   "rules": {
     "source_file": {
