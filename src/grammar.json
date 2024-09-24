@@ -8383,7 +8383,7 @@
     },
     "attribute_value": {
       "type": "PATTERN",
-      "value": "[^<>\"'=\\s]+"
+      "value": "[^{}<>\"'=\\s]+"
     },
     "quoted_attribute_value": {
       "type": "CHOICE",

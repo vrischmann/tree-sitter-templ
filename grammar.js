@@ -458,7 +458,7 @@ module.exports = grammar(GO, {
 
         // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
         attribute_name: _ => /[^<>"'/=\s]+/,
-        attribute_value: _ => /[^<>"'=\s]+/,
+        attribute_value: _ => /[^{}<>"'=\s]+/,
         quoted_attribute_value: $ => choice(
             seq('\'', optional(alias(/[^']+/, $.attribute_value)), '\''),
             seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
