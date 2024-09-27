@@ -30,7 +30,7 @@ templ nameList(items []Item) {
               (expression_list
                 (index_expression
                   (identifier)
-                  (identifier)))))
+                  (int_literal)))))
           (element
             (tag_start
               (element_identifier))

@@ -25,10 +25,10 @@ templ Foobar() {
             left: (expression_list
               (identifier))
             right: (expression_list
-              (identifier)))
+              (int_literal)))
           condition: (binary_expression
             left: (identifier)
-            right: (identifier))
+            right: (int_literal))
             update: (inc_statement
               (identifier)))
         body: (component_block
@@ -72,10 +72,10 @@ templ Foobar() {
               left: (expression_list
                 (identifier))
               right: (expression_list
-                (identifier)))
+                (int_literal)))
             condition: (binary_expression
               left: (identifier)
-              right: (identifier))
+              right: (int_literal))
               update: (inc_statement
                 (identifier)))
           body: (component_block
