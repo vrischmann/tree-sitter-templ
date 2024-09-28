@@ -7,8 +7,6 @@ const GO = require("tree-sitter-go/grammar")
 module.exports = grammar(GO, {
     name: 'templ',
 
-    word: $ => $.identifier,
-
     externals: $ => [
         $.css_property_value,
         $.element_text,
@@ -448,7 +446,6 @@ module.exports = grammar(GO, {
 
         //
 
-        identifier: $ => /[a-zA-Z0-9_]+/,
         package_identifier: $ => alias($.identifier, $.package_identifier),
         _component_identifier: $ => alias($.identifier, $.component_identifier),
         _css_identifier: $ => alias($.identifier, $.css_identifier),

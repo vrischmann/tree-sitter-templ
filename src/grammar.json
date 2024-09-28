@@ -4524,7 +4524,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[a-zA-Z0-9_]+"
+      "value": "[_\\p{XID_Start}][_\\p{XID_Continue}]*"
     },
     "_type_identifier": {
       "type": "ALIAS",
