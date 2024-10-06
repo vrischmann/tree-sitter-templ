@@ -1,0 +1,36 @@
+{
+  "grammars": [
+    {
+      "name": "templ",
+      "camelcase": "Templ",
+      "scope": "source.templ",
+      "path": ".",
+      "file-types": [
+        "templ"
+      ],
+      "highlights": "queries/templ/highlights.scm",
+      "injections": "queries/templ/injections.scm"
+    }
+  ],
+  "metadata": {
+    "version": "2.2.0",
+    "license": "MIT",
+    "description": "tree-sitter parser for templ files (https://templ.guide)",
+    "authors": [
+      {
+        "name": "Vincent Rischmann"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/vrischmann/tree-sitter-templ"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}
