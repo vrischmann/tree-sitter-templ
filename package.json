@@ -23,23 +23,6 @@
     "tree-sitter-cli": "^0.24.2",
     "prebuildify": "^6.0.1"
   },
-  "tree-sitter": [
-    {
-      "scope": "source.templ",
-      "file-types": [
-        "templ"
-      ],
-      "highlights": "queries/templ/highlights.scm",
-      "injections": "queries/templ/injections.scm"
-    }
-  ],
-  "scripts": {
-    "install": "node-gyp-build",
-    "prestart": "tree-sitter build --wasm",
-    "start": "tree-sitter playground",
-    "test": "node --test bindings/node/*_test.js",
-    "prebuildify": "prebuildify --napi --strip"
-  },
   "files": [
     "grammar.js",
     "binding.gyp",
@@ -47,5 +30,12 @@
     "bindings/node/*",
     "queries/*",
     "src/**"
-  ]
+  ],
+  "scripts": {
+    "install": "node-gyp-build",
+    "prestart": "tree-sitter build --wasm",
+    "start": "tree-sitter playground",
+    "test": "node --test bindings/node/*_test.js",
+    "prebuildify": "prebuildify --napi --strip"
+  }
 }
