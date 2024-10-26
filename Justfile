@@ -4,7 +4,7 @@ gen:
 test FILTER="": gen
 	#!/usr/bin/env fish
 	if test -n "{{FILTER}}"
-		npx tree-sitter test -f "{{FILTER}}"
+		npx tree-sitter test -i "{{FILTER}}"
 	else
 		npx tree-sitter test
 	end
