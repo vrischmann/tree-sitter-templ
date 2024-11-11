@@ -2195,6 +2195,10 @@
         {
           "type": "escape_sequence",
           "named": true
+        },
+        {
+          "type": "interpreted_string_literal_content",
+          "named": true
         }
       ]
     }
@@ -2202,16 +2206,27 @@
   {
     "type": "keyed_element",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "literal_element",
-          "named": true
-        }
-      ]
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "literal_element",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "literal_element",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2589,6 +2604,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "raw_string_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "raw_string_literal_content",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3805,6 +3835,10 @@
     "named": false
   },
   {
+    "type": "`",
+    "named": false
+  },
+  {
     "type": "attribute_name",
     "named": true
   },
@@ -3953,6 +3987,10 @@
     "named": false
   },
   {
+    "type": "interpreted_string_literal_content",
+    "named": true
+  },
+  {
     "type": "iota",
     "named": true
   },
@@ -3981,7 +4019,7 @@
     "named": false
   },
   {
-    "type": "raw_string_literal",
+    "type": "raw_string_literal_content",
     "named": true
   },
   {

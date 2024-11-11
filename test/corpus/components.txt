@@ -816,7 +816,8 @@ templ Example() {
           package: (package_identifier)
           name: (component_identifier)
           arguments: (argument_list
-            (interpreted_string_literal)))
+            (interpreted_string_literal
+              (interpreted_string_literal_content))))
         (tag_end
           name: (element_identifier))))))
 
