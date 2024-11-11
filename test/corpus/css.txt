@@ -109,19 +109,22 @@ templ Foo() {
             (attribute
               (attribute_name)
               (dynamic_class_attribute_value
-                (raw_string_literal)
+                (raw_string_literal
+                  (raw_string_literal_content))
                 (call_expression
                   (selector_expression
                     (identifier)
                     (field_identifier))
                   (argument_list
-                    (raw_string_literal)))
+                    (raw_string_literal
+                      (raw_string_literal_content))))
                 (call_expression
                   (selector_expression
                     (identifier)
                     (field_identifier))
                   (argument_list
-                    (interpreted_string_literal)
+                    (interpreted_string_literal
+                      (interpreted_string_literal_content))
                     (true)))
                 (call_expression
                   (identifier)

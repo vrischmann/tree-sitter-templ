@@ -90,7 +90,8 @@ const (
         (identifier)
         (type_identifier)
         (expression_list
-          (interpreted_string_literal))))
+          (interpreted_string_literal
+            (interpreted_string_literal_content)))))
     (type_declaration
       (type_spec
         (type_identifier)
@@ -128,13 +129,16 @@ css foo() {}
     (package_identifier))
   (import_declaration
     (import_spec
-      (interpreted_string_literal)))
+      (interpreted_string_literal
+      	(interpreted_string_literal_content))))
   (import_declaration
     (import_spec_list
       (import_spec
-        (interpreted_string_literal))
+        (interpreted_string_literal
+          (interpreted_string_literal_content)))
       (import_spec
-        (interpreted_string_literal))))
+        (interpreted_string_literal
+          (interpreted_string_literal_content)))))
   (css_declaration
     (css_identifier)
     (parameter_list)))
@@ -174,9 +178,11 @@ var advancedLinks = []Link{
             (type_identifier))
           (literal_value
             (literal_element
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (literal_element
-              (interpreted_string_literal)))))))
+              (interpreted_string_literal
+                (interpreted_string_literal_content))))))))
   (type_declaration
     (type_spec
       (type_identifier)
@@ -202,21 +208,25 @@ var advancedLinks = []Link{
                   (literal_element
                     (identifier))
                   (literal_element
-                    (interpreted_string_literal)))
+                    (interpreted_string_literal
+                      (interpreted_string_literal_content))))
                 (keyed_element
                   (literal_element
                     (identifier))
                   (literal_element
-                    (interpreted_string_literal)))))
+                    (interpreted_string_literal
+                      (interpreted_string_literal_content))))))
             (literal_element
               (literal_value
                 (keyed_element
                   (literal_element
                     (identifier))
                   (literal_element
-                    (interpreted_string_literal)))
+                    (interpreted_string_literal
+                      (interpreted_string_literal_content))))
                 (keyed_element
                   (literal_element
                     (identifier))
                   (literal_element
-                    (interpreted_string_literal)))))))))))
+                    (interpreted_string_literal
+                      (interpreted_string_literal_content))))))))))))

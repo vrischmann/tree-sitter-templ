@@ -28,7 +28,8 @@ templ render() {
                   operand: (identifier)
                   field: (field_identifier))
                 arguments: (argument_list
-                  (interpreted_string_literal))))))
+                  (interpreted_string_literal
+                    (interpreted_string_literal_content)))))))
         (element_text)
         (tag_end
           name: (element_identifier))))))

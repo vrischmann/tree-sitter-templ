@@ -31,22 +31,26 @@ templ userTypeDisplay(userType string) {
         (identifier)
         (component_switch_expression_case
           (expression_list
-            (interpreted_string_literal))
+            (interpreted_string_literal
+              (interpreted_string_literal_content)))
           (element
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))
         (component_switch_expression_case
           (expression_list
-            (interpreted_string_literal))
+            (interpreted_string_literal
+              (interpreted_string_literal_content)))
           (element
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))
         (component_switch_default_case
@@ -54,7 +58,8 @@ templ userTypeDisplay(userType string) {
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))))))
 
@@ -93,12 +98,14 @@ templ userTypeDisplay(userType string) {
         (identifier)
         (component_switch_expression_case
           (expression_list
-            (interpreted_string_literal))
+            (interpreted_string_literal
+              (interpreted_string_literal_content)))
           (element
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier)))
           (element_text)
@@ -106,17 +113,20 @@ templ userTypeDisplay(userType string) {
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))
         (component_switch_expression_case
           (expression_list
-            (interpreted_string_literal))
+            (interpreted_string_literal
+              (interpreted_string_literal_content)))
           (element
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))
         (component_switch_default_case
@@ -124,6 +134,7 @@ templ userTypeDisplay(userType string) {
             (tag_start
               (element_identifier))
             (expression
-              (interpreted_string_literal))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))))))

@@ -135,7 +135,8 @@ templ render(p person) {
                 (selector_expression
                   (identifier)
                   (field_identifier))
-                (interpreted_string_literal))
+                (interpreted_string_literal
+                  (interpreted_string_literal_content)))
               (conditional_attribute_block
                 (attribute
                   (attribute_name)
@@ -449,8 +450,10 @@ templ test() {
           (attribute
             (attribute_name)
             (dynamic_class_attribute_value
-              (interpreted_string_literal)
-              (interpreted_string_literal))))
+              (interpreted_string_literal
+                (interpreted_string_literal_content))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))))
         (element_text)
         (tag_end
           (element_identifier))))))
@@ -490,8 +493,10 @@ templ test() {
           (attribute
             (attribute_name)
             (dynamic_class_attribute_value
-              (interpreted_string_literal)
-              (interpreted_string_literal))))
+              (interpreted_string_literal
+                (interpreted_string_literal_content))
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))))
         (element_text)
         (tag_end
           (element_identifier))))))
@@ -520,7 +525,8 @@ templ Test() {
     (block
       (return_statement
         (expression_list
-          (interpreted_string_literal)))))
+          (interpreted_string_literal
+            (interpreted_string_literal_content))))))
   (component_declaration
     (component_identifier)
     (parameter_list)
@@ -535,6 +541,7 @@ templ Test() {
                 (call_expression
                   (identifier)
                   (argument_list))
-                (interpreted_string_literal)))))
+                (interpreted_string_literal
+                  (interpreted_string_literal_content))))))
         (tag_end
           (element_identifier))))))

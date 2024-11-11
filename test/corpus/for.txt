@@ -123,5 +123,6 @@ templ jsAssets(assets Assets) {
               name: (attribute_name)
               value: (expression
                 (binary_expression
-                  left: (interpreted_string_literal)
+                  left: (interpreted_string_literal
+                    (interpreted_string_literal_content))
                   right: (identifier))))))))))
