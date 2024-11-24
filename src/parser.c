@@ -6911,8 +6911,8 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 213:
       ACCEPT_TOKEN(aux_sym_raw_string_literal_token1);
       if (lookahead == '\n') ADVANCE(218);
-      if (lookahead == '`') ADVANCE(245);
-      if (lookahead != 0) ADVANCE(213);
+      if (lookahead != 0 &&
+          lookahead != '`') ADVANCE(213);
       END_STATE();
     case 214:
       ACCEPT_TOKEN(aux_sym_raw_string_literal_token1);
@@ -6925,14 +6925,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       ACCEPT_TOKEN(aux_sym_raw_string_literal_token1);
       if (lookahead == '*') ADVANCE(215);
       if (lookahead == '/') ADVANCE(218);
-      if (lookahead == '`') ADVANCE(25);
-      if (lookahead != 0) ADVANCE(216);
+      if (lookahead != 0 &&
+          lookahead != '`') ADVANCE(216);
       END_STATE();
     case 216:
       ACCEPT_TOKEN(aux_sym_raw_string_literal_token1);
       if (lookahead == '*') ADVANCE(215);
-      if (lookahead == '`') ADVANCE(25);
-      if (lookahead != 0) ADVANCE(216);
+      if (lookahead != 0 &&
+          lookahead != '`') ADVANCE(216);
       END_STATE();
     case 217:
       ACCEPT_TOKEN(aux_sym_raw_string_literal_token1);
@@ -94807,13 +94807,13 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4547] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2299),
   [4549] = {.entry = {.count = 1, .reusable = true}}, SHIFT(629),
   [4551] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__type_switch_header, 9, 0, 122),
-  [4553] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2408),
+  [4553] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2408),
   [4555] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2250),
   [4557] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__type_switch_header, 7, 0, 116),
   [4559] = {.entry = {.count = 1, .reusable = true}}, SHIFT(812),
   [4561] = {.entry = {.count = 1, .reusable = true}}, SHIFT(495),
   [4563] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1516),
-  [4565] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2384),
+  [4565] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2384),
   [4567] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1363),
   [4569] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1217),
   [4571] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2245),
@@ -94855,7 +94855,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4643] = {.entry = {.count = 1, .reusable = true}}, SHIFT(210),
   [4645] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1319),
   [4647] = {.entry = {.count = 1, .reusable = true}}, SHIFT(831),
-  [4649] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2383),
+  [4649] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2383),
   [4651] = {.entry = {.count = 1, .reusable = true}}, SHIFT(613),
   [4653] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1148),
   [4655] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1320),
@@ -94881,7 +94881,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4695] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2327),
   [4697] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1089),
   [4699] = {.entry = {.count = 1, .reusable = true}}, SHIFT(848),
-  [4701] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2249),
+  [4701] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2249),
   [4703] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1104),
   [4705] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1310),
   [4707] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1188),
@@ -94890,7 +94890,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4713] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1234),
   [4715] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2145),
   [4717] = {.entry = {.count = 1, .reusable = true}}, SHIFT(383),
-  [4719] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2251),
+  [4719] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2251),
   [4721] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1045),
   [4723] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1273),
   [4725] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__type_switch_header, 5, 0, 106),
@@ -94900,7 +94900,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4733] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1690),
   [4735] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_for_clause, 3, 0, 59),
   [4737] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1511),
-  [4739] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2428),
+  [4739] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2428),
   [4741] = {.entry = {.count = 1, .reusable = true}}, SHIFT(4),
   [4743] = {.entry = {.count = 1, .reusable = true}}, SHIFT(608),
   [4745] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1843),
@@ -94910,7 +94910,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4753] = {.entry = {.count = 1, .reusable = true}}, SHIFT(417),
   [4755] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1575),
   [4757] = {.entry = {.count = 1, .reusable = true}},  ACCEPT_INPUT(),
-  [4759] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2308),
+  [4759] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2308),
   [4761] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1591),
   [4763] = {.entry = {.count = 1, .reusable = true}}, SHIFT(232),
   [4765] = {.entry = {.count = 1, .reusable = true}}, SHIFT(125),
@@ -94919,7 +94919,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4771] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1968),
   [4773] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1122),
   [4775] = {.entry = {.count = 1, .reusable = true}}, SHIFT(442),
-  [4777] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2405),
+  [4777] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2405),
   [4779] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1922),
   [4781] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1205),
   [4783] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2277),
@@ -94928,7 +94928,7 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [4789] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1572),
   [4791] = {.entry = {.count = 1, .reusable = true}}, SHIFT(377),
   [4793] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1206),
-  [4795] = {.entry = {.count = 1, .reusable = false}}, SHIFT(2256),
+  [4795] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2256),
   [4797] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1110),
   [4799] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1207),
   [4801] = {.entry = {.count = 1, .reusable = true}}, SHIFT(1071),
