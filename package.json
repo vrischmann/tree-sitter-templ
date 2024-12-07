@@ -7,7 +7,7 @@
   "author": "Vincent Rischmann",
   "license": "MIT",
   "dependencies": {
-    "tree-sitter-go": "^0.23.3",
+    "tree-sitter-go": "^0.23.4",
     "node-addon-api": "^8.3.0",
     "node-gyp-build": "^4.8.4"
   },
