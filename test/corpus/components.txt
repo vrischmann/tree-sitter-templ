@@ -981,3 +981,154 @@ templ NumberList[N int | uint](numbers []N) {
           type: (slice_type
             element: (type_identifier))))
       (component_block)))
+
+===
+Import expression new struct object
+===
+
+package main
+
+type Item struct {
+  Attrs templ.Attributes
+}
+
+func (i Item) Select() templ.Component {
+  return nil
+}
+
+templ Invoices() {
+  @components.Item{
+    Attrs: templ.Attributes{
+      "name": "foobar",
+      "id": "200",
+    },
+  }.Select()
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (qualified_type
+              (package_identifier)
+              (type_identifier)))))))
+  (method_declaration
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (field_identifier)
+    (parameter_list)
+    (qualified_type
+      (package_identifier)
+      (type_identifier))
+    (block
+      (return_statement
+        (expression_list
+          (nil)))))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        (package_identifier)
+        (component_identifier)
+        (literal_value
+          (keyed_element
+            (literal_element
+              (identifier))
+            (literal_element
+              (composite_literal
+                (qualified_type
+                  (package_identifier)
+                  (type_identifier))
+                (literal_value
+                  (keyed_element
+                    (literal_element
+                      (interpreted_string_literal
+                        (interpreted_string_literal_content)))
+                    (literal_element
+                      (interpreted_string_literal
+                        (interpreted_string_literal_content))))
+                  (keyed_element
+                    (literal_element
+                      (interpreted_string_literal
+                        (interpreted_string_literal_content)))
+                    (literal_element
+                      (interpreted_string_literal
+                        (interpreted_string_literal_content)))))))))
+        (component_identifier)
+        (argument_list)))))
+
+===
+Import expression using nested struct function
+===
+
+package main
+
+type Bar struct {
+}
+
+templ (b Bar) Baz(a string) {
+  return nil
+}
+
+type Foo struct {
+  Bar Bar
+}
+
+templ Foobar() {
+  @components.Foo{}.Bar.Baz("str")
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list))))
+  (component_declaration
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (element_text)))
+  (type_declaration
+    (type_spec
+      (type_identifier)
+      (struct_type
+        (field_declaration_list
+          (field_declaration
+            (field_identifier)
+            (type_identifier))))))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        (package_identifier)
+        (component_identifier)
+        (literal_value)
+        (component_identifier)
+        (component_identifier)
+        (argument_list
+          (interpreted_string_literal
+            (interpreted_string_literal_content)))))))
