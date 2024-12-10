@@ -176,28 +176,36 @@ module.exports = grammar(GO, {
         //     @Foobar(a, b, c) { ... }
         //     @pkg.Foobar(a, b, c)
         //     @pkg.Foobar(a, b, c) { ... }
+        //     @pkg.Foo.Bar(a, b, c)
+        //     @pkg.Foo.Bar(a, b, c) { ... }
+        //     @pkg.Foo{}.Bar(a, b, c)
+        //     @pkg.Foo{}.Bar(a, b, c) { ... }
         //
         // Note that we use $._package_identifier and $.argument_list which are from the Go grammar.
-        //
-        // TODO(vincent): this doesn't handle importing components defined as fields in a struct correctly.
-        // Something like this:
-        //
-        //     @foo.bar.baz(a, b, c)
-        //
-        // Fails to parse.
-        component_import: $ => prec.right(seq(
+        component_import: $ => prec.right(1, seq(
             '@',
-            choice(
-                seq(
-                    field('package', $._package_identifier),
-                    '.',
-                    field('name', $._component_identifier),
-                ),
-                field('name', $._component_identifier),
-            ),
-            optional(field('arguments', $.argument_list)),
+            optional(seq(
+              field('package', $._package_identifier),
+              '.',
+            )),
+            field('name', $._component_member),
+            repeat(seq(
+              '.',
+              field('name', $._component_member)
+            )),
             optional(field('body', $.component_block)),
         )),
+        _component_member: $ => choice(
+            seq(
+                field('name', $._component_identifier),
+                field('body', $.literal_value)
+            ),
+            seq(
+                field('name', $._component_identifier),
+                field('arguments', $.argument_list)
+            ),
+            prec.right(-1, $._component_identifier)
+        ),
 
         // This matches a render statement:
         //
