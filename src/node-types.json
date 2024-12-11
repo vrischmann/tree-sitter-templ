@@ -875,7 +875,7 @@
     "named": true,
     "fields": {
       "arguments": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -885,21 +885,33 @@
         ]
       },
       "body": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
             "type": "component_block",
             "named": true
+          },
+          {
+            "type": "literal_value",
+            "named": true
           }
         ]
       },
       "name": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "argument_list",
+            "named": true
+          },
+          {
             "type": "component_identifier",
+            "named": true
+          },
+          {
+            "type": "literal_value",
             "named": true
           }
         ]
