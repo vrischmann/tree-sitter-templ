@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "tree-sitter-go": "^0.23.4",
-    "node-addon-api": "^8.3.0",
+    "node-addon-api": "^8.3.1",
     "node-gyp-build": "^4.8.4"
   },
   "peerDependencies": {
@@ -20,7 +20,7 @@
     }
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.25.1",
+    "tree-sitter-cli": "^0.25.2",
     "prebuildify": "^6.0.1"
   },
   "files": [
