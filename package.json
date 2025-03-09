@@ -20,7 +20,7 @@
     }
   },
   "devDependencies": {
-    "tree-sitter-cli": "^0.25.2",
+    "tree-sitter-cli": "^0.25.3",
     "prebuildify": "^6.0.1"
   },
   "files": [
