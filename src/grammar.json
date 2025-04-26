@@ -7053,6 +7053,22 @@
       "members": [
         {
           "type": "SYMBOL",
+          "name": "doctype"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "element_comment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "comment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "element_text"
+        },
+        {
+          "type": "SYMBOL",
           "name": "element"
         },
         {
@@ -7077,15 +7093,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "component_import"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "rawgo_block"
-        },
-        {
-          "type": "SYMBOL",
           "name": "component_render"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_import"
         },
         {
           "type": "SYMBOL",
@@ -7093,23 +7105,11 @@
         },
         {
           "type": "SYMBOL",
+          "name": "rawgo_block"
+        },
+        {
+          "type": "SYMBOL",
           "name": "expression"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "element_text"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "element_comment"
-        },
-        {
-          "type": "PREC_RIGHT",
-          "value": 1,
-          "content": {
-            "type": "SYMBOL",
-            "name": "comment"
-          }
         }
       ]
     },
@@ -7118,47 +7118,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "element"
+          "name": "element_comment"
         },
         {
           "type": "SYMBOL",
-          "name": "style_element"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "script_element"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "component_if_statement"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "component_for_statement"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "component_switch_statement"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "component_import"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "rawgo_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "component_render"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "component_children_expression"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "expression"
+          "name": "comment"
         },
         {
           "type": "ALIAS",
@@ -7171,15 +7135,47 @@
         },
         {
           "type": "SYMBOL",
-          "name": "element_comment"
+          "name": "element"
         },
         {
-          "type": "PREC_RIGHT",
-          "value": 1,
-          "content": {
-            "type": "SYMBOL",
-            "name": "comment"
-          }
+          "type": "SYMBOL",
+          "name": "style_element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "script_element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_if_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_for_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_switch_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_render"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_import"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "component_children_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rawgo_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
         }
       ]
     },
@@ -7454,56 +7450,11 @@
             "value": "@"
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "FIELD",
-                    "name": "package",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_package_identifier"
-                    }
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "."
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
             "type": "FIELD",
-            "name": "name",
+            "name": "expression",
             "content": {
               "type": "SYMBOL",
-              "name": "_component_member"
-            }
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "."
-                },
-                {
-                  "type": "FIELD",
-                  "name": "name",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_component_member"
-                  }
-                }
-              ]
+              "name": "expression_statement"
             }
           },
           {
@@ -7524,61 +7475,6 @@
           }
         ]
       }
-    },
-    "_component_member": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "name",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_component_identifier"
-              }
-            },
-            {
-              "type": "FIELD",
-              "name": "body",
-              "content": {
-                "type": "SYMBOL",
-                "name": "literal_value"
-              }
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "name",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_component_identifier"
-              }
-            },
-            {
-              "type": "FIELD",
-              "name": "arguments",
-              "content": {
-                "type": "SYMBOL",
-                "name": "argument_list"
-              }
-            }
-          ]
-        },
-        {
-          "type": "PREC_RIGHT",
-          "value": -1,
-          "content": {
-            "type": "SYMBOL",
-            "name": "_component_identifier"
-          }
-        }
-      ]
     },
     "component_render": {
       "type": "SEQ",
@@ -7644,10 +7540,6 @@
         {
           "type": "SYMBOL",
           "name": "self_closing_tag"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "doctype"
         }
       ]
     },
