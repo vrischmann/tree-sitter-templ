@@ -140,7 +140,11 @@ static bool is_element_text_terminator(int ch) {
   case '<':
   case '{':
   case '}':
+  case '\r':
   case '\n':
+  case '.':
+  case '(':
+  case '[':
     return true;
   }
 
@@ -148,12 +152,7 @@ static bool is_element_text_terminator(int ch) {
 }
 
 static bool is_element_text_terminator_for_import_expression(int ch) {
-  switch (ch) {
-  case '.':
-  case '(':
-  case ')':
-    return true;
-  }
+  switch (ch) { return true; }
 
   return false;
 }
@@ -176,11 +175,13 @@ const size_t statement_keywords_count =
 const size_t switch_statement_keywords_count =
     sizeof(statement_keywords) / sizeof(const char *);
 
-static bool scan_element_text(Scanner *scanner, TSLexer *lexer, bool in_switch) {
+static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
+                              bool in_switch) {
   int symbol = in_switch ? SWITCH_ELEMENT_TEXT : ELEMENT_TEXT;
   lexer->result_symbol = symbol;
 
-  size_t keywords_count = (in_switch) ? switch_statement_keywords_count : statement_keywords_count;
+  size_t keywords_count =
+      (in_switch) ? switch_statement_keywords_count : statement_keywords_count;
 
   // Start by marking the end so the following calls to advance don't
   // increase the token size
@@ -207,11 +208,16 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer, bool in_switch) 
     }
   }
 
-  // Try for a "@" which signals a component import expression
-  if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
-    scanner->saw_at_symbol = true;
+  if (lexer->lookahead == '@' || lexer->lookahead == '.' ||
+      lexer->lookahead == '(') {
     goto done;
   }
+
+  // Try for a "@" which signals a component import expression
+  // if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
+  //   scanner->saw_at_symbol = true;
+  //   goto done;
+  // }
 
   // 2. We looked for a statement keyword but found none.
 
@@ -259,7 +265,7 @@ done:
     has_marked = true;
   }
 
-  /* printf("done: %b, chars: %zu\n", has_marked, count); */
+  // printf("done: %d, chars: %zu\n", has_marked ? 1 : 0, count);
 
   if (has_marked) {
     scanner->saw_at_symbol = false;
@@ -446,7 +452,8 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     return true;
   }
 
-  if (valid_symbols[SWITCH_ELEMENT_TEXT] && scan_element_text(scanner, lexer, true)) {
+  if (valid_symbols[SWITCH_ELEMENT_TEXT] &&
+      scan_element_text(scanner, lexer, true)) {
     return true;
   }
 
