@@ -705,6 +705,10 @@
           "named": true
         },
         {
+          "type": "doctype",
+          "named": true
+        },
+        {
           "type": "element",
           "named": true
         },
@@ -878,54 +882,22 @@
     "type": "component_import",
     "named": true,
     "fields": {
-      "arguments": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "argument_list",
-            "named": true
-          }
-        ]
-      },
       "body": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
             "type": "component_block",
             "named": true
-          },
-          {
-            "type": "literal_value",
-            "named": true
           }
         ]
       },
-      "name": {
-        "multiple": true,
+      "expression": {
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "argument_list",
-            "named": true
-          },
-          {
-            "type": "component_identifier",
-            "named": true
-          },
-          {
-            "type": "literal_value",
-            "named": true
-          }
-        ]
-      },
-      "package": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "package_identifier",
+            "type": "expression_statement",
             "named": true
           }
         ]
