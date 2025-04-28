@@ -340,6 +340,7 @@ module.exports = grammar(GO, {
             repeat(choice(
                 $.attribute,
                 $.spread_attributes,
+                $.conditional_attribute_if_statement,
             )),
             '}',
         ),
