@@ -1196,6 +1196,10 @@
           "named": true
         },
         {
+          "type": "conditional_attribute_if_statement",
+          "named": true
+        },
+        {
           "type": "spread_attributes",
           "named": true
         }
