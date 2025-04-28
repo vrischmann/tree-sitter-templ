@@ -2,7 +2,7 @@
   "name": "tree-sitter-templ",
   "version": "2.2.0",
   "description": "tree-sitter parser for templ files (https://templ.guide)",
-  "main": "gramma.js",
+  "main": "grammar.js",
   "types": "bindings/node",
   "author": "Vincent Rischmann",
   "license": "MIT",
