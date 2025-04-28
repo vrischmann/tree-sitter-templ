@@ -314,6 +314,8 @@ module.exports = grammar(GO, {
         // This matches spread attributes.
         // See https://templ.guide/syntax-and-usage/attributes#spread-attributes
         //
+        // It's the part between the curly braces ending with three dots:
+        //
         //     <div
         //       disabled
         //       { attrs... }
@@ -334,6 +336,16 @@ module.exports = grammar(GO, {
             '}',
         ),
 
+        // This matches the block for a if or else statement in a conditional attribute.
+        // See https://templ.guide/syntax-and-usage/attributes#conditional-attributes
+        //
+        // It's the part between the curly braces:
+        //
+        //   <div
+        //     if shouldBeUsed {
+        //       <p>...</p>
+        //     }
+        //   </div>
         conditional_attribute_block: $ => seq(
             '{',
             '\n',
@@ -345,6 +357,14 @@ module.exports = grammar(GO, {
             '}',
         ),
 
+        // This matches a conditional attribute.
+        // See https://templ.guide/syntax-and-usage/attributes#conditional-attributes
+        //
+        //    <div
+        //      if shouldBeUsed {
+        //        <p>...</p>
+        //      }
+        //    </div>
         conditional_attribute_if_statement: $ => seq(
             token(prec(10, 'if')),
             optional(seq(
