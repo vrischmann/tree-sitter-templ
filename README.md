@@ -44,9 +44,9 @@ Finally you can open a `templ` file and run `:InspectTree` to see the parse tree
 
 The official tree-sitter [documentation](https://tree-sitter.github.io/tree-sitter/creating-parsers#getting-started) for creating a parser contains everything you need to start contributing to this parser.
 
-To make it slightly easier, we use a [Justfile](https://github.com/casey/just) to simplify some things:
+To make it easier, we use a [Justfile](https://github.com/casey/just) to simplify some tasks:
 * `just test [filter...]` to run tests
-* `just gen` to only generate the parser
-* `just build` to generate then build the parser
+* `just gen` to generate the parser
+* `just build` to generate and build the parser
 
-If you want to modify the parser, make sure to add a test or modify an existnig one in the `corpus` directory.
+If you want to modify the parser, make sure to add a test or modify an existing one in the `corpus` directory.
