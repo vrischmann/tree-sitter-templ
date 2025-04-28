@@ -1,8 +1,8 @@
 const GO = require("tree-sitter-go/grammar")
 
-// NOTE(vincent): we base this grammar on the Go grammar because a templ file is basically a Go file except for components and css expressions.
+// NOTE: This grammar is based on the Go grammar because a templ file is essentially a Go file with additional components and CSS expressions.
 //
-// If you see a rule mentioned below but do _not_ see it in the rules, go look at the Go grammar.
+// If you see a rule mentioned below but do not find it in the rules, refer to the Go grammar for its definition.
 
 module.exports = grammar(GO, {
     name: 'templ',
@@ -32,32 +32,26 @@ module.exports = grammar(GO, {
 
         // This matches a templ expression:
         //
+        // Example:
         //     <h1>{ title }</h1>
         //
-        // Note that we use $._expression which is from the Go grammar.
+        // Note: $._expression is inherited from the Go grammar.
         expression: $ => seq(
             '{',
             optional($._expression),
             '}',
         ),
 
-        //
         // Component stuff
         //
-
         // This matches the entire component:
         //
+        // Examples:
         //     templ Name(a int, b string, ...) {}
-        //
-        // Or returned from a method:
-        //
         //     templ (a Foobar) Name(a int, b string, ...) {}
-        //
-        // It can also use generics:
-        //
         //     templ Name[V WithName](objects []V) {}
         //
-        // Note that we use $.parameter_list and $.type_parameter_list which are from the Go grammar.
+        // Note: $.parameter_list and $.type_parameter_list are inherited from the Go grammar.
         component_declaration: $ => seq(
             'templ',
             optional(
