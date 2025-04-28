@@ -545,3 +545,49 @@ templ Test() {
                   (interpreted_string_literal_content))))))
         (tag_end
           (element_identifier))))))
+
+===
+Nested if attributes
+===
+
+package main
+
+templ ButtonGH(props buttonPropsGH) {
+  <button
+    if true {
+      if true {
+        foo={ props.tooltip }
+      }
+    }
+  ></button>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (conditional_attribute_if_statement
+            (true)
+            (conditional_attribute_block
+              (conditional_attribute_if_statement
+                (true)
+                (conditional_attribute_block
+                  (attribute
+                    (attribute_name)
+                    (expression
+                      (selector_expression
+                        (identifier)
+                        (field_identifier)))))))))
+        (tag_end
+          (element_identifier))))))
