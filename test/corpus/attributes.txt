@@ -591,3 +591,81 @@ templ ButtonGH(props buttonPropsGH) {
                         (field_identifier)))))))))
         (tag_end
           (element_identifier))))))
+
+===
+Nested if/else attributes
+===
+
+package main
+
+templ Foo() {
+  <button
+    if true {
+      if true {
+        foo="bar"
+      } else if false {
+        foo="baz"
+      } else {
+        foo="qux"
+      }
+    } else if true {
+      if true {
+        fa="bar"
+      }
+    } else {
+      fa="baz"
+    }
+  ></button>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (conditional_attribute_if_statement
+            (true)
+            (conditional_attribute_block
+              (conditional_attribute_if_statement
+                (true)
+                (conditional_attribute_block
+                  (attribute
+                    (attribute_name)
+                    (quoted_attribute_value
+                      (attribute_value))))
+                (conditional_attribute_if_statement
+                  (false)
+                  (conditional_attribute_block
+                    (attribute
+                      (attribute_name)
+                      (quoted_attribute_value
+                        (attribute_value))))
+                  (conditional_attribute_block
+                    (attribute
+                      (attribute_name)
+                      (quoted_attribute_value
+                        (attribute_value)))))))
+              (conditional_attribute_if_statement
+                (true)
+                (conditional_attribute_block
+                  (conditional_attribute_if_statement
+                    (true)
+                    (conditional_attribute_block
+                      (attribute
+                        (attribute_name)
+                        (quoted_attribute_value
+                          (attribute_value))))))
+                (conditional_attribute_block
+                  (attribute
+                    (attribute_name)
+                    (quoted_attribute_value
+                      (attribute_value)))))))
+        (tag_end
+          (element_identifier))))))
