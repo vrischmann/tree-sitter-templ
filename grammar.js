@@ -33,6 +33,7 @@ module.exports = grammar(GO, {
         // This matches a templ expression:
         //
         // Example:
+        //
         //     <h1>{ title }</h1>
         //
         // Note: $._expression is inherited from the Go grammar.
@@ -47,6 +48,7 @@ module.exports = grammar(GO, {
         // This matches the entire component:
         //
         // Examples:
+        //
         //     templ Name(a int, b string, ...) {}
         //     templ (a Foobar) Name(a int, b string, ...) {}
         //     templ Name[V WithName](objects []V) {}
@@ -66,6 +68,13 @@ module.exports = grammar(GO, {
         ),
 
         // This matches block of a component.
+        //
+        // Examples:
+        //
+        //    templ Name(a int, b string, ...) {
+        //      <h1>{ title }</h1>
+        //    }
+        //
         component_block: $ => seq(
             '{',
             repeat($._component_node),
@@ -106,8 +115,14 @@ module.exports = grammar(GO, {
 
         // This matches an if statement in a component block.
         //
-        // Based on the $.if_statement rule of the Go grammar
-        // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block
+        // Example:
+        //
+        //   if shouldBeUsed {
+        //     <p>...</p>
+        //   }
+        //
+        // Note: based on the $.if_statement rule in the Go grammar.
+        // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block.
         component_if_statement: $ => seq(
             'if',
             optional(seq(
@@ -127,8 +142,14 @@ module.exports = grammar(GO, {
 
         // This matches a for statement in a component block.
         //
-        // Based on the $.for_statement rule of the Go grammar
-        // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block
+        // Example:
+        //
+        //  for i := 0; i < 10; i++ {
+        //    <p>...</p>
+        //  }
+        //
+        // Note: based on the $.for_statement rule in the Go grammar.
+        // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block.
         component_for_statement: $ => seq(
             'for',
             optional(choice($._expression, $.for_clause, $.range_clause)),
@@ -137,7 +158,19 @@ module.exports = grammar(GO, {
 
         // This matches a switch statement in a component block.
         //
-        // Based on the $.expression_switch_statement rule of the Go grammar
+        // Example:
+        //
+        //  switch foo {
+        //    case 1:
+        //      <p>...</p>
+        //    case 2:
+        //      <p>...</p>
+        //    default:
+        //      <p>...</p>
+        //  }
+        //
+        // Note: based on the $.expression_switch_statement rule in the Go grammar.
+        // We can't directly use the Go grammar because it uses $.expression_switch_statement and we need to use our $.component_switch_statement.
         component_switch_statement: $ => prec.right(seq(
             'switch',
             optional(seq(
@@ -175,7 +208,7 @@ module.exports = grammar(GO, {
         //     @pkg.Foo{}.Bar(a, b, c)
         //     @pkg.Foo{}.Bar(a, b, c) { ... }
         //
-        // Note that we use $._package_identifier and $.argument_list which are from the Go grammar.
+        // Note: we use $._package_identifier and $.argument_list which are from the Go grammar.
         component_import: $ => prec.right(1, seq(
             '@',
             optional(seq(
@@ -224,8 +257,14 @@ module.exports = grammar(GO, {
             '}'
         ),
 
-        // a templ element, which is basically a HTML node
-
+        // This is a Templ element which is a basically a HTML element.
+        //
+        // Example:
+        //
+        //    <div>
+        //      <p>...</p>
+        //    </div>
+        //
         element: $ => choice(
             seq(
                 $.tag_start,
