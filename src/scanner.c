@@ -93,6 +93,7 @@ enum TokenType {
 };
 
 typedef struct {
+  int dummy;
 } Scanner;
 
 static unsigned serialize(Scanner *scanner, char *buffer) { return 0; }
