@@ -209,34 +209,11 @@ module.exports = grammar(GO, {
         //     @pkg.Foo{}.Bar(a, b, c)
         //     @pkg.Foo{}.Bar(a, b, c) { ... }
         //
-        // Note: we use $._package_identifier and $.argument_list which are from the Go grammar.
+        // Note: we use $.expression_statement which is in the Go grammar.
         component_import: $ => prec.right(1, seq(
-            // First name part
             '@',
             field('expression', $.expression_statement),
-
-            // optional(seq(
-            //   field('package', $._package_identifier),
-            //   '.',
-            // )),
-            // field('name', $._component_identifier),
-            // // Maybe generic type arguments follow with a literal value or just a literal value
-            // optional(choice(
-            //     seq(
-            //         field('type_arguments', $.type_arguments),
-            //         field('body', $.literal_value),
-            //     ),
-            //     field('body', $.literal_value),
-            // )),
-            // // Maybe a repeat of dot plus identifiers
-            // repeat(seq(
-            //     '.',
-            //     field('component', $._component_identifier),
-            // )),
-            // // Maybe an argument list
-            // optional(field('arguments', $.argument_list)),
-
-            // Finally maybe a component block
+            // Maybe a component block
             optional(field('body', $.component_block)),
         )),
 
@@ -528,19 +505,6 @@ module.exports = grammar(GO, {
             seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
         ),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
-
-        // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
-
-        // literal_value: $ => prec.dynamic(2, seq(
-        //     '{',
-        //     optional(
-        //         seq(
-        //             commaSep(choice($.literal_element, $.keyed_element)),
-        //             optional(','))),
-        //     '}',
-        // )),
-        //
-        // literal_element: $ => choice($._expression, $.literal_value),
     },
 });
 
