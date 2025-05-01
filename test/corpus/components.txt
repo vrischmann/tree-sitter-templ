@@ -568,6 +568,7 @@ templ showAll() {
 }
 
 templ wrapChildren() {
+    @navTemplate()
     <div id="wrapper">
         { children... }
     </div>
@@ -598,6 +599,8 @@ templ wrapChildren() {
     (component_identifier)
     (parameter_list)
     (component_block
+      (component_import
+        (call_expression))
       (element
         (tag_start
           (element_identifier)
