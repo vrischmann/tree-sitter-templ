@@ -35,9 +35,6 @@
   (dynamic_class_attribute_value)
 ] @function.method
 
-(component_import
-  name: (component_identifier) @function)
-
 (component_render) @function.call
 
 (element_comment) @comment @spell
