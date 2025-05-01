@@ -600,7 +600,9 @@ templ wrapChildren() {
     (parameter_list)
     (component_block
       (component_import
-        (call_expression))
+        (expression_statement
+          (call_expression
+            (argument_list))))
       (element
         (tag_start
           (element_identifier)
