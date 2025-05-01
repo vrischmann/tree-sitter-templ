@@ -149,6 +149,7 @@ static bool is_element_text_terminator_for_import_expression(int ch) {
   case '.':
   case '(':
   case ')':
+  case '[':
     return true;
   }
 
