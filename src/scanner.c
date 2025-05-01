@@ -260,9 +260,9 @@ done:
 
   /* printf("done: %b, chars: %zu\n", has_marked, count); */
 
-  if (has_marked) {
-    scanner->saw_at_symbol = false;
-  }
+  // if (has_marked) {
+  //   scanner->saw_at_symbol = false;
+  // }
 
   return has_marked;
 }
