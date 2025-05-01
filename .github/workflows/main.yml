@@ -30,7 +30,6 @@ jobs:
           git clone https://github.com/a-h/templ.git examples/templ --single-branch --depth=1 --filter=blob:none
       - name: Parse examples
         id: examples
-        continue-on-error: true
         uses: tree-sitter/parse-action@v4
         with:
           files: examples/**/*.templ
