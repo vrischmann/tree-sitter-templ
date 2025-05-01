@@ -9,12 +9,9 @@ module.exports = grammar(GO, {
 
     externals: $ => [
         $.css_property_value,
-        $.element_text,
-        $.element_comment,
-        $.style_element_text,
         $.script_block_text,
-        $.script_element_text,
         $.switch_element_text,
+        $.element_text,
     ],
 
     conflicts: ($, original) => [
@@ -111,6 +108,39 @@ module.exports = grammar(GO, {
             alias($.switch_element_text, $.element_text),
             $.element_comment,
             prec.right(1, $.comment),
+        ),
+
+
+        // This matches an entire HTML comment, including its content.
+        //
+        // Example:
+        //
+        //    <!-- This is a comment -->
+        element_comment: $ => seq(
+            '<!--',
+            repeat(
+                choice(
+                    // Option A: Match one or more characters that are NOT hyphens '-'.
+                    // Consumes chunks of text, including newlines, up until a hyphen is encountered.
+                    /[^-]+/,
+                    // Option B: Match a hyphen '-' followed immediately by
+                    // any single character that is NOT a closing angle bracket '>'.
+                    // This rule allows hyphens within the comment content,
+                    // as long as they are not part of the closing '-->' sequence.
+                    // For example, it matches '-- ' or '-a' but will fail to match
+                    // the '-' if the next character is '>'.
+                    /-[^>]/
+                )
+                // The 'repeat' means the parser will repeatedly try 'Option A' then 'Option B'
+                // to consume as much content as possible. It stops when it encounters
+                // the sequence '-->' because:
+                // - Option A `/[^-]+/` fails immediately (sees '-').
+                // - Option B `/-[^>]/` consumes the first '-', looks at the second '-',
+                //   consumes it (since '-' is not '>'), then looks at '>'. Now `/-[^>]/` fails
+                //   because the character following the hyphen *is* '>'.
+                // Since neither choice matches, the 'repeat' block finishes.
+            ),
+            '-->'
         ),
 
         // This matches an if statement in a component block.
@@ -299,13 +329,43 @@ module.exports = grammar(GO, {
             '>'
         ),
 
+        // This matches a complete style element.
+        //
+        // Example:
+        //
+        //   <style>
+        //     body {
+        //       color: red;
+        //     }
+        //   </style>
+        //
+        // or the self closing tag like this:
+        //
+        //   <style href="" />
         style_element: $ => choice(
             seq(
                 $.style_tag_start,
-                repeat($.style_element_text),
+                optional($.style_element_text),
                 $.style_tag_end,
             ),
             $.self_closing_style_tag,
+        ),
+        // Rule to capture the text content *between* <style> and </style> tags.
+        // It requires at least one character to be present.
+        // Example: In `<style> body { color: red; } </style>`, this matches ` body { color: red; } `
+        style_element_text: $ => repeat1(
+            choice(
+                // Option A: Match one or more characters that are NOT '<'.
+                // This consumes chunks of text (including whitespace and newlines) efficiently up until a '<' is found.
+                /[^<]+/,
+                // Option B: Match a '<' character *only if* it is immediately followed by a character that is NOT '/'.
+                // This allows '<' characters within the style content (e.g., in selectors like `a < b`),
+                // but prevents the rule from matching the start of the closing tag '</style>'.
+                // When the parser sees '</', this rule fails because the character after '<' *is* '/'.
+                /<[^/]/
+            )
+            // The repetition stops just before '</style>' because neither choice A nor B
+            // can match that sequence.
         ),
         style_tag_start: $ => seq(
             '<',
@@ -325,12 +385,22 @@ module.exports = grammar(GO, {
             '/>',
         ),
 
+        // This matches any type of attribute.
+        // See https://templ.guide/syntax-and-usage/attributes
         _attribute: $ => choice(
             $.attribute,
             $.spread_attributes,
             $.conditional_attribute_if_statement,
         ),
 
+        // This matches a simple attribute.
+        //
+        // Example:
+        //
+        //   <div class="foo">
+        //   <div name={ `foo` }>
+        //   <div class={ templ.SafeCSS(`color: red`) }>
+        //   <div { attrs... }>
         attribute: $ => seq(
             field('name', $.attribute_name),
             optional(seq(
@@ -470,23 +540,57 @@ module.exports = grammar(GO, {
             '}',
         ),
 
+        // This matches a complete script element
+        //
+        // Example:
+        //
+        //   <script>
+        //   ...
+        //   </script>
+        //
+        // or the self closing tag like this:
+        //
+        //   <script src="..." />
         script_element: $ => choice(
             seq(
-                '<',
-                field('name', 'script'),
-                repeat($.attribute),
-                '>',
+                $.script_tag_start,
                 optional($.script_element_text),
-                '</',
-                'script',
-                '>'
+                $.script_tag_end,
             ),
-            seq(
-                '<',
-                field('name', 'script'),
-                repeat($.attribute),
-                '/>',
-            ),
+            $.self_closing_script_tag,
+        ),
+        // Rule to capture the text content *between* <script> and </script> tags.
+        // Requires at least one character to be present.
+        // Example: In `<script> alert('Hi'); </script>`, this matches ` alert('Hi'); `
+        script_element_text: $ => repeat1(
+            choice(
+                // Option A: Match one or more characters that are NOT '<'.
+                // Consumes text chunks (including newlines) until a '<' is encountered.
+                /[^<]+/,
+                // Option B: Match '<' *only if* it's followed by a character that is NOT '/'.
+                // Allows '<' within the script content but prevents matching the start
+                // of the closing tag '</script>'. Fails when '</' is seen.
+                /<[^/]/
+            )
+            // The repetition stops just before '</script>' because neither choice A nor B
+            // can match that sequence.
+        ),
+        script_tag_start: $ => seq(
+            '<',
+            field('name', 'script'),
+            repeat($.attribute),
+            '>',
+        ),
+        script_tag_end: $ => seq(
+            '</',
+            'script',
+            '>'
+        ),
+        self_closing_script_tag: $ => seq(
+            '<',
+            field('name', 'script'),
+            repeat($.attribute),
+            '/>',
         ),
 
         // rawgo block

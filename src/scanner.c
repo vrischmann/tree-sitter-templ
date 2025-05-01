@@ -84,12 +84,9 @@ static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
 
 enum TokenType {
   CSS_PROPERTY_VALUE,
-  ELEMENT_TEXT,
-  ELEMENT_COMMENT,
-  STYLE_ELEMENT_TEXT,
   SCRIPT_BLOCK_TEXT,
-  SCRIPT_ELEMENT_TEXT,
   SWITCH_ELEMENT_TEXT,
+  ELEMENT_TEXT,
 };
 
 typedef struct {
@@ -176,11 +173,13 @@ const size_t statement_keywords_count =
 const size_t switch_statement_keywords_count =
     sizeof(statement_keywords) / sizeof(const char *);
 
-static bool scan_element_text(Scanner *scanner, TSLexer *lexer, bool in_switch) {
+static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
+                              bool in_switch) {
   int symbol = in_switch ? SWITCH_ELEMENT_TEXT : ELEMENT_TEXT;
   lexer->result_symbol = symbol;
 
-  size_t keywords_count = (in_switch) ? switch_statement_keywords_count : statement_keywords_count;
+  size_t keywords_count =
+      (in_switch) ? switch_statement_keywords_count : statement_keywords_count;
 
   // Start by marking the end so the following calls to advance don't
   // increase the token size
@@ -268,128 +267,6 @@ done:
   return has_marked;
 }
 
-static bool scan_style_element_text(Scanner *scanner, TSLexer *lexer) {
-  (void)scanner;
-
-  lexer->result_symbol = STYLE_ELEMENT_TEXT;
-
-  // Start by marking the end so the following calls to advance don't
-  // increase the token size
-  lexer->mark_end(lexer);
-
-  bool has_marked = false;
-
-  const char *end_keyword = "</style>";
-  size_t length = strlen(end_keyword);
-
-  // Look for the closing tag
-
-outer:
-  while (!lexer->eof(lexer)) {
-    for (size_t i = 0; i < length; i++) {
-      if (lexer->lookahead != end_keyword[i]) {
-        // This branch means the keyword was not found at this point, therefore
-        // we have to extend the current token.
-
-        lexer->advance(lexer, false);
-        lexer->mark_end(lexer);
-        has_marked = true;
-
-        goto outer;
-      }
-
-      // Otherwise continue and try to find the next character in the keyword
-
-      lexer->advance(lexer, false);
-    }
-
-    // The keyword was found
-    break;
-  }
-
-  return has_marked;
-}
-
-static bool scan_element_comment(Scanner *scanner, TSLexer *lexer) {
-  (void)scanner;
-
-  // Start by marking the end so the following calls to advance don't
-  // increase the token size
-  lexer->mark_end(lexer);
-
-  LookaheadBuffer buffer;
-  lookahead_buffer_init(&buffer);
-
-  if (!lookahead_buffer_find_keyword(&buffer, lexer, "<!--")) {
-    return false;
-  }
-
-  size_t dashes = 0;
-  while (lexer->lookahead) {
-    switch (lexer->lookahead) {
-    case '-':
-      ++dashes;
-      break;
-    case '>':
-      if (dashes >= 2) {
-        lexer->result_symbol = ELEMENT_COMMENT;
-        lexer->advance(lexer, false);
-        lexer->mark_end(lexer);
-        return true;
-      }
-      dashes = 0;
-      break;
-    default:
-      dashes = 0;
-      break;
-    }
-    lexer->advance(lexer, false);
-  }
-  return false;
-}
-
-static bool scan_script_element_text(Scanner *scanner, TSLexer *lexer) {
-  (void)scanner;
-
-  lexer->result_symbol = SCRIPT_ELEMENT_TEXT;
-
-  // Start by marking the end so the following calls to advance don't
-  // increase the token size
-  lexer->mark_end(lexer);
-
-  bool has_marked = false;
-
-  const char *end_keyword = "</script>";
-  size_t length = strlen(end_keyword);
-
-  // Look for the closing tag
-
-outer:
-  while (!lexer->eof(lexer)) {
-    for (size_t i = 0; i < length; i++) {
-      if (lexer->lookahead != end_keyword[i]) {
-        // This branch means the keyword was not found at this point, therefore
-        // we have to extend the current token.
-
-        lexer->advance(lexer, false);
-        lexer->mark_end(lexer);
-        has_marked = true;
-
-        goto outer;
-      }
-
-      // Otherwise continue and try to find the next character in the keyword
-
-      lexer->advance(lexer, false);
-    }
-
-    // The keyword was found
-    break;
-  }
-
-  return has_marked;
-}
-
 static bool scan_script_block_text(Scanner *scanner, TSLexer *lexer) {
   (void)scanner;
 
@@ -446,30 +323,17 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     return true;
   }
 
-  if (valid_symbols[SWITCH_ELEMENT_TEXT] && scan_element_text(scanner, lexer, true)) {
-    return true;
-  }
-
-  if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer, false)) {
-    return true;
-  }
-
-  if (valid_symbols[ELEMENT_COMMENT] && scan_element_comment(scanner, lexer)) {
-    return true;
-  }
-
-  if (valid_symbols[STYLE_ELEMENT_TEXT] &&
-      scan_style_element_text(scanner, lexer)) {
-    return true;
-  }
-
   if (valid_symbols[SCRIPT_BLOCK_TEXT] &&
       scan_script_block_text(scanner, lexer)) {
     return true;
   }
 
-  if (valid_symbols[SCRIPT_ELEMENT_TEXT] &&
-      scan_script_element_text(scanner, lexer)) {
+  if (valid_symbols[SWITCH_ELEMENT_TEXT] &&
+      scan_element_text(scanner, lexer, true)) {
+    return true;
+  }
+
+  if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer, false)) {
     return true;
   }
 

@@ -119,10 +119,12 @@ templ jsAssets(assets Assets) {
             field: (field_identifier)))
         body: (component_block
           (script_element
-            (attribute
-              name: (attribute_name)
-              value: (expression
-                (binary_expression
-                  left: (interpreted_string_literal
-                    (interpreted_string_literal_content))
-                  right: (identifier))))))))))
+            (script_tag_start
+              (attribute
+                name: (attribute_name)
+                value: (expression
+                  (binary_expression
+                    left: (interpreted_string_literal
+                      (interpreted_string_literal_content))
+                    right: (identifier)))))
+            (script_tag_end)))))))

@@ -241,6 +241,7 @@ templ Foobar() {
             name: (attribute_name)
             value: (quoted_attribute_value
               (attribute_value))))
+        (style_element_text)
         (style_tag_end))
       (element
         (tag_start
