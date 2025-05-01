@@ -411,15 +411,19 @@ templ Page(title string, body string) {
       (parameter_declaration
         name: (identifier)
         type: (type_identifier)))
-    (component_block
+        (component_block
       (component_import
-        name: (component_identifier)
-        arguments: (argument_list
-          (identifier)))
+        expression: (expression_statement
+          (call_expression
+            function: (identifier)
+            arguments: (argument_list
+              (identifier)))))
       (component_import
-        name: (component_identifier)
-        arguments: (argument_list
-          (identifier))))))
+        expression: (expression_statement
+          (call_expression
+            function: (identifier)
+            arguments: (argument_list
+              (identifier))))))))
 
 =====
 Long text
@@ -579,8 +583,10 @@ templ wrapChildren() {
     (parameter_list)
     (component_block
       (component_import
-        (component_identifier)
-        (argument_list)
+        (expression_statement
+          (call_expression
+            (identifier)
+            (argument_list)))
         (component_block
           (element
             (tag_start
@@ -814,11 +820,14 @@ templ Example() {
         (tag_start
           name: (element_identifier))
         (component_import
-          package: (package_identifier)
-          name: (component_identifier)
-          arguments: (argument_list
-            (interpreted_string_literal
-              (interpreted_string_literal_content))))
+          expression: (expression_statement
+            (call_expression
+              function: (selector_expression
+                operand: (identifier)
+                field: (field_identifier))
+              arguments: (argument_list
+                (interpreted_string_literal
+                  (interpreted_string_literal_content))))))
         (tag_end
           name: (element_identifier))))))
 
@@ -920,8 +929,10 @@ templ Foobar(item Item) {
           name: (element_identifier))
         (element_text)
         (component_import
-          package: (package_identifier)
-          name: (component_identifier))
+          expression: (expression_statement
+            (selector_expression
+              operand: (identifier)
+              field: (field_identifier))))
         (element_text)
         (tag_end
           name: (element_identifier))))))
@@ -942,6 +953,12 @@ templ ServiceList[V WithName](services []V) {
 templ NumberList[N int | uint](numbers []N) {
 }
 
+templ Test() {
+  @NumberList[int]()
+  @NumberList[int]
+  @NumberList[int, string]{}
+}
+
 ---
 
 (source_file
@@ -949,39 +966,68 @@ templ NumberList[N int | uint](numbers []N) {
     (package_identifier))
   (type_declaration
     (type_spec
-      name: (type_identifier)
-      type: (interface_type
+      (type_identifier)
+      (interface_type
         (method_elem
-          name: (field_identifier)
-          parameters: (parameter_list)
-          result: (type_identifier)))))
+          (field_identifier)
+          (parameter_list)
+          (type_identifier)))))
   (component_declaration
-    name: (component_identifier)
-    type_parameters: (type_parameter_list
+    (component_identifier)
+    (type_parameter_list
       (type_parameter_declaration
-        name: (identifier)
-        type: (type_constraint
+        (identifier)
+        (type_constraint
           (type_identifier))))
     (parameter_list
       (parameter_declaration
-        name: (identifier)
-        type: (slice_type
-          element: (type_identifier))))
+        (identifier)
+        (slice_type
+          (type_identifier))))
     (component_block))
   (component_declaration
-    name: (component_identifier)
-    type_parameters: (type_parameter_list
+    (component_identifier)
+    (type_parameter_list
       (type_parameter_declaration
-        name: (identifier)
-        type: (type_constraint
+        (identifier)
+        (type_constraint
           (type_identifier)
           (type_identifier))))
-      (parameter_list
-        (parameter_declaration
-          name: (identifier)
-          type: (slice_type
-            element: (type_identifier))))
-      (component_block)))
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (slice_type
+          (type_identifier))))
+    (component_block))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        (expression_statement
+          (call_expression
+            (identifier)
+            (type_arguments
+              (type_elem
+                (type_identifier)))
+            (argument_list))))
+      (component_import
+        (expression_statement
+          (index_expression
+            (identifier)
+            (identifier))))
+      (component_import
+        (expression_statement
+          (composite_literal
+            (generic_type
+              (type_identifier)
+              (type_arguments
+                (type_elem
+                  (type_identifier))
+                (type_elem
+                  (type_identifier))))
+            (literal_value)))))))
+
 
 ===
 Import expression new struct object
@@ -1040,13 +1086,9 @@ templ Invoices() {
     (parameter_list)
     (component_block
       (component_import
-        (package_identifier)
-        (component_identifier)
-        (literal_value
-          (keyed_element
-            (literal_element
-              (identifier))
-            (literal_element
+        (expression_statement
+          (call_expression
+            (selector_expression
               (composite_literal
                 (qualified_type
                   (package_identifier)
@@ -1054,20 +1096,29 @@ templ Invoices() {
                 (literal_value
                   (keyed_element
                     (literal_element
-                      (interpreted_string_literal
-                        (interpreted_string_literal_content)))
+                      (identifier))
                     (literal_element
-                      (interpreted_string_literal
-                        (interpreted_string_literal_content))))
-                  (keyed_element
-                    (literal_element
-                      (interpreted_string_literal
-                        (interpreted_string_literal_content)))
-                    (literal_element
-                      (interpreted_string_literal
-                        (interpreted_string_literal_content)))))))))
-        (component_identifier)
-        (argument_list)))))
+                      (composite_literal
+                        (qualified_type
+                          (package_identifier)
+                          (type_identifier))
+                        (literal_value
+                          (keyed_element
+                            (literal_element
+                              (interpreted_string_literal
+                                (interpreted_string_literal_content)))
+                            (literal_element
+                              (interpreted_string_literal
+                                (interpreted_string_literal_content))))
+                          (keyed_element
+                            (literal_element
+                              (interpreted_string_literal
+                                (interpreted_string_literal_content)))
+                            (literal_element
+                              (interpreted_string_literal
+                                (interpreted_string_literal_content))))))))))
+              (field_identifier))
+            (argument_list)))))))
 
 ===
 Import expression using nested struct function
@@ -1125,11 +1176,69 @@ templ Foobar() {
     (parameter_list)
     (component_block
       (component_import
-        (package_identifier)
-        (component_identifier)
-        (literal_value)
-        (component_identifier)
-        (component_identifier)
-        (argument_list
-          (interpreted_string_literal
-            (interpreted_string_literal_content)))))))
+        (expression_statement
+          (call_expression
+            (selector_expression
+              (selector_expression
+                (composite_literal
+                  (qualified_type
+                    (package_identifier)
+                    (type_identifier))
+                  (literal_value))
+                (field_identifier))
+              (field_identifier))
+            (argument_list
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))))))))
+
+===
+Suspense example
+===
+
+templ Slot() {
+  <div>Loading { name }...</div>
+}
+
+---
+
+(source_file
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier))
+        (element_text)
+        (expression
+          (identifier))
+        (element_text)
+        (tag_end
+          (element_identifier))))))
+
+=========
+Valid element_text with parentheses
+=========
+
+package foobar
+
+templ Page2() {
+  <div>foo () bat !</div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (element_text)
+        (tag_end
+          name: (element_identifier))))))
+
