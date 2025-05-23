@@ -18,5 +18,3 @@ examples:
 
 init-templ:
 	git submodule update --init --depth=1
-	git submodule foreach git sparse-checkout init --cone
-	git submodule foreach git sparse-checkout set examples
