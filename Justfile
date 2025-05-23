@@ -14,7 +14,7 @@ build: gen
 	npx node-gyp build
 
 examples: build
-	tree-sitter parse "templ/examples/**/*.templ"
+	tree-sitter parse -q -t "templ/examples/**/*.templ"
 
 init-templ:
 	git submodule update --init --depth=1
