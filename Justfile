@@ -13,6 +13,9 @@ build: gen
 	npx node-gyp configure
 	npx node-gyp build
 
+examples: build
+	tree-sitter parse "templ/examples/**/*.templ"
+
 init-templ:
 	git submodule update --init --depth=1
 	git submodule foreach git sparse-checkout init --cone
