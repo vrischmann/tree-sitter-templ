@@ -324,8 +324,12 @@ module.exports = grammar(GO, {
 
         doctype: $ => seq(
             '<!',
-            field('name', $.element_identifier),
-            'html',
+            // Case insensitive "doctype"
+            /[Dd][Oo][Cc][Tt][Yy][Pp][Ee]/,
+            choice(
+                'html',
+                'HTML PUBLIC "http://www.w3.org/TR/html4/loose.dtd"',
+            ),
             '>'
         ),
 
