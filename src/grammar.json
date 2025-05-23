@@ -7765,16 +7765,21 @@
           "value": "<!"
         },
         {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "element_identifier"
-          }
+          "type": "PATTERN",
+          "value": "[Dd][Oo][Cc][Tt][Yy][Pp][Ee]"
         },
         {
-          "type": "STRING",
-          "value": "html"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "html"
+            },
+            {
+              "type": "STRING",
+              "value": "HTML PUBLIC \"http://www.w3.org/TR/html4/loose.dtd\""
+            }
+          ]
         },
         {
           "type": "STRING",

@@ -1434,18 +1434,7 @@
   {
     "type": "doctype",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "element_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "dot",
@@ -3909,6 +3898,10 @@
   },
   {
     "type": "@",
+    "named": false
+  },
+  {
+    "type": "HTML PUBLIC \"http://www.w3.org/TR/html4/loose.dtd\"",
     "named": false
   },
   {
