@@ -417,6 +417,10 @@
           {
             "type": "attribute_name",
             "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
           }
         ]
       },
