@@ -149,6 +149,7 @@ static bool is_element_text_terminator_for_import_expression(int ch) {
   case '.':
   case '(':
   case ')':
+  case '[':
     return true;
   }
 
@@ -260,9 +261,9 @@ done:
 
   /* printf("done: %b, chars: %zu\n", has_marked, count); */
 
-  if (has_marked) {
-    scanner->saw_at_symbol = false;
-  }
+  // if (has_marked) {
+  //   scanner->saw_at_symbol = false;
+  // }
 
   return has_marked;
 }
