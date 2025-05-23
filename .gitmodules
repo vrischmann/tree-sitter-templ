@@ -1,0 +1,3 @@
+[submodule "templ"]
+	path = templ
+	url = https://github.com/a-h/templ

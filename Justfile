@@ -12,3 +12,8 @@ test FILTER="": gen
 build: gen
 	npx node-gyp configure
 	npx node-gyp build
+
+init-templ:
+	git submodule update --init --depth=1
+	git submodule foreach git sparse-checkout init --cone
+	git submodule foreach git sparse-checkout set examples
