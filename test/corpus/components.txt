@@ -612,6 +612,7 @@ package main
 templ Foobar() {
   <!doctype html>
   <!DOCTYPE html>
+  <!DOCTYPE HTML PUBLIC "http://www.w3.org/TR/html4/loose.dtd">
   <h1>Foobar</h1>
 }
 
@@ -625,11 +626,11 @@ templ Foobar() {
     (parameter_list)
     (component_block
       (element
-        (doctype
-          name: (element_identifier)))
+        (doctype))
       (element
-        (doctype
-          name: (element_identifier)))
+        (doctype))
+      (element
+        (doctype))
       (element
         (tag_start
           name: (element_identifier))
