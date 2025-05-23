@@ -669,3 +669,37 @@ templ Foo() {
                       (attribute_value)))))))
         (tag_end
           (element_identifier))))))
+
+===
+Attribute names with expression
+===
+
+templ Foo() {
+	<form
+		{ "dynamic"+"-attr-key" }={ "hello world" }
+	>
+  </form>
+}
+
+---
+
+(source_file
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          (element_identifier)
+          (attribute
+            (expression
+              (binary_expression
+                (interpreted_string_literal
+                  (interpreted_string_literal_content))
+                (interpreted_string_literal
+                  (interpreted_string_literal_content))))
+            (expression
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))))
+        (tag_end
+          (element_identifier))))))

@@ -401,12 +401,16 @@ module.exports = grammar(GO, {
         //
         // Example:
         //
+        //   <div { "dynamic"+"-attr-key" }={ "hello world" }>
         //   <div class="foo">
         //   <div name={ `foo` }>
         //   <div class={ templ.SafeCSS(`color: red`) }>
         //   <div { attrs... }>
         attribute: $ => seq(
-            field('name', $.attribute_name),
+            field('name', choice(
+                $.expression,
+                $.attribute_name,
+            )),
             optional(seq(
                 '=',
                 field('value', choice(
