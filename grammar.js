@@ -78,36 +78,37 @@ module.exports = grammar(GO, {
             '}',
         ),
         _component_node: $ => choice(
-            $.element,
-            $.style_element,
-            $.script_element,
-            $.component_if_statement,
-            $.component_for_statement,
-            $.component_switch_statement,
-            $.component_import,
-            $.rawgo_block,
-            $.component_render,
-            $.component_children_expression,
-            $.expression,
-            $.element_text,
-            $.element_comment,
-            prec.right(1, $.comment),
+            $.doctype,                             // <!DOCTYPE html>
+            $.element_comment,                     // <!--
+            $.comment,                             // Go comment, // or /*
+            $.element,                             // <a>, <br>, etc
+            $.style_element,                       // <style>
+            $.script_element,                      // <script>
+            $.component_if_statement,              // if {}
+            $.component_for_statement,             // for {}
+            $.component_switch_statement,          // switch {}
+            $.component_render,                    // {! Component(a, b, c) }
+            $.component_import,                    // @Component(a, b, c) { <div>Children</div> }
+            $.component_children_expression,       // { children... }
+            $.rawgo_block,                         // {{ myval := x.myval }}
+            $.expression,                          // { "abc" } or { foo }
+            $.element_text,                        // raw elements
         ),
         _switch_component_node: $ => choice(
+            $.element_comment,
+            $.comment,
             $.element,
             $.style_element,
             $.script_element,
             $.component_if_statement,
             $.component_for_statement,
             $.component_switch_statement,
-            $.component_import,
-            $.rawgo_block,
             $.component_render,
+            $.component_import,
             $.component_children_expression,
+            $.rawgo_block,
             $.expression,
             alias($.switch_element_text, $.element_text),
-            $.element_comment,
-            prec.right(1, $.comment),
         ),
 
 
@@ -238,31 +239,13 @@ module.exports = grammar(GO, {
         //     @pkg.Foo{}.Bar(a, b, c)
         //     @pkg.Foo{}.Bar(a, b, c) { ... }
         //
-        // Note: we use $._package_identifier and $.argument_list which are from the Go grammar.
+        // Note: we use $.expression_statement which is in the Go grammar.
         component_import: $ => prec.right(1, seq(
             '@',
-            optional(seq(
-              field('package', $._package_identifier),
-              '.',
-            )),
-            field('name', $._component_member),
-            repeat(seq(
-              '.',
-              field('name', $._component_member)
-            )),
+            field('expression', $.expression_statement),
+            // Maybe a component block
             optional(field('body', $.component_block)),
         )),
-        _component_member: $ => choice(
-            seq(
-                field('name', $._component_identifier),
-                field('body', $.literal_value)
-            ),
-            seq(
-                field('name', $._component_identifier),
-                field('arguments', $.argument_list)
-            ),
-            prec.right(-1, $._component_identifier)
-        ),
 
         // This matches a render statement:
         //
@@ -302,7 +285,6 @@ module.exports = grammar(GO, {
                 $.tag_end,
             ),
             $.self_closing_tag,
-            $.doctype,
         ),
         tag_start: $ => seq(
             '<',
@@ -635,19 +617,6 @@ module.exports = grammar(GO, {
             seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
         ),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
-
-        // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
-
-        literal_value: $ => seq(
-            '{',
-            optional(
-                seq(
-                    commaSep(choice($.literal_element, $.keyed_element)),
-                    optional(','))),
-            '}',
-        ),
-
-        literal_element: $ => choice($._expression, $.literal_value),
     },
 });
 
@@ -659,4 +628,12 @@ function commaSep1(rule) {
 
 function commaSep(rule) {
     return optional(commaSep1(rule))
+}
+
+function dotSep1(rule) {
+    return seq(rule, repeat(seq('.', rule)))
+}
+
+function dotSep(rule) {
+    return optional(dotSep1(rule))
 }
