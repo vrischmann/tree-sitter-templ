@@ -408,13 +408,14 @@ module.exports = grammar(GO, {
         //   <div name={ `foo` }>
         //   <div class={ templ.SafeCSS(`color: red`) }>
         //   <div { attrs... }>
+        //   <div noshade?={ false }>
         attribute: $ => seq(
             field('name', choice(
                 $.expression,
                 $.attribute_name,
             )),
             optional(seq(
-                '=',
+                choice('=', '?='),
                 field('value', choice(
                     $.expression,
                     $.attribute_value,
