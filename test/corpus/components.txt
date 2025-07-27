@@ -1133,3 +1133,54 @@ templ Foobar() {
         (argument_list
           (interpreted_string_literal
             (interpreted_string_literal_content)))))))
+
+===
+Generic import
+===
+
+templ GenericFoo[T any](value T) {
+	<div>{ fmt.Sprint(value) }</div>
+}
+
+templ Lol() {
+	@GenericFoo[int](200)
+}
+
+---
+
+(source_file
+  (component_declaration
+    (component_identifier)
+    (type_parameter_list
+      (type_parameter_declaration
+        (identifier)
+        (type_constraint
+          (type_identifier))))
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (element
+        (tag_start
+          (element_identifier))
+        (expression
+          (call_expression
+            (selector_expression
+              (identifier)
+              (field_identifier))
+            (argument_list
+              (identifier))))
+        (tag_end
+          (element_identifier)))))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        (component_identifier)
+        (type_arguments
+          (type_elem
+            (type_identifier)))
+        (argument_list
+          (int_literal))))))

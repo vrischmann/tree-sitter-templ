@@ -239,7 +239,7 @@ module.exports = grammar(GO, {
         //     @pkg.Foo{}.Bar(a, b, c) { ... }
         //
         // Note: we use $._package_identifier and $.argument_list which are from the Go grammar.
-        component_import: $ => prec.right(1, seq(
+        component_import: $ => prec.right(5, seq(
             '@',
             optional(seq(
               field('package', $._package_identifier),
@@ -252,15 +252,17 @@ module.exports = grammar(GO, {
             )),
             optional(field('body', $.component_block)),
         )),
+
         _component_member: $ => choice(
             seq(
                 field('name', $._component_identifier),
                 field('body', $.literal_value)
             ),
-            seq(
+            prec.right(2, seq(
                 field('name', $._component_identifier),
+                optional(field('type_arguments', $.type_arguments)),
                 field('arguments', $.argument_list)
-            ),
+            )),
             prec.right(-1, $._component_identifier)
         ),
 
