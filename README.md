@@ -5,18 +5,65 @@ A [tree-sitter](https://github.com/tree-sitter/tree-sitter) grammar for [Templ](
 # Using this with Neovim
 
 To use this parser for syntax highlighting in Neovim, you need [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
-It is highly recommended you go through nvim-treesitter's quickstart, but in any case a minimal configuration to enable syntax highlighting looks like this:
+
+## Requirements
+
+- Neovim 0.11.0+
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+
+## Installation
+
+First, install nvim-treesitter. If using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-}
+require('lazy').setup({
+  {
+    'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    branch = 'main',
+    build = ':TSUpdate'
+  }
+})
 ```
 
-Once `nvim-treesitter` is installed you need to install the parser with the command `:TSInstall templ`.
+Then install the Templ parser:
+
+```lua
+require('nvim-treesitter').install({ 'templ' })
+```
+
+Finally, enable syntax highlighting for Templ files by adding this autocmd:
+
+```lua
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'templ',
+  callback = function()
+    vim.treesitter.start()
+  end,
+})
+```
+
+## Manual Installation
+
+If you want to use a specific branch, version, or local development path, you can manually configure the parser:
+
+```lua
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'TSUpdate',
+  callback = function()
+    require('nvim-treesitter.parsers').templ = {
+      install_info = {
+        url = 'https://github.com/vrischmann/tree-sitter-templ',
+        branch = 'main', -- or specific branch/tag
+        -- path = "~/dev/perso/projects/tree-sitter-templ", -- for local development
+        queries = 'queries/templ',
+      },
+    }
+  end
+})
+```
+
+Then run `:TSInstall templ` to install the parser with your custom configuration.
 
 You can check its status with `:checkhealth`, you should see something like this:
 ```
