@@ -703,3 +703,37 @@ templ Foo() {
                 (interpreted_string_literal_content)))))
         (tag_end
           (element_identifier))))))
+
+===
+Boolean attribute with variable
+===
+
+package main
+
+templ component(isDisabled bool) {
+  <input disabled?={ isDisabled } type="text" />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (expression
+              (identifier)))
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))))))
