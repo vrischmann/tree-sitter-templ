@@ -32,7 +32,7 @@ jobs:
         uses: tree-sitter/parse-action@v4
         with:
           files: examples/**/*.templ
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: steps.examples.outputs.failures != ''
         with:
           name: failures-${{ matrix.os }}
