@@ -24,13 +24,14 @@ templ nameList(items []Item) {
               (type_identifier))))
         (component_block
           (rawgo_block
-            (short_var_declaration
-              (expression_list
-                (identifier))
-              (expression_list
-                (index_expression
-                  (identifier)
-                  (int_literal)))))
+            (statement_list
+              (short_var_declaration
+                (expression_list
+                  (identifier))
+                (expression_list
+                  (index_expression
+                    (identifier)
+                    (int_literal))))))
           (element
             (tag_start
               (element_identifier))
