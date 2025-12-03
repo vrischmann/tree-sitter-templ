@@ -617,7 +617,7 @@ module.exports = grammar(GO, {
         // }
         rawgo_block: $ => seq(
             '{{',
-            optional($._statement_list),
+            optional($.statement_list),
             '}}',
         ),
 

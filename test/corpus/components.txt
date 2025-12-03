@@ -1032,9 +1032,10 @@ templ Invoices() {
       (package_identifier)
       (type_identifier))
     (block
-      (return_statement
-        (expression_list
-          (nil)))))
+      (statement_list
+        (return_statement
+          (expression_list
+            (nil))))))
   (component_declaration
     (component_identifier)
     (parameter_list)
