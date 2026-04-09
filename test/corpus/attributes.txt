@@ -738,3 +738,106 @@ templ component(isDisabled bool) {
             name: (attribute_name)
             value: (quoted_attribute_value
               (attribute_value))))))))
+
+====
+Single-line conditional attribute
+====
+
+package main
+
+templ Foo() {
+  <hr if true { class="itIsTrue" } />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (conditional_attribute_if_statement
+            condition: (true)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))))))))
+
+====
+Single-line conditional attribute between regular attributes
+====
+
+package main
+
+templ Foo() {
+  <hr id="a" if true { class="b" } title="c" />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value)))
+          (conditional_attribute_if_statement
+            condition: (true)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value)))))
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))))))
+
+====
+Single-line conditional attribute with else
+====
+
+package main
+
+templ Foo() {
+  <hr if true { class="t" } else { class="f" } />
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (conditional_attribute_if_statement
+            condition: (true)
+            consequence: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))
+            alternative: (conditional_attribute_block
+              (attribute
+                name: (attribute_name)
+                value: (quoted_attribute_value
+                  (attribute_value))))))))))
