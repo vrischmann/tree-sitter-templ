@@ -462,7 +462,7 @@ module.exports = grammar(GO, {
         //   </div>
         conditional_attribute_block: $ => seq(
             '{',
-            '\n',
+            optional('\n'),
             repeat(choice(
                 $.attribute,
                 $.spread_attributes,
