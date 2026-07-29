@@ -8,7 +8,6 @@ module.exports = grammar(GO, {
     name: 'templ',
 
     externals: $ => [
-        $.script_block_text,
         $.switch_element_text,
         $.element_text,
     ],
@@ -550,6 +549,16 @@ module.exports = grammar(GO, {
             '{',
             optional($.script_block_text),
             '}',
+        ),
+        script_block_text: $ => repeat1(choice(
+            $._script_block_fragment,
+            $._script_brace_group,
+        )),
+        _script_block_fragment: _ => token.immediate(prec(1, /[^{}]+/)),
+        _script_brace_group: $ => seq(
+            token.immediate('{'),
+            repeat(choice($._script_block_fragment, $._script_brace_group)),
+            token.immediate('}'),
         ),
 
         // This matches a complete script element
