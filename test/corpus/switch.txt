@@ -138,3 +138,48 @@ templ userTypeDisplay(userType string) {
                 (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))))))
+
+====
+Switch case with fallthrough
+====
+
+package main
+
+templ Foo(x int) {
+    switch x {
+        case 1:
+            fallthrough
+        case 2:
+            <p>{ "two" }</p>
+    }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (component_switch_statement
+        (identifier)
+        (component_switch_expression_case
+          (expression_list
+            (int_literal))
+          (fallthrough_statement))
+        (component_switch_expression_case
+          (expression_list
+            (int_literal))
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
+            (tag_end
+              (element_identifier))))))))
