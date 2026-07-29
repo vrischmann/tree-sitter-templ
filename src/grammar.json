@@ -8342,6 +8342,17 @@
       "type": "PATTERN",
       "value": "[a-zA-Z\\-]+"
     },
+    "css_property_value": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^\\s;{}][^;{}]*"
+        }
+      }
+    },
     "dynamic_class_attribute_value": {
       "type": "PREC",
       "value": -1,
@@ -8811,10 +8822,6 @@
   ],
   "precedences": [],
   "externals": [
-    {
-      "type": "SYMBOL",
-      "name": "css_property_value"
-    },
     {
       "type": "SYMBOL",
       "name": "script_block_text"

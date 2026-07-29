@@ -83,7 +83,6 @@ static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
 //
 
 enum TokenType {
-  CSS_PROPERTY_VALUE,
   SCRIPT_BLOCK_TEXT,
   SWITCH_ELEMENT_TEXT,
   ELEMENT_TEXT,
@@ -109,27 +108,6 @@ static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
   } else {
     scanner->saw_at_symbol = false;
   }
-}
-
-static bool scan_css_property_value(Scanner *scanner, TSLexer *lexer) {
-  (void)scanner;
-
-  // If we encounter the start of a templ expression, bail
-  if (lexer->lookahead == '{') {
-    return false;
-  }
-
-  lexer->result_symbol = CSS_PROPERTY_VALUE;
-
-  // Consume everything until we find the end of the value;
-  while (!lexer->eof(lexer)) {
-    if (lexer->lookahead == ';') {
-      return true;
-    }
-    lexer->advance(lexer, false);
-  }
-
-  return false;
 }
 
 static bool is_element_text_terminator(int ch) {
@@ -318,11 +296,6 @@ done:
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   while (!lexer->eof(lexer) && iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
-  }
-
-  if (valid_symbols[CSS_PROPERTY_VALUE] &&
-      scan_css_property_value(scanner, lexer)) {
-    return true;
   }
 
   if (valid_symbols[SCRIPT_BLOCK_TEXT] &&
