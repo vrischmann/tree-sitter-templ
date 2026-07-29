@@ -13,8 +13,10 @@ build: gen
 	npx node-gyp configure
 	npx node-gyp build
 
-examples:
-	tree-sitter parse -q -t "templ/**/*.templ"
+# Parse the templ examples, the same way the CI does.
+# Fetches the examples (templ submodule) and rebuilds the parser first.
+examples: gen init-templ
+	npx tree-sitter parse -q --stat "templ/**/*.templ"
 
 init-templ:
 	git submodule update --init --depth=1
