@@ -841,3 +841,34 @@ templ Foo() {
                 name: (attribute_name)
                 value: (quoted_attribute_value
                   (attribute_value))))))))))
+
+===
+Quoted attribute value whose content starts with a comment marker
+===
+
+package main
+
+templ test() {
+	<a href="// note" data-url="https://example.com/path"/>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          (element_identifier)
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value)))
+          (attribute
+            (attribute_name)
+            (quoted_attribute_value
+              (attribute_value))))))))

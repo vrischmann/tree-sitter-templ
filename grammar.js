@@ -634,9 +634,14 @@ module.exports = grammar(GO, {
         // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
         attribute_name: _ => /[^<>"'/=\s]+/,
         attribute_value: _ => /[^{}<>"'=\s]+/,
+        // NOTE: the content is given a higher lexical precedence than Go's
+        // `comment` token (which is inherited as an extra). Without it, a value
+        // beginning with `//` or `/*` (e.g. title="// note") is swallowed by the
+        // comment extra, because the comment matches to end of line and beats
+        // the content token on longest match. prec(1) makes the content win.
         quoted_attribute_value: $ => choice(
-            seq('\'', optional(alias(/[^']+/, $.attribute_value)), '\''),
-            seq('"', optional(alias(/[^"]+/, $.attribute_value)), '"'),
+            seq('\'', optional(alias(token(prec(1, /[^']+/)), $.attribute_value)), '\''),
+            seq('"', optional(alias(token(prec(1, /[^"]+/)), $.attribute_value)), '"'),
         ),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
 
