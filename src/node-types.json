@@ -1571,6 +1571,11 @@
     "fields": {}
   },
   {
+    "type": "element_text",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "empty_statement",
     "named": true,
     "fields": {}
@@ -4055,10 +4060,6 @@
   },
   {
     "type": "element_identifier",
-    "named": true
-  },
-  {
-    "type": "element_text",
     "named": true
   },
   {

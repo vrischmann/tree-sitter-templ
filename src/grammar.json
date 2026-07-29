@@ -8825,6 +8825,91 @@
         }
       ]
     },
+    "element_text": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_element_text_chunk"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_element_text_import_punctuation"
+                }
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_element_text_chunk"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "switch_element_text": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_switch_element_text_chunk"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_element_text_import_punctuation"
+                }
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_switch_element_text_chunk"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_element_text_import_punctuation": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[.()\\[\\]]"
+        }
+      }
+    },
     "text": {
       "type": "PATTERN",
       "value": "[^<>&{}\\s]([^<>&{}]*[^<>&\\s{}])?"
@@ -8886,11 +8971,11 @@
   "externals": [
     {
       "type": "SYMBOL",
-      "name": "switch_element_text"
+      "name": "_switch_element_text_chunk"
     },
     {
       "type": "SYMBOL",
-      "name": "element_text"
+      "name": "_element_text_chunk"
     }
   ],
   "inline": [
