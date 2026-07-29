@@ -8,8 +8,8 @@ module.exports = grammar(GO, {
     name: 'templ',
 
     externals: $ => [
-        $.switch_element_text,
-        $.element_text,
+        $._switch_element_text_chunk,
+        $._element_text_chunk,
     ],
 
     conflicts: ($, original) => [
@@ -652,6 +652,31 @@ module.exports = grammar(GO, {
             seq('\'', optional(alias(token(prec(1, /[^']+/)), $.attribute_value)), '\''),
             seq('"', optional(alias(token(prec(1, /[^"]+/)), $.attribute_value)), '"'),
         ),
+        // element_text / switch_element_text wrap the external "chunk" tokens.
+        // The external scanner is stateless: it declines to start a chunk on
+        // import-continuation punctuation ('.', '(', ')', '[', ']') so the
+        // grammar can parse those as part of a component_import. To keep
+        // ordinary text that begins with such punctuation parseable (e.g.
+        // "(from context)"), that punctuation is also exposed here as a
+        // single-character, low-precedence token that element_text may repeat
+        // before an optional chunk. A single-char token is required: a
+        // quantified one would match further than the import's '(' and win on
+        // longest match regardless of precedence.
+        element_text: $ => prec.right(choice(
+            $._element_text_chunk,
+            seq(
+                repeat1($._element_text_import_punctuation),
+                optional($._element_text_chunk),
+            ),
+        )),
+        switch_element_text: $ => prec.right(choice(
+            $._switch_element_text_chunk,
+            seq(
+                repeat1($._element_text_import_punctuation),
+                optional($._switch_element_text_chunk),
+            ),
+        )),
+        _element_text_import_punctuation: _ => token(prec(-1, /[.()\[\]]/)),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
 
         // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
