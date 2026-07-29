@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "prebuildify": "^6.0.1",
-    "tree-sitter-cli": "^0.26.8"
+    "tree-sitter-cli": "^0.26.11"
   },
   "files": [
     "grammar.js",
