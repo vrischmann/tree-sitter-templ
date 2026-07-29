@@ -1,0 +1,52 @@
+# Bumps the templ submodule to the latest upstream main and opens a PR when it
+# changes. CI then runs on that PR, so a parse regression in the updated
+# example files surfaces as a failed check.
+#
+# A PAT is used (the BUMP_TOKEN secret) instead of the default GITHUB_TOKEN,
+# because pushes performed with GITHUB_TOKEN do not trigger other workflows,
+# which would mean no CI on the PR.
+#
+# Setup: create a fine-grained PAT with "Contents: Read and write" and
+# "Pull requests: Read and write" for this repository, then add it as the
+# BUMP_TOKEN secret.
+name: Bump templ examples
+
+on:
+  schedule:
+    - cron: "17 3 * * 1" # every Monday at 03:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Bump templ submodule to latest main
+        run: |
+          git -C templ fetch --depth=1 origin main
+          git -C templ checkout FETCH_HEAD
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.BUMP_TOKEN }}
+          commit-message: "chore: bump templ examples submodule"
+          branch: chore/bump-templ-examples
+          delete-branch: true
+          title: "chore: bump templ examples"
+          body: |
+            Bumps the `templ` submodule to the latest upstream `main`, keeping
+            the local example set parsed by `just examples` in sync.
+
+            Created automatically by the `Bump templ examples` workflow.
+            Check the CI status below: a failed **Parse examples** step means
+            the grammar breaks on the updated example files.
+          labels: automated
