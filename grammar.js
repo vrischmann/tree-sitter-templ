@@ -8,7 +8,6 @@ module.exports = grammar(GO, {
     name: 'templ',
 
     externals: $ => [
-        $.css_property_value,
         $.script_block_text,
         $.switch_element_text,
         $.element_text,
@@ -520,6 +519,7 @@ module.exports = grammar(GO, {
             ';'
         ),
         css_property_name: $ => /[a-zA-Z\-]+/,
+        css_property_value: $ => token(prec(1, /[^\s;{}][^;{}]*/)),
 
         // This matches a dynamic class attribute.
         // See https://templ.guide/syntax-and-usage/css-style-management#dynamic-classes
