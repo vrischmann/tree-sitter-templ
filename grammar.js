@@ -100,6 +100,7 @@ module.exports = grammar(GO, {
             $.component_if_statement,
             $.component_for_statement,
             $.component_switch_statement,
+            $.fallthrough_statement,
             $.component_import,
             $.rawgo_block,
             $.component_render,

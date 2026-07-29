@@ -168,9 +168,10 @@ const char *statement_keywords[] = {
     // Switch keywords
     "case ",
     "default:",
+    "fallthrough",
 };
 const size_t statement_keywords_count =
-    sizeof(statement_keywords) / sizeof(const char *) - 2;
+    sizeof(statement_keywords) / sizeof(const char *) - 3;
 const size_t switch_statement_keywords_count =
     sizeof(statement_keywords) / sizeof(const char *);
 
