@@ -2729,6 +2729,11 @@
     }
   },
   {
+    "type": "script_block_text",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "script_declaration",
     "named": true,
     "fields": {
@@ -4171,10 +4176,6 @@
   {
     "type": "script",
     "named": false
-  },
-  {
-    "type": "script_block_text",
-    "named": true
   },
   {
     "type": "script_identifier",

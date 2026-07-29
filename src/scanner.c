@@ -83,7 +83,6 @@ static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
 //
 
 enum TokenType {
-  SCRIPT_BLOCK_TEXT,
   SWITCH_ELEMENT_TEXT,
   ELEMENT_TEXT,
 };
@@ -247,60 +246,9 @@ done:
   return has_marked;
 }
 
-static bool scan_script_block_text(Scanner *scanner, TSLexer *lexer) {
-  (void)scanner;
-
-  lexer->result_symbol = SCRIPT_BLOCK_TEXT;
-
-  // Start by marking the end so the following calls to advance don't
-  // increase the token size
-  lexer->mark_end(lexer);
-
-  if (lexer->eof(lexer)) {
-    return false;
-  }
-
-  bool has_marked = false;
-
-  int brace_count = 1;
-  int count = 0;
-
-  while (!lexer->eof(lexer)) {
-    switch (lexer->lookahead) {
-    case '{':
-      brace_count++;
-      break;
-    case '}':
-      brace_count--;
-      if (brace_count == 0) {
-        goto done;
-      }
-      break;
-    }
-
-    lexer->advance(lexer, false);
-    lexer->mark_end(lexer);
-
-    has_marked = true;
-    count++;
-  }
-
-done:
-
-  (void)count;
-  /* printf("done: %d, count: %d\n", has_marked, count); */
-
-  return has_marked;
-}
-
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
   while (!lexer->eof(lexer) && iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
-  }
-
-  if (valid_symbols[SCRIPT_BLOCK_TEXT] &&
-      scan_script_block_text(scanner, lexer)) {
-    return true;
   }
 
   if (valid_symbols[SWITCH_ELEMENT_TEXT] &&
