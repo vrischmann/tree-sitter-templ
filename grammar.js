@@ -82,6 +82,7 @@ module.exports = grammar(GO, {
             $.component_if_statement,
             $.component_for_statement,
             $.component_switch_statement,
+            $.component_type_switch_statement,
             $.component_import,
             $.rawgo_block,
             $.component_render,
@@ -98,6 +99,7 @@ module.exports = grammar(GO, {
             $.component_if_statement,
             $.component_for_statement,
             $.component_switch_statement,
+            $.component_type_switch_statement,
             $.fallthrough_statement,
             $.component_import,
             $.rawgo_block,
@@ -222,6 +224,48 @@ module.exports = grammar(GO, {
         )),
         component_switch_default_case: $ => prec.right(seq(
             'default',
+            ':',
+            repeat($._switch_component_node),
+        )),
+
+        // This matches a type switch statement in a component block.
+        //
+        // Example:
+        //
+        //  switch v := v.(type) {
+        //    case int:
+        //      <p>...</p>
+        //    case string:
+        //      <p>...</p>
+        //    default:
+        //      <p>...</p>
+        //  }
+        //
+        // Note: based on the $.type_switch_statement rule in the Go grammar,
+        // reusing its $._type_switch_header shape but with component-style case
+        // bodies (see $._switch_component_node).
+        component_type_switch_statement: $ => prec.right(seq(
+            'switch',
+            optional(seq(
+                field('initializer', $._simple_statement),
+                ';'
+            )),
+            optional(seq(field('alias', $.expression_list), ':=')),
+            field('value', $._expression),
+            '.',
+            '(',
+            'type',
+            ')',
+            '{',
+            repeat(choice(
+                $.component_switch_type_case,
+                $.component_switch_default_case,
+            )),
+            '}',
+        )),
+        component_switch_type_case: $ => prec.right(seq(
+            'case',
+            field('type', commaSep1($._type)),
             ':',
             repeat($._switch_component_node),
         )),

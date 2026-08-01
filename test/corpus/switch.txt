@@ -183,3 +183,67 @@ templ Foo(x int) {
                 (interpreted_string_literal_content)))
             (tag_end
               (element_identifier))))))))
+
+
+====
+Type switch
+====
+
+package main
+
+templ Foo(v any) {
+    switch v := v.(type) {
+        case int:
+            <p>{ "int" }</p>
+        case string:
+            <p>{ "string" }</p>
+        default:
+            <p>{ "unknown" }</p>
+    }
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        (identifier)
+        (type_identifier)))
+    (component_block
+      (component_type_switch_statement
+        (expression_list
+          (identifier))
+        (identifier)
+        (component_switch_type_case
+          (type_identifier)
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
+            (tag_end
+              (element_identifier))))
+        (component_switch_type_case
+          (type_identifier)
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
+            (tag_end
+              (element_identifier))))
+        (component_switch_default_case
+          (element
+            (tag_start
+              (element_identifier))
+            (expression
+              (interpreted_string_literal
+                (interpreted_string_literal_content)))
+            (tag_end
+              (element_identifier))))))))
