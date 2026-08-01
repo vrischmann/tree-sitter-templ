@@ -872,3 +872,36 @@ templ test() {
             (attribute_name)
             (quoted_attribute_value
               (attribute_value))))))))
+
+====
+Element name with colon
+====
+
+package main
+
+templ Foo() {
+	<svg:rect width="10"/>
+	<maps:map></maps:map>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (self_closing_tag
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value)))))
+      (element
+        (tag_start
+          name: (element_identifier))
+        (tag_end
+          name: (element_identifier))))))
