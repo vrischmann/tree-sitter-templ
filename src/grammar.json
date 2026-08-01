@@ -8525,7 +8525,7 @@
     },
     "css_property_name": {
       "type": "PATTERN",
-      "value": "[a-zA-Z\\-]+"
+      "value": "[a-zA-Z\\-][a-zA-Z0-9\\-]*"
     },
     "css_property_value": {
       "type": "TOKEN",

@@ -8544,6 +8544,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 338:
       ACCEPT_TOKEN(sym_css_property_name);
       if (lookahead == '-' ||
+          ('0' <= lookahead && lookahead <= '9') ||
           ('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(338);
       END_STATE();

@@ -561,7 +561,7 @@ module.exports = grammar(GO, {
             )),
             ';'
         ),
-        css_property_name: $ => /[a-zA-Z\-]+/,
+        css_property_name: $ => /[a-zA-Z\-][a-zA-Z0-9\-]*/,
         css_property_value: $ => token(prec(1, /[^\s;{}][^;{}]*/)),
 
         // This matches a dynamic class attribute.
