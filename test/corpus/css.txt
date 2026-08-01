@@ -385,3 +385,38 @@ templ Foobar() {
         (style_tag_end))
       (style_element
         (self_closing_style_tag)))))
+
+====
+CSS property name with digit
+====
+
+package main
+
+css grid() {
+  --col1width: 100px;
+}
+
+templ Foo() {
+  <div></div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (css_declaration
+    name: (css_identifier)
+    (parameter_list)
+    (css_property
+      name: (css_property_name)
+      value: (css_property_value)))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (tag_end
+          name: (element_identifier))))))
