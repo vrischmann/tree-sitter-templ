@@ -54,20 +54,20 @@ static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
                                           TSLexer *lexer, const char *str) {
   size_t length = strlen(str);
 
+  if (buffer->write_pos > length) {
+    return false;
+  }
+
   // First look in the buffer
-  for (size_t i = 0; i < buffer->write_pos && i < length; i++) {
+  for (size_t i = 0; i < buffer->write_pos; i++) {
     if (buffer->buf[i] != str[i]) {
       return false;
     }
-
-    length--;
   }
 
-  const char *str_remaining = &str[buffer->write_pos];
-
   // Otherwise fetch data from the lexer
-  for (size_t i = 0; i < length; i++) {
-    if (lexer->eof(lexer) || lexer->lookahead != str_remaining[i]) {
+  for (size_t i = buffer->write_pos; i < length; i++) {
+    if (lexer->eof(lexer) || lexer->lookahead != str[i]) {
       return false;
     }
 
