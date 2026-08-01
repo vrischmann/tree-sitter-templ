@@ -8,8 +8,8 @@ module.exports = grammar(GO, {
     name: 'templ',
 
     externals: $ => [
-        $.switch_element_text,
-        $.element_text,
+        $._switch_element_text_chunk,
+        $._element_text_chunk,
     ],
 
     conflicts: ($, original) => [
@@ -245,9 +245,9 @@ module.exports = grammar(GO, {
               '.',
             )),
             field('name', $._component_member),
-            repeat(seq(
-              '.',
-              field('name', $._component_member)
+            repeat(choice(
+              seq('.', field('name', $._component_member)),
+              field('call', $.argument_list),
             )),
             optional(field('body', $.component_block)),
         )),
@@ -652,6 +652,21 @@ module.exports = grammar(GO, {
             seq('\'', optional(alias(token(prec(1, /[^']+/)), $.attribute_value)), '\''),
             seq('"', optional(alias(token(prec(1, /[^"]+/)), $.attribute_value)), '"'),
         ),
+        element_text: $ => prec.right(choice(
+            $._element_text_chunk,
+            seq(
+                repeat1($._element_text_import_punctuation),
+                optional($._element_text_chunk),
+            ),
+        )),
+        switch_element_text: $ => prec.right(choice(
+            $._switch_element_text_chunk,
+            seq(
+                repeat1($._element_text_import_punctuation),
+                optional($._switch_element_text_chunk),
+            ),
+        )),
+        _element_text_import_punctuation: _ => token(prec(-1, /[.()\[\]]/)),
         text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
 
         // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js

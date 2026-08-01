@@ -902,6 +902,16 @@
           }
         ]
       },
+      "call": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "argument_list",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": true,
         "required": true,
@@ -1567,6 +1577,11 @@
   },
   {
     "type": "element_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "element_text",
     "named": true,
     "fields": {}
   },
@@ -4055,10 +4070,6 @@
   },
   {
     "type": "element_identifier",
-    "named": true
-  },
-  {
-    "type": "element_text",
     "named": true
   },
   {

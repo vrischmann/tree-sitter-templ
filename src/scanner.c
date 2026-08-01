@@ -83,30 +83,25 @@ static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
 //
 
 enum TokenType {
-  SWITCH_ELEMENT_TEXT,
-  ELEMENT_TEXT,
+  SWITCH_ELEMENT_TEXT_CHUNK,
+  ELEMENT_TEXT_CHUNK,
 };
 
+// The scanner carries no state between calls, so serialize/deserialize are no-ops.
 typedef struct {
-  bool saw_at_symbol;
+  char _unused;
 } Scanner;
 
 static unsigned serialize(Scanner *scanner, char *buffer) {
-  buffer[0] = scanner->saw_at_symbol ? 1 : 0;
-
+  (void)scanner;
+  (void)buffer;
   return 0;
 }
 
 static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
-  if (length <= 0) {
-    return;
-  }
-
-  if (buffer[0] == 1) {
-    scanner->saw_at_symbol = true;
-  } else {
-    scanner->saw_at_symbol = false;
-  }
+  (void)scanner;
+  (void)buffer;
+  (void)length;
 }
 
 static bool is_element_text_terminator(int ch) {
@@ -115,18 +110,6 @@ static bool is_element_text_terminator(int ch) {
   case '{':
   case '}':
   case '\n':
-    return true;
-  }
-
-  return false;
-}
-
-static bool is_element_text_terminator_for_import_expression(int ch) {
-  switch (ch) {
-  case '.':
-  case '(':
-  case ')':
-  case '[':
     return true;
   }
 
@@ -154,7 +137,9 @@ const size_t switch_statement_keywords_count =
 
 static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
                               bool in_switch) {
-  int symbol = in_switch ? SWITCH_ELEMENT_TEXT : ELEMENT_TEXT;
+  (void)scanner;
+
+  int symbol = in_switch ? SWITCH_ELEMENT_TEXT_CHUNK : ELEMENT_TEXT_CHUNK;
   lexer->result_symbol = symbol;
 
   size_t keywords_count =
@@ -174,6 +159,16 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
     return false;
   }
 
+  // Stateless: decline if the chunk would start with import-continuation
+  // punctuation, so the grammar can parse it as part of a component_import
+  // (argument list, selector, index) or as a low-precedence punctuation token.
+  {
+    int la = lexer->lookahead;
+    if (la == '.' || la == '(' || la == ')' || la == '[' || la == ']') {
+      return false;
+    }
+  }
+
   // Detect if the node starts with a keyword that makes it a statement instead.
   for (size_t i = 0; i < keywords_count; i++) {
     const char *keyword = statement_keywords[i];
@@ -185,9 +180,9 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
     }
   }
 
-  // Try for a "@" which signals a component import expression
+  // Try for a "@" which signals a component import expression. Decline (count
+  // stays 0) so the grammar parses a component_import instead.
   if (lookahead_buffer_find_keyword(&buffer, lexer, "@")) {
-    scanner->saw_at_symbol = true;
     goto done;
   }
 
@@ -196,15 +191,6 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
   // Process the remaining data in the buffer to look for terminator characters.
   if (lookahead_buffer_find_char(&buffer, is_element_text_terminator)) {
     goto done;
-  }
-
-  // If we saw a @ symbol, we could be in an import expression and the
-  // terminator characters differ.
-  if (scanner->saw_at_symbol) {
-    if (lookahead_buffer_find_char(
-            &buffer, is_element_text_terminator_for_import_expression)) {
-      goto done;
-    }
   }
 
   // Everything up to this
@@ -218,10 +204,6 @@ static bool scan_element_text(Scanner *scanner, TSLexer *lexer,
 
   while (!lexer->eof(lexer)) {
     if (is_element_text_terminator(lexer->lookahead)) {
-      goto done;
-    }
-    if (scanner->saw_at_symbol &&
-        is_element_text_terminator_for_import_expression(lexer->lookahead)) {
       goto done;
     }
 
@@ -239,10 +221,6 @@ done:
 
   /* printf("done: %b, chars: %zu\n", has_marked, count); */
 
-  if (has_marked) {
-    scanner->saw_at_symbol = false;
-  }
-
   return has_marked;
 }
 
@@ -251,12 +229,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     lexer->advance(lexer, true);
   }
 
-  if (valid_symbols[SWITCH_ELEMENT_TEXT] &&
+  if (valid_symbols[SWITCH_ELEMENT_TEXT_CHUNK] &&
       scan_element_text(scanner, lexer, true)) {
     return true;
   }
 
-  if (valid_symbols[ELEMENT_TEXT] && scan_element_text(scanner, lexer, false)) {
+  if (valid_symbols[ELEMENT_TEXT_CHUNK] &&
+      scan_element_text(scanner, lexer, false)) {
     return true;
   }
 
@@ -265,8 +244,6 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
 
 void *tree_sitter_templ_external_scanner_create() {
   Scanner *scanner = (Scanner *)calloc(1, sizeof(Scanner));
-
-  scanner->saw_at_symbol = false;
 
   return scanner;
 }
