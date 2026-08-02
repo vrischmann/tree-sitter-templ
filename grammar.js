@@ -15,6 +15,10 @@ module.exports = grammar(GO, {
     conflicts: ($, original) => [
         ...original,
         [$._expression, $.dynamic_class_attribute_value],
+        // A '<' + void element name could open either a void_element
+        // (e.g. <br>) or a tag_start / self_closing_tag (e.g. <br/>). The
+        // closing token decides, so this is resolved by GLR.
+        [$.void_element, $._element_name],
     ],
 
     rules: {
@@ -77,6 +81,7 @@ module.exports = grammar(GO, {
         ),
         _component_node: $ => choice(
             $.element,
+            $.void_element,
             $.style_element,
             $.script_element,
             $.component_if_statement,
@@ -94,6 +99,7 @@ module.exports = grammar(GO, {
         ),
         _switch_component_node: $ => choice(
             $.element,
+            $.void_element,
             $.style_element,
             $.script_element,
             $.component_if_statement,
@@ -351,20 +357,43 @@ module.exports = grammar(GO, {
         ),
         tag_start: $ => seq(
             '<',
-            field('name', $.element_identifier),
+            field('name', $._element_name),
             repeat($._attribute),
             '>',
         ),
         tag_end: $ => seq(
             '</',
-            field('name', $.element_identifier),
+            field('name', $._element_name),
             '>',
         ),
         self_closing_tag: $ => seq(
             '<',
-            field('name', $.element_identifier),
+            field('name', $._element_name),
             repeat($._attribute),
             '/>',
+        ),
+
+        // This matches a void HTML element, which never has a closing tag.
+        //
+        // Example:
+        //
+        //    <br>
+        //    <input name="q">
+        //    <hr>
+        //
+        // The name is restricted to the set of HTML void elements (the same
+        // set the templ parser treats as self-closing, see parser/v2/types.go)
+        // so that normal open/close elements (e.g. <div></div>) keep working.
+        void_element: $ => seq(
+            '<',
+            field('name', alias($._void_element_name, $.element_identifier)),
+            repeat($._attribute),
+            '>',
+        ),
+        _void_element_name: $ => choice(
+            'area', 'base', 'br', 'col', 'command', 'embed',
+            'hr', 'img', 'input', 'keygen', 'link', 'meta',
+            'param', 'source', 'track', 'wbr',
         ),
 
         doctype: $ => seq(
@@ -683,6 +712,18 @@ module.exports = grammar(GO, {
         _script_identifier: $ => alias($.identifier, $.script_identifier),
 
         element_identifier: $ => /[a-zA-Z0-9\-:]+/,
+
+        // Accepts any element name, including the HTML void element names.
+        // The void names are aliased to element_identifier so the parse tree
+        // stays consistent, but they remain a distinct token. This lets the
+        // void_element rule (which only matches void names) coexist with
+        // tag_start / self_closing_tag via GLR: both paths can consume the same
+        // name token, and the closing ('>', '/>' or a paired '</name>') decides
+        // which form wins.
+        _element_name: $ => choice(
+            $.element_identifier,
+            alias($._void_element_name, $.element_identifier),
+        ),
 
         // Taken from https://github.com/tree-sitter/tree-sitter-html/blob/master/grammar.js
         attribute_name: _ => /[^<>"'/=\s]+/,

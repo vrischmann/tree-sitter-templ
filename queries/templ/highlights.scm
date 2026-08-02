@@ -6,6 +6,7 @@
   (tag_start)
   (tag_end)
   (self_closing_tag)
+  (void_element)
   (style_tag_start)
   (style_tag_end)
   (self_closing_style_tag)
