@@ -905,3 +905,42 @@ templ Foo() {
           name: (element_identifier))
         (tag_end
           name: (element_identifier))))))
+
+====
+Void elements without closing tag
+====
+
+package main
+
+templ Foo() {
+  <div>
+    <br>
+    <input name="q">
+    <hr>
+  </div>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (element
+        (tag_start
+          name: (element_identifier))
+        (void_element
+          name: (element_identifier))
+        (void_element
+          name: (element_identifier)
+          (attribute
+            name: (attribute_name)
+            value: (quoted_attribute_value
+              (attribute_value))))
+        (void_element
+          name: (element_identifier))
+        (tag_end
+          name: (element_identifier))))))

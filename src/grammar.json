@@ -7128,6 +7128,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "void_element"
+        },
+        {
+          "type": "SYMBOL",
           "name": "style_element"
         },
         {
@@ -7194,6 +7198,10 @@
         {
           "type": "SYMBOL",
           "name": "element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "void_element"
         },
         {
           "type": "SYMBOL",
@@ -7972,7 +7980,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "element_identifier"
+            "name": "_element_name"
           }
         },
         {
@@ -8000,7 +8008,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "element_identifier"
+            "name": "_element_name"
           }
         },
         {
@@ -8021,7 +8029,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "element_identifier"
+            "name": "_element_name"
           }
         },
         {
@@ -8034,6 +8042,108 @@
         {
           "type": "STRING",
           "value": "/>"
+        }
+      ]
+    },
+    "void_element": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_void_element_name"
+            },
+            "named": true,
+            "value": "element_identifier"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_attribute"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        }
+      ]
+    },
+    "_void_element_name": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "area"
+        },
+        {
+          "type": "STRING",
+          "value": "base"
+        },
+        {
+          "type": "STRING",
+          "value": "br"
+        },
+        {
+          "type": "STRING",
+          "value": "col"
+        },
+        {
+          "type": "STRING",
+          "value": "command"
+        },
+        {
+          "type": "STRING",
+          "value": "embed"
+        },
+        {
+          "type": "STRING",
+          "value": "hr"
+        },
+        {
+          "type": "STRING",
+          "value": "img"
+        },
+        {
+          "type": "STRING",
+          "value": "input"
+        },
+        {
+          "type": "STRING",
+          "value": "keygen"
+        },
+        {
+          "type": "STRING",
+          "value": "link"
+        },
+        {
+          "type": "STRING",
+          "value": "meta"
+        },
+        {
+          "type": "STRING",
+          "value": "param"
+        },
+        {
+          "type": "STRING",
+          "value": "source"
+        },
+        {
+          "type": "STRING",
+          "value": "track"
+        },
+        {
+          "type": "STRING",
+          "value": "wbr"
         }
       ]
     },
@@ -8923,6 +9033,24 @@
       "type": "PATTERN",
       "value": "[a-zA-Z0-9\\-:]+"
     },
+    "_element_name": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "element_identifier"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_void_element_name"
+          },
+          "named": true,
+          "value": "element_identifier"
+        }
+      ]
+    },
     "attribute_name": {
       "type": "PATTERN",
       "value": "[^<>\"'/=\\s]+"
@@ -9150,6 +9278,10 @@
     [
       "_expression",
       "dynamic_class_attribute_value"
+    ],
+    [
+      "void_element",
+      "_element_name"
     ]
   ],
   "precedences": [],
