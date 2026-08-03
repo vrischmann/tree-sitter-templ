@@ -8856,16 +8856,20 @@
               "name": "script_tag_start"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "script_element_text"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "script_element_text"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "script_go_expression"
+                  }
+                ]
+              }
             },
             {
               "type": "SYMBOL",
@@ -8880,20 +8884,33 @@
       ]
     },
     "script_element_text": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "[^<]+"
-          },
-          {
-            "type": "PATTERN",
-            "value": "<[^/]"
-          }
-        ]
-      }
+      "type": "SYMBOL",
+      "name": "_script_element_text_chunk"
+    },
+    "script_go_expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_script_go_expression_start"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_expression"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "}}"
+        }
+      ]
     },
     "script_tag_start": {
       "type": "SEQ",
@@ -8924,21 +8941,8 @@
       ]
     },
     "script_tag_end": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "</"
-        },
-        {
-          "type": "STRING",
-          "value": "script"
-        },
-        {
-          "type": "STRING",
-          "value": ">"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "_script_tag_end"
     },
     "self_closing_script_tag": {
       "type": "SEQ",
@@ -9293,6 +9297,18 @@
     {
       "type": "SYMBOL",
       "name": "_element_text_chunk"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_script_element_text_chunk"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_script_go_expression_start"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_script_tag_end"
     }
   ],
   "inline": [

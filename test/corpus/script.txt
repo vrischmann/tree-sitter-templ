@@ -130,3 +130,265 @@ templ Foobar() {
             name: (attribute_name)
             value: (quoted_attribute_value
               (attribute_value))))))))
+
+====
+Script with Go expression interpolation
+====
+
+package main
+templ body(msg string) {
+<script>
+const message = "Your message: {{ msg }}";
+alert(message);
+</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_go_expression
+          (identifier))
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Script comments do not contain Go expressions
+====
+
+package main
+templ body(msg string) {
+<script>
+// </div> {{ msg }}
+/* </div> {{ msg }} */
+</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Script string state persists across Go expressions
+====
+
+package main
+templ body(msg string) {
+<script>
+const message = "{{ msg }} // {{ msg }}";
+</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_go_expression
+          (identifier))
+        (script_element_text)
+        (script_go_expression
+          (identifier))
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Incomplete script ending with an opening brace
+====
+
+package main
+templ body() {
+<script>{
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (ERROR
+    (component_identifier)
+    (parameter_list)
+    (script_tag_start)
+    (script_element_text)))
+
+====
+Incomplete script ending with a less-than sign
+====
+
+package main
+templ body() {
+<script><
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (ERROR
+    (component_identifier)
+    (parameter_list)
+    (script_tag_start)
+    (script_element_text)))
+
+====
+Closing script tag after a single-line comment
+====
+
+package main
+templ body(msg string) {
+<script>// {{ msg }}</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Closing script tag after an unterminated block comment
+====
+
+package main
+templ body(msg string) {
+<script>/* {{ msg }}</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Script regex quotes do not hide comments
+====
+
+package main
+templ body() {
+<script>
+const re = /"/;
+// {{ msg }}
+</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Script starts with a Go expression
+====
+
+package main
+templ body(msg string) {
+<script>{{ msg }};</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list
+      (parameter_declaration
+        name: (identifier)
+        type: (type_identifier)))
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_go_expression
+          (identifier))
+        (script_element_text)
+        (script_tag_end)))))
+
+====
+Script closing tag ends an unterminated string
+====
+
+package main
+templ body() {
+<script>const text = "</script>
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (script_element
+        (script_tag_start)
+        (script_element_text)
+        (script_tag_end)))))

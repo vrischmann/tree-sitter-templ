@@ -85,23 +85,34 @@ static bool lookahead_buffer_find_keyword(LookaheadBuffer *buffer,
 enum TokenType {
   SWITCH_ELEMENT_TEXT_CHUNK,
   ELEMENT_TEXT_CHUNK,
+  SCRIPT_ELEMENT_TEXT_CHUNK,
+  SCRIPT_GO_EXPRESSION_START,
+  SCRIPT_TAG_END,
 };
 
-// The scanner carries no state between calls, so serialize/deserialize are no-ops.
+typedef enum {
+  JS_QUOTE_NONE,
+  JS_QUOTE_SINGLE,
+  JS_QUOTE_DOUBLE,
+  JS_QUOTE_BACKTICK,
+} JavaScriptQuote;
+
 typedef struct {
-  char _unused;
+  JavaScriptQuote script_quote;
 } Scanner;
 
 static unsigned serialize(Scanner *scanner, char *buffer) {
-  (void)scanner;
-  (void)buffer;
-  return 0;
+  buffer[0] = (char)scanner->script_quote;
+  return 1;
 }
 
 static void deserialize(Scanner *scanner, const char *buffer, unsigned length) {
-  (void)scanner;
-  (void)buffer;
-  (void)length;
+  scanner->script_quote = JS_QUOTE_NONE;
+
+  if (length == 1 && buffer[0] >= JS_QUOTE_NONE &&
+      buffer[0] <= JS_QUOTE_BACKTICK) {
+    scanner->script_quote = (JavaScriptQuote)buffer[0];
+  }
 }
 
 static bool is_element_text_terminator(int ch) {
@@ -224,7 +235,254 @@ done:
   return has_marked;
 }
 
+static bool scan_script_end_tag(TSLexer *lexer) {
+  const char *end_tag = "</script>";
+  lexer->mark_end(lexer);
+
+  for (size_t i = 0; end_tag[i] != '\0'; i++) {
+    if (lexer->eof(lexer) || lexer->lookahead != end_tag[i]) {
+      // Keep the matching prefix as comment text when this is another closing
+      // tag, such as </div>.
+      lexer->mark_end(lexer);
+      return false;
+    }
+    lexer->advance(lexer, false);
+  }
+
+  return true;
+}
+
+typedef enum {
+  JS_REGEX_DONE,
+  JS_REGEX_INTERPOLATION,
+  JS_REGEX_SCRIPT_END,
+} JavaScriptRegexResult;
+
+static JavaScriptRegexResult scan_javascript_regex(TSLexer *lexer) {
+  bool in_character_class = false;
+
+  while (!lexer->eof(lexer)) {
+    int ch = lexer->lookahead;
+
+    if (ch == '\n' || ch == '\r') {
+      return JS_REGEX_DONE;
+    }
+
+    if (ch == '<') {
+      if (scan_script_end_tag(lexer)) {
+        return JS_REGEX_SCRIPT_END;
+      }
+      continue;
+    }
+
+    if (ch == '{') {
+      lexer->mark_end(lexer);
+      lexer->advance(lexer, false);
+      if (!lexer->eof(lexer) && lexer->lookahead == '{') {
+        return JS_REGEX_INTERPOLATION;
+      }
+      lexer->mark_end(lexer);
+      continue;
+    }
+
+    if (ch == '\\') {
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      if (!lexer->eof(lexer)) {
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+      }
+      continue;
+    }
+
+    if (ch == '[') {
+      in_character_class = true;
+    } else if (ch == ']') {
+      in_character_class = false;
+    } else if (ch == '/' && !in_character_class) {
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      return JS_REGEX_DONE;
+    }
+
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+  }
+
+  return JS_REGEX_DONE;
+}
+
+static bool scan_javascript_comment(TSLexer *lexer, bool multiline) {
+  while (!lexer->eof(lexer)) {
+    int ch = lexer->lookahead;
+
+    if (ch == '<') {
+      if (scan_script_end_tag(lexer)) {
+        return true;
+      }
+      continue;
+    }
+
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+
+    if (!multiline && (ch == '\n' || ch == '\r')) {
+      return false;
+    }
+    if (multiline && ch == '*' && !lexer->eof(lexer) &&
+        lexer->lookahead == '/') {
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      return false;
+    }
+  }
+
+  return false;
+}
+
+static bool scan_script_element_text(Scanner *scanner, TSLexer *lexer,
+                                     const bool *valid_symbols) {
+  lexer->result_symbol = SCRIPT_ELEMENT_TEXT_CHUNK;
+  lexer->mark_end(lexer);
+
+  JavaScriptQuote quote = scanner->script_quote;
+  bool has_content = false;
+
+  while (!lexer->eof(lexer)) {
+    int ch = lexer->lookahead;
+
+    if (ch == '<') {
+      if (scan_script_end_tag(lexer)) {
+        if (has_content) {
+          scanner->script_quote = quote;
+          return true;
+        }
+        if (valid_symbols[SCRIPT_TAG_END]) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = SCRIPT_TAG_END;
+          scanner->script_quote = JS_QUOTE_NONE;
+          return true;
+        }
+        return false;
+      }
+
+      has_content = true;
+      continue;
+    }
+
+    // JavaScript escapes consume the next character, so an escaped brace does
+    // not open an interpolation and an escaped quote does not end a string.
+    if (ch == '\\') {
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      has_content = true;
+
+      if (!lexer->eof(lexer)) {
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+      }
+      continue;
+    }
+
+    if (quote == JS_QUOTE_NONE && ch == '/') {
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      has_content = true;
+
+      if (lexer->eof(lexer)) {
+        continue;
+      }
+
+      if (lexer->lookahead == '/') {
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+        if (scan_javascript_comment(lexer, false)) {
+          scanner->script_quote = quote;
+          return true;
+        }
+        continue;
+      }
+
+      if (lexer->lookahead == '*') {
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+        if (scan_javascript_comment(lexer, true)) {
+          scanner->script_quote = quote;
+          return true;
+        }
+        continue;
+      }
+
+      JavaScriptRegexResult result = scan_javascript_regex(lexer);
+      if (result == JS_REGEX_INTERPOLATION || result == JS_REGEX_SCRIPT_END) {
+        scanner->script_quote = quote;
+        return true;
+      }
+      continue;
+    }
+
+    // Keep the first brace of an interpolation out of the text token.
+    // Interpolation is allowed inside JavaScript strings.
+    if (ch == '{') {
+      lexer->mark_end(lexer);
+      lexer->advance(lexer, false);
+      if (!lexer->eof(lexer) && lexer->lookahead == '{') {
+        if (has_content) {
+          scanner->script_quote = quote;
+          return true;
+        }
+        if (valid_symbols[SCRIPT_GO_EXPRESSION_START]) {
+          lexer->advance(lexer, false);
+          lexer->mark_end(lexer);
+          lexer->result_symbol = SCRIPT_GO_EXPRESSION_START;
+          scanner->script_quote = quote;
+          return true;
+        }
+        return false;
+      }
+
+      lexer->mark_end(lexer);
+      has_content = true;
+      continue;
+    }
+
+    if (quote == JS_QUOTE_NONE) {
+      switch (ch) {
+      case '\'':
+        quote = JS_QUOTE_SINGLE;
+        break;
+      case '"':
+        quote = JS_QUOTE_DOUBLE;
+        break;
+      case '`':
+        quote = JS_QUOTE_BACKTICK;
+        break;
+      }
+    } else if ((quote == JS_QUOTE_SINGLE && ch == '\'') ||
+               (quote == JS_QUOTE_DOUBLE && ch == '"') ||
+               (quote == JS_QUOTE_BACKTICK && ch == '`')) {
+      quote = JS_QUOTE_NONE;
+    }
+
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    has_content = true;
+  }
+
+  if (has_content) {
+    scanner->script_quote = quote;
+  }
+  return has_content;
+}
+
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+  if ((valid_symbols[SCRIPT_ELEMENT_TEXT_CHUNK] ||
+       valid_symbols[SCRIPT_GO_EXPRESSION_START] ||
+       valid_symbols[SCRIPT_TAG_END]) &&
+      scan_script_element_text(scanner, lexer, valid_symbols)) {
+    return true;
+  }
+
   while (!lexer->eof(lexer) && iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
   }

@@ -10,6 +10,9 @@ module.exports = grammar(GO, {
     externals: $ => [
         $._switch_element_text_chunk,
         $._element_text_chunk,
+        $._script_element_text_chunk,
+        $._script_go_expression_start,
+        $._script_tag_end,
     ],
 
     conflicts: ($, original) => [
@@ -648,26 +651,21 @@ module.exports = grammar(GO, {
         script_element: $ => choice(
             seq(
                 $.script_tag_start,
-                optional($.script_element_text),
+                repeat(choice(
+                    $.script_element_text,
+                    $.script_go_expression,
+                )),
                 $.script_tag_end,
             ),
             $.self_closing_script_tag,
         ),
         // Rule to capture the text content *between* <script> and </script> tags.
-        // Requires at least one character to be present.
-        // Example: In `<script> alert('Hi'); </script>`, this matches ` alert('Hi'); `
-        script_element_text: $ => repeat1(
-            choice(
-                // Option A: Match one or more characters that are NOT '<'.
-                // Consumes text chunks (including newlines) until a '<' is encountered.
-                /[^<]+/,
-                // Option B: Match '<' *only if* it's followed by a character that is NOT '/'.
-                // Allows '<' within the script content but prevents matching the start
-                // of the closing tag '</script>'. Fails when '</' is seen.
-                /<[^/]/
-            )
-            // The repetition stops just before '</script>' because neither choice A nor B
-            // can match that sequence.
+        // Text stops before a Go expression interpolation or the closing tag.
+        script_element_text: $ => $._script_element_text_chunk,
+        script_go_expression: $ => seq(
+            $._script_go_expression_start,
+            optional($._expression),
+            '}}',
         ),
         script_tag_start: $ => seq(
             '<',
@@ -675,11 +673,7 @@ module.exports = grammar(GO, {
             repeat($.attribute),
             '>',
         ),
-        script_tag_end: $ => seq(
-            '</',
-            'script',
-            '>'
-        ),
+        script_tag_end: $ => $._script_tag_end,
         self_closing_script_tag: $ => seq(
             '<',
             field('name', 'script'),
