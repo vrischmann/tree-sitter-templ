@@ -933,6 +933,10 @@
             "named": true
           },
           {
+            "type": "component_index_expression",
+            "named": true
+          },
+          {
             "type": "literal_value",
             "named": true
           },
@@ -958,6 +962,32 @@
         "types": [
           {
             "type": "type_arguments",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "component_index_expression",
+    "named": true,
+    "fields": {
+      "index": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      },
+      "operand": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "component_identifier",
             "named": true
           }
         ]
