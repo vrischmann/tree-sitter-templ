@@ -312,7 +312,25 @@ module.exports = grammar(GO, {
                 optional(field('type_arguments', $.type_arguments)),
                 field('arguments', $.argument_list)
             )),
+            // An index/subscript applied to a component identifier, e.g.
+            // `components[0]` in `@components[0].Render()` or
+            // `components[getKey()]`. The operand is constrained to a
+            // component identifier so it does not clash with the existing
+            // call and type-argument forms above. It is given a lower
+            // dynamic precedence than `type_arguments` so that an expression
+            // like `@GenericFoo[int](200)` keeps parsing as a generic call.
+            prec.dynamic(1, $.component_index_expression),
             prec.right(-1, $._component_identifier)
+        ),
+
+        // The `operand[index]` subscript form usable as a component member.
+        // This mirrors Go's `index_expression` but constrains the operand to
+        // a component identifier (see the note on `_component_member`).
+        component_index_expression: $ => seq(
+            field('operand', $._component_identifier),
+            '[',
+            field('index', $._expression),
+            ']',
         ),
 
         // This matches a render statement:
