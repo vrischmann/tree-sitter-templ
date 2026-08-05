@@ -1185,3 +1185,54 @@ templ Lol() {
             (type_identifier)))
         (argument_list
           (int_literal))))))
+===
+Import with index expression
+===
+
+package main
+
+templ Foo() {
+  @components[0].Render()
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        name: (component_index_expression
+          operand: (component_identifier)
+          index: (int_literal))
+        name: (component_identifier)
+        arguments: (argument_list)))))
+
+===
+Import with index expression using a call
+===
+
+package main
+
+templ Foo() {
+  @components[getKey()]
+}
+
+---
+
+(source_file
+  (package_clause
+    (package_identifier))
+  (component_declaration
+    name: (component_identifier)
+    (parameter_list)
+    (component_block
+      (component_import
+        name: (component_index_expression
+          operand: (component_identifier)
+          index: (call_expression
+            function: (identifier)
+            arguments: (argument_list)))))))
