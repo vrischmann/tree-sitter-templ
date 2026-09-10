@@ -35,6 +35,48 @@ module.exports = grammar(GO, {
             $.script_declaration,
         ),
 
+        // Override of the Go grammar's source_file. The original shape puts
+        // the terminator AFTER each item (a repeat of "item + terminator"
+        // plus an optional final declaration without one), so the generator
+        // builds two copies of every top-level statement/declaration spine:
+        // one whose FOLLOW set is the terminator tokens (items inside the
+        // repeat) and one whose FOLLOW set additionally carries the
+        // source_file completion (the possibly-final item). Re-phrasing the
+        // list with the terminator BEFORE each subsequent item -- the same
+        // shape the Go grammar already uses for its statement_list rule --
+        // gives every item position a single FOLLOW set, so the spines are
+        // built once.
+        //
+        // The accepted language is unchanged for all practical input: items
+        // are still separated by terminators, a trailing terminator is still
+        // allowed, and the final item no longer needs one (the Go grammar's
+        // terminator already includes the '\0' end-of-input marker, so a
+        // final unterminated item was already accepted wherever the input is
+        // NUL-terminated, e.g. the C and JavaScript bindings).
+        //
+        // The whole list is wrapped in a single optional (rather than an
+        // optional first item plus a repeat) so that the terminator tokens
+        // are never valid at the very start of the file: a leading ';' is
+        // unambiguously an empty_statement item, mirroring the shape the Go
+        // grammar already uses for its statement_list rule (a leading
+        // statement, then a repeat of "terminator + statement").
+        source_file: $ => optional(seq(
+            $._source_item,
+            repeat(seq($._source_terminator, $._source_item)),
+            optional($._source_terminator),
+        )),
+
+        // One top-level item of a templ/Go file: a statement or a top-level
+        // declaration. Go's _statement already includes const/type/var
+        // declarations (via _declaration), so this choice is exactly the
+        // item set the original source_file repeat accepted.
+        _source_item: $ => choice($._statement, $._top_level_declaration),
+
+        // The terminator between top-level items. The same three tokens as
+        // the Go grammar's terminator constant: newline, ';', and the '\0'
+        // end-of-input marker.
+        _source_terminator: $ => choice(/\n/, ';', '\0'),
+
         // This matches a templ expression:
         //
         // Example:
