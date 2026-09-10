@@ -2829,33 +2829,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "for"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "for_clause"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "range_clause"
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_for_head"
         },
         {
           "type": "FIELD",
@@ -7372,7 +7347,7 @@
         }
       ]
     },
-    "component_for_statement": {
+    "_for_head": {
       "type": "SEQ",
       "members": [
         {
@@ -7403,6 +7378,15 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "component_for_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_for_head"
         },
         {
           "type": "FIELD",

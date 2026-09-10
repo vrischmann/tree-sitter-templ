@@ -196,6 +196,16 @@ module.exports = grammar(GO, {
             ))
         ),
 
+        // The shared prefix of Go's for_statement and the component for
+        // statement: the 'for' keyword and the optional loop clause (a plain
+        // expression, a three-part for clause, or a range clause). Defined
+        // once so the parser builds one prefix spine instead of one per
+        // statement.
+        _for_head: $ => seq(
+            'for',
+            optional(choice($._expression, $.for_clause, $.range_clause)),
+        ),
+
         // This matches a for statement in a component block.
         //
         // Example:
@@ -207,9 +217,18 @@ module.exports = grammar(GO, {
         // Note: based on the $.for_statement rule in the Go grammar.
         // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block.
         component_for_statement: $ => seq(
-            'for',
-            optional(choice($._expression, $.for_clause, $.range_clause)),
+            $._for_head,
             field('body', $.component_block)
+        ),
+
+        // Override of the Go grammar's for_statement so it references the
+        // shared _for_head prefix instead of inlining it. The accepted
+        // language and the parse tree are unchanged (_for_head is anonymous
+        // and the body field is preserved); only the LR spine is shared with
+        // component_for_statement.
+        for_statement: $ => seq(
+            $._for_head,
+            field('body', $.block),
         ),
 
         // This matches a switch statement in a component block.
