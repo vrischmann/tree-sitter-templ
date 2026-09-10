@@ -4119,17 +4119,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "literal_element"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "keyed_element"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_literal_item"
                 },
                 {
                   "type": "REPEAT",
@@ -4141,17 +4132,8 @@
                         "value": ","
                       },
                       {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "literal_element"
-                          },
-                          {
-                            "type": "SYMBOL",
-                            "name": "keyed_element"
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "_literal_item"
                       }
                     ]
                   }
@@ -9096,6 +9078,19 @@
           "value": "[.()\\[\\]]"
         }
       }
+    },
+    "_literal_item": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "literal_element"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyed_element"
+        }
+      ]
     }
   },
   "extras": [

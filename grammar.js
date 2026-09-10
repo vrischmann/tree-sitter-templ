@@ -776,10 +776,15 @@ module.exports = grammar(GO, {
         // without an extra optional() wrapper around the seq.
         literal_value: $ => seq(
             '{',
-            commaSep(choice($.literal_element, $.keyed_element)),
+            commaSep($._literal_item),
             optional(','),
             '}',
         ),
+        // The list items of a literal_value are either plain expressions or
+        // keyed entries. Wrapping the choice in a single private nonterminal
+        // keeps the comma-separated-list production on one symbol instead of
+        // branching it into two, which shrinks the LR state set.
+        _literal_item: $ => choice($.literal_element, $.keyed_element),
 
         literal_element: $ => choice($._expression, $.literal_value),
     },
