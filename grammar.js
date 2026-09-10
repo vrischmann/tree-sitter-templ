@@ -18,6 +18,13 @@ module.exports = grammar(GO, {
         // (e.g. <br>) or a tag_start / self_closing_tag (e.g. <br/>). The
         // closing token decides, so this is resolved by GLR.
         [$.void_element, $._element_name],
+        // After 'switch', a '(' may start the optional initializer (as a
+        // parenthesized expression statement) or, if the initializer is
+        // skipped, the switch value. Factoring the shared prefix into
+        // _switch_head makes both interpretations belong to the same
+        // production, so the conflict is declared on the rule itself
+        // (same GLR branch the Go-inherited conflicts covered before).
+        [$._switch_head],
     ],
 
     rules: {
@@ -205,14 +212,21 @@ module.exports = grammar(GO, {
         //      <p>...</p>
         //  }
         //
-        // Note: based on the $.expression_switch_statement rule in the Go grammar.
-        // We can't directly use the Go grammar because it uses $.expression_switch_statement and we need to use our $.component_switch_statement.
-        component_switch_statement: $ => prec.right(seq(
+        // The shared prefix of both switch statements: the 'switch' keyword
+        // and the optional initializer. Defined once so the parser builds one
+        // prefix spine instead of one per statement.
+        _switch_head: $ => seq(
             'switch',
             optional(seq(
                 field('initializer', $._simple_statement),
                 ';'
             )),
+        ),
+
+        // Note: based on the $.expression_switch_statement rule in the Go grammar.
+        // We can't directly use the Go grammar because it uses $.expression_switch_statement and we need to use our $.component_switch_statement.
+        component_switch_statement: $ => prec.right(seq(
+            $._switch_head,
             field('value', optional($._expression)),
             '{',
             repeat(choice(
@@ -250,11 +264,7 @@ module.exports = grammar(GO, {
         // reusing its $._type_switch_header shape but with component-style case
         // bodies (see $._switch_component_node).
         component_type_switch_statement: $ => prec.right(seq(
-            'switch',
-            optional(seq(
-                field('initializer', $._simple_statement),
-                ';'
-            )),
+            $._switch_head,
             optional(seq(field('alias', $.expression_list), ':=')),
             field('value', $._expression),
             '.',
@@ -761,13 +771,13 @@ module.exports = grammar(GO, {
         _element_text_import_punctuation: _ => token(prec(-1, /[.()\[\]]/)),
 
         // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
-
+        // Note: commaSep is already nullable (it is an optional list) and the
+        // trailing comma is optional too, so the whole interior is nullable
+        // without an extra optional() wrapper around the seq.
         literal_value: $ => seq(
             '{',
-            optional(
-                seq(
-                    commaSep(choice($.literal_element, $.keyed_element)),
-                    optional(','))),
+            commaSep(choice($.literal_element, $.keyed_element)),
+            optional(','),
             '}',
         ),
 
