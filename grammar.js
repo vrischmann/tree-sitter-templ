@@ -407,11 +407,11 @@ module.exports = grammar(GO, {
             repeat($._attribute),
             '>',
         ),
-        _void_element_name: $ => choice(
-            'area', 'base', 'br', 'col', 'command', 'embed',
-            'hr', 'img', 'input', 'keygen', 'link', 'meta',
-            'param', 'source', 'track', 'wbr',
-        ),
+        // The same set as 15 separate string alternatives, collapsed into one
+        // regex token so the grammar has a single symbol instead of fifteen.
+        // Longest-match semantics keep it equivalent: e.g. `bracket` still
+        // matches as element_identifier (longer) rather than `br`.
+        _void_element_name: _ => /(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)/,
 
         doctype: $ => seq(
             '<!',
@@ -754,7 +754,6 @@ module.exports = grammar(GO, {
             ),
         )),
         _element_text_import_punctuation: _ => token(prec(-1, /[.()\[\]]/)),
-        text: _ => /[^<>&{}\s]([^<>&{}]*[^<>&\s{}])?/,
 
         // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
 

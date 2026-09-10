@@ -8116,73 +8116,8 @@
       ]
     },
     "_void_element_name": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "area"
-        },
-        {
-          "type": "STRING",
-          "value": "base"
-        },
-        {
-          "type": "STRING",
-          "value": "br"
-        },
-        {
-          "type": "STRING",
-          "value": "col"
-        },
-        {
-          "type": "STRING",
-          "value": "command"
-        },
-        {
-          "type": "STRING",
-          "value": "embed"
-        },
-        {
-          "type": "STRING",
-          "value": "hr"
-        },
-        {
-          "type": "STRING",
-          "value": "img"
-        },
-        {
-          "type": "STRING",
-          "value": "input"
-        },
-        {
-          "type": "STRING",
-          "value": "keygen"
-        },
-        {
-          "type": "STRING",
-          "value": "link"
-        },
-        {
-          "type": "STRING",
-          "value": "meta"
-        },
-        {
-          "type": "STRING",
-          "value": "param"
-        },
-        {
-          "type": "STRING",
-          "value": "source"
-        },
-        {
-          "type": "STRING",
-          "value": "track"
-        },
-        {
-          "type": "STRING",
-          "value": "wbr"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)"
     },
     "doctype": {
       "type": "SEQ",
@@ -9235,10 +9170,6 @@
           "value": "[.()\\[\\]]"
         }
       }
-    },
-    "text": {
-      "type": "PATTERN",
-      "value": "[^<>&{}\\s]([^<>&{}]*[^<>&\\s{}])?"
     }
   },
   "extras": [
