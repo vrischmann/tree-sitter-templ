@@ -417,10 +417,11 @@ module.exports = grammar(GO, {
             '<!',
             // Case insensitive "doctype"
             /[Dd][Oo][Cc][Tt][Yy][Pp][Ee]/,
-            choice(
-                'html',
-                'HTML PUBLIC "http://www.w3.org/TR/html4/loose.dtd"',
-            ),
+            // Same two alternatives as before, collapsed into a single regex
+            // token so the grammar carries one symbol instead of two. The
+            // alternatives are disjoint (case-sensitive), so the regex accepts
+            // exactly the same strings.
+            /html|HTML PUBLIC "http:\/\/www\.w3\.org\/TR\/html4\/loose\.dtd"/,
             '>'
         ),
 
@@ -487,7 +488,10 @@ module.exports = grammar(GO, {
                 $.attribute_name,
             )),
             optional(seq(
-                choice('=', '?='),
+                // The '=' and '?=' operators are disjoint on their first
+                // character, so a single regex token behaves identically to
+                // the two string alternatives (and saves one symbol).
+                /(?:\?=|=)/,
                 field('value', choice(
                     $.expression,
                     $.attribute_value,
@@ -535,11 +539,9 @@ module.exports = grammar(GO, {
         conditional_attribute_block: $ => seq(
             '{',
             optional('\n'),
-            repeat(choice(
-                $.attribute,
-                $.spread_attributes,
-                $.conditional_attribute_if_statement,
-            )),
+            // Same three alternatives as the $._attribute rule used by the
+            // tag rules, referenced here so the choice is defined once.
+            repeat($._attribute),
             '}',
         ),
 

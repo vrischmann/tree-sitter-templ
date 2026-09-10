@@ -8131,17 +8131,8 @@
           "value": "[Dd][Oo][Cc][Tt][Yy][Pp][Ee]"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "html"
-            },
-            {
-              "type": "STRING",
-              "value": "HTML PUBLIC \"http://www.w3.org/TR/html4/loose.dtd\""
-            }
-          ]
+          "type": "PATTERN",
+          "value": "html|HTML PUBLIC \"http:\\/\\/www\\.w3\\.org\\/TR\\/html4\\/loose\\.dtd\""
         },
         {
           "type": "STRING",
@@ -8297,17 +8288,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "="
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "?="
-                    }
-                  ]
+                  "type": "PATTERN",
+                  "value": "(?:\\?=|=)"
                 },
                 {
                   "type": "FIELD",
@@ -8390,21 +8372,8 @@
         {
           "type": "REPEAT",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "attribute"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "spread_attributes"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "conditional_attribute_if_statement"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_attribute"
           }
         },
         {

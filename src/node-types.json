@@ -4208,15 +4208,7 @@
     "named": false
   },
   {
-    "type": "?=",
-    "named": false
-  },
-  {
     "type": "@",
-    "named": false
-  },
-  {
-    "type": "HTML PUBLIC \"http://www.w3.org/TR/html4/loose.dtd\"",
     "named": false
   },
   {
@@ -4350,10 +4342,6 @@
   },
   {
     "type": "goto",
-    "named": false
-  },
-  {
-    "type": "html",
     "named": false
   },
   {
