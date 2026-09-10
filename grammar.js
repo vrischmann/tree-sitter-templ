@@ -794,7 +794,16 @@ module.exports = grammar(GO, {
         rawgo_block: $ => seq(
             '{{',
             optional($.statement_list),
-            '}}',
+            // The rawgo block closes with two plain '}' tokens instead of a
+            // dedicated '}}' token. The source text is unchanged ('}}' simply
+            // lexes as two '}' tokens at the closer position) and the tree is
+            // unchanged (both closers are anonymous), but the statement list
+            // inside rawgo now has the same FOLLOW set as a Go block body
+            // ('}' instead of '}}'), so the generator merges the rawgo
+            // statement sub-automaton into the Go block's copy instead of
+            // building a second one.
+            '}',
+            '}',
         ),
 
         //
