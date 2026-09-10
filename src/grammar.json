@@ -7272,12 +7272,19 @@
         }
       ]
     },
-    "component_if_statement": {
+    "_if_head": {
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "if"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 10,
+            "content": {
+              "type": "STRING",
+              "value": "if"
+            }
+          }
         },
         {
           "type": "CHOICE",
@@ -7311,6 +7318,15 @@
             "type": "SYMBOL",
             "name": "_expression"
           }
+        }
+      ]
+    },
+    "component_if_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_if_head"
         },
         {
           "type": "FIELD",
@@ -8331,48 +8347,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 10,
-            "content": {
-              "type": "STRING",
-              "value": "if"
-            }
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "FIELD",
-                  "name": "initializer",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_simple_statement"
-                  }
-                },
-                {
-                  "type": "STRING",
-                  "value": ";"
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "FIELD",
-          "name": "condition",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_expression"
-          }
+          "type": "SYMBOL",
+          "name": "_if_head"
         },
         {
           "type": "FIELD",

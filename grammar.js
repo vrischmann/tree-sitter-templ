@@ -156,6 +156,24 @@ module.exports = grammar(GO, {
             '-->'
         ),
 
+        // The shared prefix of both if statements: the 'if' keyword, the
+        // optional initializer and the condition. Defined once so the parser
+        // builds one prefix spine instead of one per statement.
+        //
+        // The keyword carries the lexical precedence the conditional-attribute
+        // form needs to beat attribute_name on ties. That is lexically inert in
+        // component-block context: the external text scanner already declines
+        // any chunk starting with "if " (statement_keywords), so the keyword is
+        // the only matchable token at such positions either way.
+        _if_head: $ => seq(
+            token(prec(10, 'if')),
+            optional(seq(
+                field('initializer', $._simple_statement),
+                ';'
+            )),
+            field('condition', $._expression),
+        ),
+
         // This matches an if statement in a component block.
         //
         // Example:
@@ -167,12 +185,7 @@ module.exports = grammar(GO, {
         // Note: based on the $.if_statement rule in the Go grammar.
         // We can't directly use the Go grammar because it uses $.block and we need to use our $.component_block.
         component_if_statement: $ => seq(
-            'if',
-            optional(seq(
-                field('initializer', $._simple_statement),
-                ';'
-            )),
-            field('condition', $._expression),
+            $._if_head,
             field('consequence', $.component_block),
             optional(seq(
                 'else',
@@ -566,12 +579,7 @@ module.exports = grammar(GO, {
         //      }
         //    </div>
         conditional_attribute_if_statement: $ => seq(
-            token(prec(10, 'if')),
-            optional(seq(
-                field('initializer', $._simple_statement),
-                ';'
-            )),
-            field('condition', $._expression),
+            $._if_head,
             field('consequence', $.conditional_attribute_block),
             optional(seq(
                 token(prec(10, 'else')),
