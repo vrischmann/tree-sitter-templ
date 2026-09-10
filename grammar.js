@@ -14,7 +14,6 @@ module.exports = grammar(GO, {
 
     conflicts: ($, original) => [
         ...original,
-        [$._expression, $.dynamic_class_attribute_value],
         // A '<' + void element name could open either a void_element
         // (e.g. <br>) or a tag_start / self_closing_tag (e.g. <br/>). The
         // closing token decides, so this is resolved by GLR.
@@ -441,27 +440,10 @@ module.exports = grammar(GO, {
         style_element: $ => choice(
             seq(
                 $.style_tag_start,
-                optional($.style_element_text),
+                optional(alias($._element_body_text, $.style_element_text)),
                 $.style_tag_end,
             ),
             $.self_closing_style_tag,
-        ),
-        // Rule to capture the text content *between* <style> and </style> tags.
-        // It requires at least one character to be present.
-        // Example: In `<style> body { color: red; } </style>`, this matches ` body { color: red; } `
-        style_element_text: $ => repeat1(
-            choice(
-                // Option A: Match one or more characters that are NOT '<'.
-                // This consumes chunks of text (including whitespace and newlines) efficiently up until a '<' is found.
-                /[^<]+/,
-                // Option B: Match a '<' character *only if* it is immediately followed by a character that is NOT '/'.
-                // This allows '<' characters within the style content (e.g., in selectors like `a < b`),
-                // but prevents the rule from matching the start of the closing tag '</style>'.
-                // When the parser sees '</', this rule fails because the character after '<' *is* '/'.
-                /<[^/]/
-            )
-            // The repetition stops just before '</style>' because neither choice A nor B
-            // can match that sequence.
         ),
         style_tag_start: $ => seq(
             '<',
@@ -616,13 +598,13 @@ module.exports = grammar(GO, {
         //
         //     <div class={ `foo`, templ.SafeCSS(`color: red`), templ.KV("is-primary", true), myCssClass() }
         //
+        // The items are plain Go expressions: string literals are already a
+        // subset of $._expression (via the Go grammar's _literal), so no
+        // separate choice for them is needed.
         dynamic_class_attribute_value: $ => prec(-1, seq(
             '{',
             seq(
-                commaSep(choice(
-                    $._string_literal,
-                    $._expression,
-                )),
+                commaSep($._expression),
                 optional(','),
             ),
             '}',
@@ -666,26 +648,28 @@ module.exports = grammar(GO, {
         script_element: $ => choice(
             seq(
                 $.script_tag_start,
-                optional($.script_element_text),
+                optional(alias($._element_body_text, $.script_element_text)),
                 $.script_tag_end,
             ),
             $.self_closing_script_tag,
         ),
-        // Rule to capture the text content *between* <script> and </script> tags.
-        // Requires at least one character to be present.
+        // Rule to capture the text content *between* <style>/<script> and their
+        // closing tags. It requires at least one character to be present.
         // Example: In `<script> alert('Hi'); </script>`, this matches ` alert('Hi'); `
-        script_element_text: $ => repeat1(
+        //
+        // Both <style> and <script> bodies share this exact same shape, so it is
+        // defined once here and re-used in both via aliases (which keep the
+        // node names `style_element_text` / `script_element_text` in the tree).
+        //
+        // The repetition stops just before the closing tag because:
+        // - Option A `/[^<]+/` consumes text up until a '<' is seen.
+        // - Option B `/<[^/]/` allows a '<' *only* when not followed by '/', so
+        //   '<' inside the body (e.g. `a < b`) works but '</' stops the match.
+        _element_body_text: $ => repeat1(
             choice(
-                // Option A: Match one or more characters that are NOT '<'.
-                // Consumes text chunks (including newlines) until a '<' is encountered.
                 /[^<]+/,
-                // Option B: Match '<' *only if* it's followed by a character that is NOT '/'.
-                // Allows '<' within the script content but prevents matching the start
-                // of the closing tag '</script>'. Fails when '</' is seen.
                 /<[^/]/
             )
-            // The repetition stops just before '</script>' because neither choice A nor B
-            // can match that sequence.
         ),
         script_tag_start: $ => seq(
             '<',
