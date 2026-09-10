@@ -625,8 +625,11 @@ module.exports = grammar(GO, {
         // separate choice for them is needed.
         dynamic_class_attribute_value: $ => prec(-1, seq(
             '{',
-            commaSep($._expression),
-            optional(','),
+            optional(seq(
+                $._expression,
+                repeat(seq(',', $._expression)),
+                optional(','),
+            )),
             '}',
         )),
 
@@ -785,13 +788,19 @@ module.exports = grammar(GO, {
         _element_text_import_punctuation: _ => token(prec(-1, /[.()\[\]]/)),
 
         // Taken from https://github.com/tree-sitter/tree-sitter-go/blob/master/grammar.js
-        // Note: commaSep is already nullable (it is an optional list) and the
-        // trailing comma is optional too, so the whole interior is nullable
-        // without an extra optional() wrapper around the seq.
+        // The item list and its optional trailing comma live inside a single
+        // optional() so the body is either empty or starts with an item.
+        // (Writing commaSep($._literal_item) + optional(',') instead would
+        // also accept a bare `{,}` — a leading comma with no items — which
+        // is not valid Go, and it replicates a dedicated comma spine state
+        // in every context that contains a literal_value.)
         literal_value: $ => seq(
             '{',
-            commaSep($._literal_item),
-            optional(','),
+            optional(seq(
+                $._literal_item,
+                repeat(seq(',', $._literal_item)),
+                optional(','),
+            )),
             '}',
         ),
         // The list items of a literal_value are either plain expressions or
