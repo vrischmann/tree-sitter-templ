@@ -619,7 +619,10 @@ module.exports = grammar(GO, {
         //   </div>
         conditional_attribute_block: $ => seq(
             '{',
-            optional('\n'),
+            // The newline after '{' needs no explicit token: the whitespace
+            // extra (inherited from the Go grammar) already skips it, and an
+            // anonymous '\n' here would only add a per-context shift state
+            // without changing the accepted language or the tree.
             // Same three alternatives as the $._attribute rule used by the
             // tag rules, referenced here so the choice is defined once.
             repeat($._attribute),
