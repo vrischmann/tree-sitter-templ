@@ -231,6 +231,20 @@ module.exports = grammar(GO, {
             field('body', $.block),
         ),
 
+        // Override of the Go grammar's expression_switch_statement so it
+        // references the shared _switch_head prefix instead of inlining the
+        // 'switch' + optional-initializer sequence. The accepted language and
+        // the parse tree are unchanged (_switch_head is anonymous and the
+        // initializer/value fields are preserved); only the LR spine is shared
+        // with the two component switch statements.
+        expression_switch_statement: $ => seq(
+            $._switch_head,
+            field('value', optional($._expression)),
+            '{',
+            repeat(choice($.expression_case, $.default_case)),
+            '}',
+        ),
+
         // This matches a switch statement in a component block.
         //
         // Example:
@@ -293,16 +307,12 @@ module.exports = grammar(GO, {
         //  }
         //
         // Note: based on the $.type_switch_statement rule in the Go grammar,
-        // reusing its $._type_switch_header shape but with component-style case
-        // bodies (see $._switch_component_node).
+        // reusing the shared $._type_switch_body (the 'alias :=' plus the
+        // '(type)' cast part) but with component-style case bodies (see
+        // $._switch_component_node).
         component_type_switch_statement: $ => prec.right(seq(
             $._switch_head,
-            optional(seq(field('alias', $.expression_list), ':=')),
-            field('value', $._expression),
-            '.',
-            '(',
-            'type',
-            ')',
+            $._type_switch_body,
             '{',
             repeat(choice(
                 $.component_switch_type_case,
@@ -316,6 +326,33 @@ module.exports = grammar(GO, {
             ':',
             repeat($._switch_component_node),
         )),
+
+        // The part of a type switch head after the shared _switch_head prefix:
+        // the optional 'alias :=' and the value with the '(type)' cast. Defined
+        // once so Go's type_switch_statement and the component type switch
+        // share one spine instead of one per statement.
+        _type_switch_body: $ => seq(
+            optional(seq(field('alias', $.expression_list), ':=')),
+            field('value', $._expression),
+            '.',
+            '(',
+            'type',
+            ')',
+        ),
+
+        // Override of the Go grammar's type_switch_statement so it references
+        // the shared _switch_head prefix and the shared _type_switch_body
+        // instead of inlining them (Go's own _type_switch_header becomes
+        // unused and is dropped by the generator). The accepted language and
+        // the parse tree are unchanged (both shared parts are anonymous and
+        // the initializer/alias/value fields are preserved).
+        type_switch_statement: $ => seq(
+            $._switch_head,
+            $._type_switch_body,
+            '{',
+            repeat(choice($.type_case, $.default_case)),
+            '}',
+        ),
 
         // This matches an import statement:
         //
