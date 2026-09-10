@@ -617,10 +617,8 @@ module.exports = grammar(GO, {
         // separate choice for them is needed.
         dynamic_class_attribute_value: $ => prec(-1, seq(
             '{',
-            seq(
-                commaSep($._expression),
-                optional(','),
-            ),
+            commaSep($._expression),
+            optional(','),
             '}',
         )),
 
@@ -679,6 +677,14 @@ module.exports = grammar(GO, {
         // - Option A `/[^<]+/` consumes text up until a '<' is seen.
         // - Option B `/<[^/]/` allows a '<' *only* when not followed by '/', so
         //   '<' inside the body (e.g. `a < b`) works but '</' stops the match.
+        //
+        // Do NOT collapse this into a single token like /(?:[^<]|<[^/])+/: the
+        // token's '<'-continuation merges the closing '</' literal's DFA path
+        // into the text token's states, so on a whitespace-only body the '</'
+        // match absorbs the leading whitespace and wins the longest-match race
+        // (verified: the corpus 'Empty style element' test loses its
+        // style_element_text node). The two-token loop keeps the text token's
+        // accept state free of a '<' transition, so the text token wins there.
         _element_body_text: $ => repeat1(
             choice(
                 /[^<]+/,
