@@ -529,21 +529,20 @@ module.exports = grammar(GO, {
             repeat($._attribute),
             '>',
         ),
-        // The same set as 15 separate string alternatives, collapsed into one
-        // regex token so the grammar has a single symbol instead of fifteen.
-        // Longest-match semantics keep it equivalent: e.g. `bracket` still
-        // matches as element_identifier (longer) rather than `br`.
-        _void_element_name: _ => /(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)/,
+        _void_element_name: $ => choice(
+            'area', 'base', 'br', 'col', 'command', 'embed',
+            'hr', 'img', 'input', 'keygen', 'link', 'meta',
+            'param', 'source', 'track', 'wbr',
+        ),
 
         doctype: $ => seq(
             '<!',
             // Case insensitive "doctype"
             /[Dd][Oo][Cc][Tt][Yy][Pp][Ee]/,
-            // Same two alternatives as before, collapsed into a single regex
-            // token so the grammar carries one symbol instead of two. The
-            // alternatives are disjoint (case-sensitive), so the regex accepts
-            // exactly the same strings.
-            /html|HTML PUBLIC "http:\/\/www\.w3\.org\/TR\/html4\/loose\.dtd"/,
+            choice(
+                'html',
+                'HTML PUBLIC "http://www.w3.org/TR/html4/loose.dtd"',
+            ),
             '>'
         ),
 
@@ -611,10 +610,7 @@ module.exports = grammar(GO, {
                 $.attribute_name,
             )),
             optional(seq(
-                // The '=' and '?=' operators are disjoint on their first
-                // character, so a single regex token behaves identically to
-                // the two string alternatives (and saves one symbol).
-                /(?:\?=|=)/,
+                choice('=', '?='),
                 field('value', choice(
                     $.expression,
                     $.attribute_value,
@@ -661,6 +657,7 @@ module.exports = grammar(GO, {
         //   </div>
         conditional_attribute_block: $ => seq(
             '{',
+            optional('\n'),
             // The newline after '{' needs no explicit token: the whitespace
             // extra (inherited from the Go grammar) already skips it, and an
             // anonymous '\n' here would only add a per-context shift state

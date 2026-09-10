@@ -1787,6 +1787,11 @@
     "fields": {}
   },
   {
+    "type": "element_identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "element_text",
     "named": true,
     "fields": {}
@@ -4024,6 +4029,10 @@
     "named": false
   },
   {
+    "type": "\n",
+    "named": false
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -4204,7 +4213,15 @@
     "named": false
   },
   {
+    "type": "?=",
+    "named": false
+  },
+  {
     "type": "@",
+    "named": false
+  },
+  {
+    "type": "HTML PUBLIC \"http://www.w3.org/TR/html4/loose.dtd\"",
     "named": false
   },
   {
@@ -4228,6 +4245,10 @@
     "named": false
   },
   {
+    "type": "area",
+    "named": false
+  },
+  {
     "type": "attribute_name",
     "named": true
   },
@@ -4236,8 +4257,16 @@
     "named": true
   },
   {
+    "type": "base",
+    "named": false
+  },
+  {
     "type": "blank_identifier",
     "named": true
+  },
+  {
+    "type": "br",
+    "named": false
   },
   {
     "type": "break",
@@ -4253,6 +4282,14 @@
   },
   {
     "type": "children...",
+    "named": false
+  },
+  {
+    "type": "col",
+    "named": false
+  },
+  {
+    "type": "command",
     "named": false
   },
   {
@@ -4297,11 +4334,11 @@
     "named": false
   },
   {
-    "type": "element_identifier",
-    "named": true
+    "type": "else",
+    "named": false
   },
   {
-    "type": "else",
+    "type": "embed",
     "named": false
   },
   {
@@ -4341,6 +4378,14 @@
     "named": false
   },
   {
+    "type": "hr",
+    "named": false
+  },
+  {
+    "type": "html",
+    "named": false
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -4353,7 +4398,15 @@
     "named": true
   },
   {
+    "type": "img",
+    "named": false
+  },
+  {
     "type": "import",
+    "named": false
+  },
+  {
+    "type": "input",
     "named": false
   },
   {
@@ -4373,11 +4426,23 @@
     "named": true
   },
   {
+    "type": "keygen",
+    "named": false
+  },
+  {
     "type": "label_name",
     "named": true
   },
   {
+    "type": "link",
+    "named": false
+  },
+  {
     "type": "map",
+    "named": false
+  },
+  {
+    "type": "meta",
     "named": false
   },
   {
@@ -4391,6 +4456,10 @@
   {
     "type": "package_identifier",
     "named": true
+  },
+  {
+    "type": "param",
+    "named": false
   },
   {
     "type": "range",
@@ -4421,6 +4490,10 @@
     "named": false
   },
   {
+    "type": "source",
+    "named": false
+  },
+  {
     "type": "struct",
     "named": false
   },
@@ -4437,6 +4510,10 @@
     "named": false
   },
   {
+    "type": "track",
+    "named": false
+  },
+  {
     "type": "true",
     "named": true
   },
@@ -4450,6 +4527,10 @@
   },
   {
     "type": "var",
+    "named": false
+  },
+  {
+    "type": "wbr",
     "named": false
   },
   {
