@@ -8005,7 +8005,7 @@
         }
       ]
     },
-    "tag_start": {
+    "_tag_open": {
       "type": "SEQ",
       "members": [
         {
@@ -8026,6 +8026,15 @@
             "type": "SYMBOL",
             "name": "_attribute"
           }
+        }
+      ]
+    },
+    "tag_start": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
         },
         {
           "type": "STRING",
@@ -8058,23 +8067,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "<"
-        },
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_element_name"
-          }
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_attribute"
-          }
+          "type": "SYMBOL",
+          "name": "_tag_open"
         },
         {
           "type": "STRING",
@@ -8179,7 +8173,7 @@
         }
       ]
     },
-    "style_tag_start": {
+    "_style_tag_open": {
       "type": "SEQ",
       "members": [
         {
@@ -8196,6 +8190,15 @@
             "type": "SYMBOL",
             "name": "_attribute"
           }
+        }
+      ]
+    },
+    "style_tag_start": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_style_tag_open"
         },
         {
           "type": "STRING",
@@ -8224,19 +8227,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "<"
-        },
-        {
-          "type": "STRING",
-          "value": "style"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_attribute"
-          }
+          "type": "SYMBOL",
+          "name": "_style_tag_open"
         },
         {
           "type": "STRING",
@@ -8812,7 +8804,7 @@
         ]
       }
     },
-    "script_tag_start": {
+    "_script_tag_open": {
       "type": "SEQ",
       "members": [
         {
@@ -8833,6 +8825,15 @@
             "type": "SYMBOL",
             "name": "attribute"
           }
+        }
+      ]
+    },
+    "script_tag_start": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_script_tag_open"
         },
         {
           "type": "STRING",
@@ -8861,23 +8862,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "<"
-        },
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "STRING",
-            "value": "script"
-          }
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "attribute"
-          }
+          "type": "SYMBOL",
+          "name": "_script_tag_open"
         },
         {
           "type": "STRING",

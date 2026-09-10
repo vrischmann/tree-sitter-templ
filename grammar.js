@@ -372,10 +372,13 @@ module.exports = grammar(GO, {
             $.self_closing_tag,
             $.doctype,
         ),
-        tag_start: $ => seq(
+        _tag_open: $ => seq(
             '<',
             field('name', $._element_name),
             repeat($._attribute),
+        ),
+        tag_start: $ => seq(
+            $._tag_open,
             '>',
         ),
         tag_end: $ => seq(
@@ -384,9 +387,7 @@ module.exports = grammar(GO, {
             '>',
         ),
         self_closing_tag: $ => seq(
-            '<',
-            field('name', $._element_name),
-            repeat($._attribute),
+            $._tag_open,
             '/>',
         ),
 
@@ -446,10 +447,13 @@ module.exports = grammar(GO, {
             ),
             $.self_closing_style_tag,
         ),
-        style_tag_start: $ => seq(
+        _style_tag_open: $ => seq(
             '<',
             'style',
             repeat($._attribute),
+        ),
+        style_tag_start: $ => seq(
+            $._style_tag_open,
             '>'
         ),
         style_tag_end: $ => seq(
@@ -458,9 +462,7 @@ module.exports = grammar(GO, {
             '>',
         ),
         self_closing_style_tag: $ => seq(
-            '<',
-            'style',
-            repeat($._attribute),
+            $._style_tag_open,
             '/>',
         ),
 
@@ -673,10 +675,13 @@ module.exports = grammar(GO, {
                 /<[^/]/
             )
         ),
-        script_tag_start: $ => seq(
+        _script_tag_open: $ => seq(
             '<',
             field('name', 'script'),
             repeat($.attribute),
+        ),
+        script_tag_start: $ => seq(
+            $._script_tag_open,
             '>',
         ),
         script_tag_end: $ => seq(
@@ -685,9 +690,7 @@ module.exports = grammar(GO, {
             '>'
         ),
         self_closing_script_tag: $ => seq(
-            '<',
-            field('name', 'script'),
-            repeat($.attribute),
+            $._script_tag_open,
             '/>',
         ),
 
