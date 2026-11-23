@@ -31,7 +31,7 @@ jobs:
           git clone https://github.com/a-h/templ.git examples/templ --single-branch --depth=1 --filter=blob:none
       - name: Parse examples
         id: examples
-        uses: tree-sitter/parse-action@v4
+        uses: tree-sitter/parse-action@v5
         with:
           files: examples/**/*.templ
       - uses: actions/upload-artifact@v7
